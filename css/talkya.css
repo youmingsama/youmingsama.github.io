@@ -1,0 +1,15 @@
+  .cbp_tmtimeline>li:nth-child(odd) .cbp_tmlabel {
+    background: url("https://cdn.jsdelivr.net/gh/youmingsama/PicGo/img2/blackandwhite.jpg") 0% 0% / cover !important;
+  }
+  .cbp_tmtimeline>li .cbp_tmlabel {
+    background: url("https://cdn.jsdelivr.net/gh/youmingsama/PicGo/img2/blackandwhite.jpg") 0% 0% / cover !important;
+  }
+  .cbp_tmtimeline>li:nth-child(odd) .cbp_tmlabel:after {
+    border-right-color:  #000000 !important
+  }
+  .cbp_tmtimeline>li .cbp_tmlabel:after {
+    border-right-color:  #ffffff !important
+  }
+  .at_button {
+    background: url("https://cdn.jsdelivr.net/gh/youmingsama/PicGo/img2/blackandwhite.jpg") 0% 0% / cover !important;
+  }

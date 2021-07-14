@@ -1,0 +1,9 @@
+@import "//at.alicdn.com/t/font_2269988_eavk5dct9mm.css";
+.iconfont {
+    font-family: "iconfont" !important;
+    font-size: 1em;
+    /* 可以定义图标大小 */
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    }

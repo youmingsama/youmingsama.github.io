@@ -1,0 +1,10 @@
+.v[data-class=v] .vcontent .vemoji {
+    width: 122px  !important;
+}
+#post img {
+    display: inline-block  !important;
+}
+.v[data-class=v] .vemoji-popup .vemoji {
+    max-width: 36px !important;
+    max-height: 36px !important;
+}
