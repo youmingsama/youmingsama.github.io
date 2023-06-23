@@ -1,0 +1,79 @@
+@font-face {
+  font-family: "iconfont"; /* Project id 2269988 */
+  src: url('//at.alicdn.com/t/c/font_2269988_gvntri7bk1r.woff2?t=1675619278208') format('woff2'),
+       url('//at.alicdn.com/t/c/font_2269988_gvntri7bk1r.woff?t=1675619278208') format('woff'),
+       url('//at.alicdn.com/t/c/font_2269988_gvntri7bk1r.ttf?t=1675619278208') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 21px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-rss:before {
+  content: "\e8ae";
+}
+
+.icon-github-o:before {
+  content: "\e613";
+}
+
+.icon-email:before {
+  content: "\e66f";
+}
+
+.icon-telegram:before {
+  content: "\e9ac";
+}
+
+.icon-discord:before {
+  content: "\e675";
+}
+
+.icon-Notion:before {
+  content: "\e740";
+}
+
+.icon-youjian:before {
+  content: "\e616";
+}
+
+.icon-youxiang:before {
+  content: "\e639";
+}
+
+.icon-jiaonang:before {
+  content: "\e61b";
+}
+
+.icon-lanmei:before {
+  content: "\e716";
+}
+
+.icon-todo:before {
+  content: "\e602";
+}
+
+.icon-huasheng:before {
+  content: "\e80a";
+}
+
+.icon-bilibili-line:before {
+  content: "\e627";
+}
+
+.icon-yinyue:before {
+  content: "\e680";
+}
+
+.icon-tupian:before {
+  content: "\e8ba";
+}
+
+.icon-sanmingzhi:before {
+  content: "\e60d";
+  font-size: 10px !important;
+}

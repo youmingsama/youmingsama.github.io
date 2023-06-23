@@ -1,0 +1,1341 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>golang杂耍大师混乱的笔记 | youmingsama</title><meta name="keywords" content="golang"><meta name="author" content="youmingsama"><meta name="copyright" content="youmingsama"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="本文截选至the way to go 中文版   从字符串中读取内容 函数 strings.NewReader(str) 用于生成一个 Reader 并读取字符串中的内容，然后返回指向该 Reader 的指针，从其它类型读取内容的函数还有：  Read() 从 []byte 中读取内容。 ReadByte() 和 ReadRune() 从字符串中读取下一个 byte 或者 rune。   字符串">
+<meta property="og:type" content="article">
+<meta property="og:title" content="golang杂耍大师混乱的笔记">
+<meta property="og:url" content="https://blog.youmingsama.cn/posts/8f098f8e/index.html">
+<meta property="og:site_name" content="youmingsama">
+<meta property="og:description" content="本文截选至the way to go 中文版   从字符串中读取内容 函数 strings.NewReader(str) 用于生成一个 Reader 并读取字符串中的内容，然后返回指向该 Reader 的指针，从其它类型读取内容的函数还有：  Read() 从 []byte 中读取内容。 ReadByte() 和 ReadRune() 从字符串中读取下一个 byte 或者 rune。   字符串">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/img/bqb.jpg">
+<meta property="article:published_time" content="2020-05-04T00:00:00.000Z">
+<meta property="article:modified_time" content="2020-05-04T00:00:00.000Z">
+<meta property="article:author" content="youmingsama">
+<meta property="article:tag" content="golang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/img/bqb.jpg"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://blog.youmingsama.cn/posts/8f098f8e/"><link rel="preconnect" href="//cdn1.tianli0.top"><link rel="preconnect" href="//cdn.dusays.com"><link rel="manifest" href="/manifest.json"><link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/img/32.png"><link rel="icon" type="image/png" sizes="16x16" href="/img/16.png"><link rel="mask-icon" href="/img/safari-pinned-tab.svg" color="#5bbad5"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"简","msgToSimplifiedChinese":"繁"},
+  noticeOutdate: {"limitDay":120,"position":"top","messagePrev":"距离上次更新已经过了","messageNext":"天，文章所描述的內容可能已经发生变化，请留意"},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":500},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: youmingsama","link":"链接: ","source":"来源: youmingsama","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"top-right"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn1.tianli0.top/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn1.tianli0.top/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'golang杂耍大师混乱的笔记',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2020-05-04 00:00:00'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/ariasakablog.css"><link id="css" rel="stylesheet" href="/css/stylessimple.css"><link rel="stylesheet" href="/css/iconfont.css"><style>#article-container h1:before, h2:before, h3:before, h4:before, h5:before, h6:before { -webkit-animation: avatar_turn_around 3s linear infinite; -moz-animation: avatar_turn_around 3s linear infinite; -o-animation: avatar_turn_around 3s linear infinite; -ms-animation: avatar_turn_around 3s linear infinite; animation: avatar_turn_around 3s linear infinite; }</style><style id="barragesColor"></style><style id="settingStyle"></style><style id="yjjs"></style><style id="themeColor"></style><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+SC"><link rel="stylesheet" href="https://cdn1.tianli0.top/gh/Zfour/Butterfly-card-history/baiduhistory/css/main.css"><link rel="stylesheet" href="/css/commentBarrage.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif+SC"><link rel="stylesheet" type="text/css" href="https://cdn1.tianli0.top/npm/node-snackbar@latest/dist/snackbar.min.css"><script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script><script>LA.init({id: "JnlSnWLD7XChjrlx",ck: "JnlSnWLD7XChjrlx"})</script><script src="https://sdk.51.la/perf/js-sdk-perf.min.js" crossorigin="anonymous"></script><script>new LingQue.Monitor().init({id:"JnnW6bt2WtyehVan"});</script><script src="/swReg.js"></script></head><body><span id="fps"></span><style id="grays"></style><script src="https://cdn1.tianli0.top/npm/prefetch-page"></script><script>addEventListener('DOMContentLoaded', function () {prefetch({ threshold: 25, delay: 3000, limit: 10 ,customs: ['search.xml']})});requestIdleCallback(function () {prefetch({ threshold: 25, delay: 3000, limit: 10,customs: ['search.xml']})})</script><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/5.4.5/css/swiper.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-swiper-lyx/lib/swiperstyle.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://cdn1.tianli0.top/npm/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="youmingsama" type="application/atom+xml">
+<div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><img src="/img/nyancat.gif" id="loadcat"></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fa fa-newspaper"></i><span> 文章</span><!--i.fas.fa-chevron-down--></a><ul class="menus_item_child"><li><a class="site-page child" href="javascript:toRandomPost()" rel="external nofollow noreferrer"><i class="fa-fw fa fa-paper-plane"></i><span> 随便逛逛</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fa fa-sitemap"></i><span> 本站</span><!--i.fas.fa-chevron-down--></a><ul class="menus_item_child"><li><a class="site-page child" href="/speaks/"><i class="fa-fw fa fa-comments"></i><span> 说说</span></a></li><li><a class="site-page child" href="/links/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></li><li><a class="site-page child" href="/fcircle/"><i class="fa-fw fab fa-galactic-republic"></i><span> 朋友圈</span></a></li><li><a class="site-page child" href="/othersite/"><i class="fa-fw fa fa-tasks"></i><span> 分站</span></a></li><li><a class="site-page child" href="/update/"><i class="fa-fw fa fa-bell"></i><span> 日志</span></a></li><li><a class="site-page child" href="/messageboard/"><i class="fa-fw fa fa-blackboard"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fa-fw fas fa-address-card"></i><span> 我的</span><!--i.fas.fa-chevron-down--></a><ul class="menus_item_child"><li><a class="site-page child" href="/movies/"><i class="fa-fw fa fa-photo-video"></i><span> 电影</span></a></li><li><a class="site-page child" href="/bangumis/"><i class="fa-fw fa-fw fas fa fa-film"></i><span> 追番</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fa fa-info-circle"></i><span> 关于我</span></a></li><li><a class="site-page child" href="/license/"><i class="fa-fw fas fa-balance-scale"></i><span> 声明</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fa-fw fas fa-tools"></i><span> 工具</span><!--i.fas.fa-chevron-down--></a><ul class="menus_item_child"><li><a class="site-page child" href="/kongtiao/"><span> 小空调</span></a></li><li><a class="site-page child" href="/zaobao/"><i class="fa-fw fa fa-newspaper"></i><span> 每日早报</span></a></li><li><a class="site-page child" href="/muyu/"><i class="fa-fw fa fa-cog"></i><span> 木鱼</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fas fa-link"></i><span> 线路</span><!--i.fas.fa-chevron-down--></a><ul class="menus_item_child"><li><a class="site-page child" href="https://blog.youmingsama.cn"><span> Vercel</span></a></li><li><a class="site-page child" href="https://blog.youmingsama.cn"><span> Vercel2</span></a></li><li><a class="site-page child" href="https://blog.youmingsama.cn"><span> Netlify</span></a></li><li><a class="site-page child" target="_blank" rel="noopener external nofollow noreferrer" href="https://blog.youmingsama.top/"><span> Cloudflare</span></a></li><li><a class="site-page child" target="_blank" rel="noopener external nofollow noreferrer" href="https://blog.youmingsama.top/"><span> Cloudflare2</span></a></li><li><a class="site-page child" target="_blank" rel="noopener external nofollow noreferrer" href="https://blog.youmingsama.top/"><span> Github</span></a></li><li><a class="site-page child" target="_blank" rel="noopener external nofollow noreferrer" href="https://blog.youmingsama.top/"><span> Railway</span></a></li><li><a class="site-page child" target="_blank" rel="noopener external nofollow noreferrer" href="https://blog.youmingsama.top/"><span> Railway2</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/img/bqb.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">youmingsama</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fa fa-newspaper"></i><span> 文章</span><!--i.fas.fa-chevron-down--></a><ul class="menus_item_child"><li><a class="site-page child" href="javascript:toRandomPost()" rel="external nofollow noreferrer"><i class="fa-fw fa fa-paper-plane"></i><span> 随便逛逛</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fa fa-sitemap"></i><span> 本站</span><!--i.fas.fa-chevron-down--></a><ul class="menus_item_child"><li><a class="site-page child" href="/speaks/"><i class="fa-fw fa fa-comments"></i><span> 说说</span></a></li><li><a class="site-page child" href="/links/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></li><li><a class="site-page child" href="/fcircle/"><i class="fa-fw fab fa-galactic-republic"></i><span> 朋友圈</span></a></li><li><a class="site-page child" href="/othersite/"><i class="fa-fw fa fa-tasks"></i><span> 分站</span></a></li><li><a class="site-page child" href="/update/"><i class="fa-fw fa fa-bell"></i><span> 日志</span></a></li><li><a class="site-page child" href="/messageboard/"><i class="fa-fw fa fa-blackboard"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fa-fw fas fa-address-card"></i><span> 我的</span><!--i.fas.fa-chevron-down--></a><ul class="menus_item_child"><li><a class="site-page child" href="/movies/"><i class="fa-fw fa fa-photo-video"></i><span> 电影</span></a></li><li><a class="site-page child" href="/bangumis/"><i class="fa-fw fa-fw fas fa fa-film"></i><span> 追番</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fa fa-info-circle"></i><span> 关于我</span></a></li><li><a class="site-page child" href="/license/"><i class="fa-fw fas fa-balance-scale"></i><span> 声明</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fa-fw fas fa-tools"></i><span> 工具</span><!--i.fas.fa-chevron-down--></a><ul class="menus_item_child"><li><a class="site-page child" href="/kongtiao/"><span> 小空调</span></a></li><li><a class="site-page child" href="/zaobao/"><i class="fa-fw fa fa-newspaper"></i><span> 每日早报</span></a></li><li><a class="site-page child" href="/muyu/"><i class="fa-fw fa fa-cog"></i><span> 木鱼</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fas fa-link"></i><span> 线路</span><!--i.fas.fa-chevron-down--></a><ul class="menus_item_child"><li><a class="site-page child" href="https://blog.youmingsama.cn"><span> Vercel</span></a></li><li><a class="site-page child" href="https://blog.youmingsama.cn"><span> Vercel2</span></a></li><li><a class="site-page child" href="https://blog.youmingsama.cn"><span> Netlify</span></a></li><li><a class="site-page child" target="_blank" rel="noopener external nofollow noreferrer" href="https://blog.youmingsama.top/"><span> Cloudflare</span></a></li><li><a class="site-page child" target="_blank" rel="noopener external nofollow noreferrer" href="https://blog.youmingsama.top/"><span> Cloudflare2</span></a></li><li><a class="site-page child" target="_blank" rel="noopener external nofollow noreferrer" href="https://blog.youmingsama.top/"><span> Github</span></a></li><li><a class="site-page child" target="_blank" rel="noopener external nofollow noreferrer" href="https://blog.youmingsama.top/"><span> Railway</span></a></li><li><a class="site-page child" target="_blank" rel="noopener external nofollow noreferrer" href="https://blog.youmingsama.top/"><span> Railway2</span></a></li></ul></div></div><center id="name-container"><a id="page-name" href="javascript:rmf.scrollToTop()" rel="external nofollow noreferrer">PAGE_NAME</a></center></div><div id="toggleButtons"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><!--span=' '+_p('search.title')--></a></div><div id="randoms"><a class="site-page social-icon" href="javascript:toRandomPost()" rel="external nofollow noreferrer"><i class="fa fa-paper-plane"></i></a></div><div id="travellings"><a class="site-page social-icon" target="_blank" rel="noopener external nofollow noreferrer" href="https://travellings.link"><i class="fa fa-subway"></i></a></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">golang杂耍大师混乱的笔记</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-05-04T00:00:00.000Z" title="发表于 2020-05-04 00:00:00">2020-05-04</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-05-04T00:00:00.000Z" title="更新于 2020-05-04 00:00:00">2020-05-04</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/print-hello-world/">print*,"hello world!!!"</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">11.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>45分钟</span></span><span class="post-meta-separator">|</span><span id="" data-flag-title="golang杂耍大师混乱的笔记"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="twikoo_visitors"></span></span><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/posts/8f098f8e/#post-comment"><span id="twikoo-count"></span></a></span><span class="post-meta-separator">|&nbsp; <span class="post-meta-dianzan"><a class="dianzan" href="javascript:void(0)" rel="external nofollow noreferrer" onclick="dianzan()"><i class="fas fa-thumbs-up"></i></a><span class="post-meta-label"> 点赞:</span><span class="dianzan-count">0</span></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><blockquote>
+<p>本文截选至the way to go 中文版</p>
+</blockquote>
+<h2 id="从字符串中读取内容"><a class="markdownIt-Anchor" href="#从字符串中读取内容"></a> 从字符串中读取内容</h2>
+<p>函数 <code>strings.NewReader(str)</code> 用于生成一个 <code>Reader</code> 并读取字符串中的内容，然后返回指向该 <code>Reader</code> 的指针，从其它类型读取内容的函数还有：</p>
+<ul>
+<li><code>Read()</code> 从 []byte 中读取内容。</li>
+<li><code>ReadByte()</code> 和 <code>ReadRune()</code> 从字符串中读取下一个 byte 或者 rune。</li>
+</ul>
+<h2 id="字符串与其它类型的转换"><a class="markdownIt-Anchor" href="#字符串与其它类型的转换"></a> 字符串与其它类型的转换</h2>
+<p>与字符串相关的类型转换都是通过 <code>strconv</code> 包实现的。</p>
+<p>该包包含了一些变量用于获取程序运行的操作系统平台下 int 类型所占的位数，如：<code>strconv.IntSize</code>。</p>
+<p>任何类型 <strong>T</strong> 转换为字符串总是成功的。</p>
+<p>针对从数字类型转换到字符串，Go 提供了以下函数：</p>
+<ul>
+<li><code>strconv.Itoa(i int) string</code> 返回数字 i 所表示的字符串类型的十进制数。</li>
+<li><code>strconv.FormatFloat(f float64, fmt byte, prec int, bitSize int) string</code> 将 64 位浮点型的数字转换为字符串，其中 <code>fmt</code> 表示格式（其值可以是 <code>'b'</code>、<code>'e'</code>、<code>'f'</code> 或 <code>'g'</code>），<code>prec</code> 表示精度，<code>bitSize</code> 则使用 32 表示 float32，用 64 表示 float64。</li>
+</ul>
+<p>将字符串转换为其它类型 <strong>tp</strong> 并不总是可能的，可能会在运行时抛出错误 <code>parsing "…": invalid argument</code>。</p>
+<p>针对从字符串类型转换为数字类型，Go 提供了以下函数：</p>
+<ul>
+<li><code>strconv.Atoi(s string) (i int, err error)</code> 将字符串转换为 int 型。</li>
+<li><code>strconv.ParseFloat(s string, bitSize int) (f float64, err error)</code> 将字符串转换为 float64 型。</li>
+</ul>
+<p>利用多返回值的特性，这些函数会返回 2 个值，第 1 个是转换后的结果（如果转换成功），第 2 个是可能出现的错误，因此，我们一般使用以下形式来进行从字符串到其它类型的转换：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">val, err = strconv.Atoi(s)</span><br></pre></td></tr></tbody></table></figure>
+<h1 id="时间和日期"><a class="markdownIt-Anchor" href="#时间和日期"></a> 时间和日期</h1>
+<p><code>time</code> 包为我们提供了一个数据类型 <code>time.Time</code>（作为值使用）以及显示和测量时间和日期的功能函数。</p>
+<p>当前时间可以使用 <code>time.Now()</code> 获取，或者使用 <code>t.Day()</code>、<code>t.Minute()</code> 等等来获取时间的一部分；你甚至可以自定义时间格式化字符串，例如： <code>fmt.Printf("%02d.%02d.%4d\n", t.Day(), t.Month(), t.Year())</code> 将会输出 <code>21.07.2011</code>。</p>
+<p>Duration 类型表示两个连续时刻所相差的纳秒数，类型为 int64。Location 类型映射某个时区的时间，UTC 表示通用协调世界时间。</p>
+<p>包中的一个预定义函数 <code>func (t Time) Format(layout string) string</code> 可以根据一个格式化字符串来将一个时间 t 转换为相应格式的字符串，你可以使用一些预定义的格式，如：<code>time.ANSIC</code> 或 <code>time.RFC822</code>。</p>
+<p>一般的格式化设计是通过对于一个标准时间的格式化描述来展现的，这听起来很奇怪，但看下面这个例子你就会一目了然：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fmt.Println(t.Format("02 Jan 2006 15:04")) </span><br></pre></td></tr></tbody></table></figure>
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">21 Jul 2011 10:31</span><br></pre></td></tr></tbody></table></figure>
+<p>其它有关时间操作的文档请参阅 <a target="_blank" rel="noopener external nofollow noreferrer" href="http://golang.org/pkg/time/">官方文档</a></p>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"time"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> week time.Duration</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> {</span><br><span class="line">    t := time.Now()</span><br><span class="line">    fmt.Println(t) <span class="comment">// e.g. Wed Dec 21 09:52:14 +0100 RST 2011</span></span><br><span class="line">    fmt.Printf(<span class="string">"%02d.%02d.%4d\n"</span>, t.Day(), t.Month(), t.Year())</span><br><span class="line">    <span class="comment">// 21.12.2011</span></span><br><span class="line">    t = time.Now().UTC()</span><br><span class="line">    fmt.Println(t) <span class="comment">// Wed Dec 21 08:52:14 +0000 UTC 2011</span></span><br><span class="line">    fmt.Println(time.Now()) <span class="comment">// Wed Dec 21 09:52:14 +0100 RST 2011</span></span><br><span class="line">    <span class="comment">// calculating times:</span></span><br><span class="line">    week = <span class="number">60</span> * <span class="number">60</span> * <span class="number">24</span> * <span class="number">7</span> * <span class="number">1e9</span> <span class="comment">// must be in nanosec</span></span><br><span class="line">    week_from_now := t.Add(time.Duration(week))</span><br><span class="line">    fmt.Println(week_from_now) <span class="comment">// Wed Dec 28 08:52:14 +0000 UTC 2011</span></span><br><span class="line">    <span class="comment">// formatting times:</span></span><br><span class="line">    fmt.Println(t.Format(time.RFC822)) <span class="comment">// 21 Dec 11 0852 UTC</span></span><br><span class="line">    fmt.Println(t.Format(time.ANSIC)) <span class="comment">// Wed Dec 21 08:56:34 2011</span></span><br><span class="line">    <span class="comment">// The time must be 2006-01-02 15:04:05</span></span><br><span class="line">    fmt.Println(t.Format(<span class="string">"02 Jan 2006 15:04"</span>)) <span class="comment">// 21 Dec 2011 08:52</span></span><br><span class="line">    s := t.Format(<span class="string">"20060102"</span>)</span><br><span class="line">    fmt.Println(t, <span class="string">"=&gt;"</span>, s)</span><br><span class="line">    <span class="comment">// Wed Dec 21 08:52:14 +0000 UTC 2011 =&gt; 20111221</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>输出的结果已经写在每行 <code>//</code> 的后面。</p>
+<p>如果你需要在应用程序在经过一定时间或周期执行某项任务（事件处理的特例），则可以使用 <code>time.After</code> 或者 <code>time.Ticker</code> 另外，<code>time.Sleep（d Duration）</code> 可以实现对某个进程（实质上是 goroutine）时长为 d 的暂停。</p>
+<h1 id="测试多返回值函数的错误"><a class="markdownIt-Anchor" href="#测试多返回值函数的错误"></a> 测试多返回值函数的错误</h1>
+<p>Go 语言的函数经常使用两个返回值来表示执行是否成功：返回某个值以及 true 表示成功；返回零值（或 nil）和 false 表示失败（第 4.4 节）。当不使用 true 或 false 的时候，也可以使用一个 error 类型的变量来代替作为第二个返回值：成功执行的话，error 的值为 nil，否则就会包含相应的错误信息（Go 语言中的错误类型为 error: <code>var err error</code>，我们将会在第 13 章进行更多地讨论）。这样一来，就很明显需要用一个 if 语句来测试执行结果；由于其符号的原因，这样的形式又称之为 comma,ok 模式（pattern）。</p>
+<p>在第 4.7 节的程序 <code>string_conversion.go</code> 中，函数 <code>strconv.Atoi</code> 的作用是将一个字符串转换为一个整数。之前我们忽略了相关的错误检查：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">anInt, _ = strconv.Atoi(origStr)</span><br></pre></td></tr></tbody></table></figure>
+<p>如果 origStr 不能被转换为整数，anInt 的值会变成 0 而 <code>_</code> 无视了错误，程序会继续运行。</p>
+<p>这样做是非常不好的：程序应该在最接近的位置检查所有相关的错误，至少需要暗示用户有错误发生并对函数进行返回，甚至中断程序。</p>
+<p>我们在第二个版本中对代码进行了改进：</p>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"strconv"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> {</span><br><span class="line">    <span class="keyword">var</span> orig <span class="type">string</span> = <span class="string">"ABC"</span></span><br><span class="line">    <span class="comment">// var an int</span></span><br><span class="line">    <span class="keyword">var</span> newS <span class="type">string</span></span><br><span class="line">    <span class="comment">// var err error</span></span><br><span class="line"></span><br><span class="line">    fmt.Printf(<span class="string">"The size of ints is: %d\n"</span>, strconv.IntSize)	  </span><br><span class="line">    <span class="comment">// anInt, err = strconv.Atoi(origStr)</span></span><br><span class="line">    an, err := strconv.Atoi(orig)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> {</span><br><span class="line">        fmt.Printf(<span class="string">"orig %s is not an integer - exiting with error\n"</span>, orig)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    } </span><br><span class="line">    fmt.Printf(<span class="string">"The integer is %d\n"</span>, an)</span><br><span class="line">    an = an + <span class="number">5</span></span><br><span class="line">    newS = strconv.Itoa(an)</span><br><span class="line">    fmt.Printf(<span class="string">"The new string is: %s\n"</span>, newS)</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>这是测试 err 变量是否包含一个真正的错误（<code>if err != nil</code>）的习惯用法。如果确实存在错误，则会打印相应的错误信息然后通过 return 提前结束函数的执行。我们还可以使用携带返回值的 return 形式，例如 <code>return err</code>。这样一来，函数的调用者就可以检查函数执行过程中是否存在错误了。</p>
+<p><strong>习惯用法</strong></p>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">value, err := pack1.Function1(param1)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> {</span><br><span class="line">    fmt.Printf(<span class="string">"An error occured in pack1.Function1 with parameter %v"</span>, param1)</span><br><span class="line">    <span class="keyword">return</span> err</span><br><span class="line">}</span><br><span class="line"><span class="comment">// 未发生错误，继续执行：</span></span><br></pre></td></tr></tbody></table></figure>
+<p>由于本例的函数调用者属于 main 函数，所以程序会直接停止运行。</p>
+<p>如果我们想要在错误发生的同时终止程序的运行，我们可以使用 <code>os</code> 包的 <code>Exit</code> 函数：</p>
+<p><strong>习惯用法</strong></p>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> {</span><br><span class="line">    fmt.Printf(<span class="string">"Program stopping with error %v"</span>, err)</span><br><span class="line">    os.Exit(<span class="number">1</span>)</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>（此处的退出代码 1 可以使用外部脚本获取到）</p>
+<p>有时候，你会发现这种习惯用法被连续重复地使用在某段代码中。</p>
+<p>当没有错误发生时，代码继续运行就是唯一要做的事情，所以 if 语句块后面不需要使用 else 分支。</p>
+<p>示例 2：我们尝试通过 <code>os.Open</code> 方法打开一个名为 <code>name</code> 的只读文件：</p>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">f, err := os.Open(name)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> {</span><br><span class="line">    <span class="keyword">return</span> err</span><br><span class="line">}</span><br><span class="line">doSomething(f) <span class="comment">// 当没有错误发生时，文件对象被传入到某个函数中</span></span><br><span class="line">doSomething</span><br></pre></td></tr></tbody></table></figure>
+<p>示例 3：可以将错误的获取放置在 if 语句的初始化部分：</p>
+<p><strong>习惯用法</strong></p>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> err := file.Chmod(<span class="number">0664</span>); err != <span class="literal">nil</span> {</span><br><span class="line">    fmt.Println(err)</span><br><span class="line">    <span class="keyword">return</span> err</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>示例 4：或者将 ok-pattern 的获取放置在 if 语句的初始化部分，然后进行判断：</p>
+<p><strong>习惯用法</strong></p>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> value, ok := readData(); ok {</span><br><span class="line">…</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p><strong>注意事项</strong></p>
+<p>如果您像下面一样，没有为多返回值的函数准备足够的变量来存放结果：</p>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">mySqrt</span><span class="params">(f <span class="type">float64</span>)</span></span> (v <span class="type">float64</span>, ok <span class="type">bool</span>) {</span><br><span class="line">    <span class="keyword">if</span> f &lt; <span class="number">0</span> { <span class="keyword">return</span> } <span class="comment">// error case</span></span><br><span class="line">    <span class="keyword">return</span> math.Sqrt(f),<span class="literal">true</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> {</span><br><span class="line">    t := mySqrt(<span class="number">25.0</span>)</span><br><span class="line">    fmt.Println(t)</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>您会得到一个编译错误：<code>multiple-value mySqrt() in single-value context</code>。</p>
+<p>正确的做法是：</p>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">t, ok := mySqrt(<span class="number">25.0</span>)</span><br><span class="line"><span class="keyword">if</span> ok { fmt.Println(t) }</span><br></pre></td></tr></tbody></table></figure>
+<p><strong>注意事项 2</strong></p>
+<p>当您将字符串转换为整数时，且确定转换一定能够成功时，可以将 <code>Atoi</code> 函数进行一层忽略错误的封装：</p>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">atoi</span> <span class="params">(s <span class="type">string</span>)</span></span> (n <span class="type">int</span>) {</span><br><span class="line">    n, _ = strconv.Atoi(s)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>实际上，<code>fmt</code> 包最简单的打印函数也有 2 个返回值：</p>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">count, err := fmt.Println(x) <span class="comment">// number of bytes printed, nil or 0, error</span></span><br></pre></td></tr></tbody></table></figure>
+<p>当打印到控制台时，可以将该函数返回的错误忽略；但当输出到文件流、网络流等具有不确定因素的输出对象时，应该始终检查是否有错误发生</p>
+<h2 id="or-range-结构"><a class="markdownIt-Anchor" href="#or-range-结构"></a> or-range 结构</h2>
+<p>这是 Go 特有的一种的迭代结构，您会发现它在许多情况下都非常有用。它可以迭代任何一个集合（包括数组和 map，详见第 7 和 8 章）。语法上很类似其它语言中 foreach 语句，但您依旧可以获得每次迭代所对应的索引。一般形式为：<code>for ix, val := range coll { }</code>。</p>
+<p>要注意的是，<code>val</code> 始终为集合中对应索引的值拷贝，因此它一般只具有只读性质，对它所做的任何修改都不会影响到集合中原有的值（<strong>译者注：如果 <code>val</code> 为指针，则会产生指针的拷贝，依旧可以修改集合中的原值</strong>）。一个字符串是 Unicode 编码的字符（或称之为 <code>rune</code>）集合，因此您也可以用它迭代字符串：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">for pos, char := range str {</span><br><span class="line">...</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>每个 rune 字符和索引在 for-range 循环中是一一对应的。它能够自动根据 UTF-8 规则识别 Unicode 编码的字符。</p>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> {</span><br><span class="line">    str := <span class="string">"Go is a beautiful language!"</span></span><br><span class="line">    fmt.Printf(<span class="string">"The length of str is: %d\n"</span>, <span class="built_in">len</span>(str))</span><br><span class="line">    <span class="keyword">for</span> pos, char := <span class="keyword">range</span> str {</span><br><span class="line">        fmt.Printf(<span class="string">"Character on position %d is: %c \n"</span>, pos, char)</span><br><span class="line">    }</span><br><span class="line">    fmt.Println()</span><br><span class="line">    str2 := <span class="string">"Chinese: 日本語"</span></span><br><span class="line">    fmt.Printf(<span class="string">"The length of str2 is: %d\n"</span>, <span class="built_in">len</span>(str2))</span><br><span class="line">    <span class="keyword">for</span> pos, char := <span class="keyword">range</span> str2 {</span><br><span class="line">        fmt.Printf(<span class="string">"character %c starts at byte position %d\n"</span>, char, pos)</span><br><span class="line">    }</span><br><span class="line">    fmt.Println()</span><br><span class="line">    fmt.Println(<span class="string">"index int(rune) rune    char bytes"</span>)</span><br><span class="line">    <span class="keyword">for</span> index, <span class="type">rune</span> := <span class="keyword">range</span> str2 {</span><br><span class="line">        fmt.Printf(<span class="string">"%-2d      %d      %U '%c' % X\n"</span>, index, <span class="type">rune</span>, <span class="type">rune</span>, <span class="type">rune</span>, []<span class="type">byte</span>(<span class="type">string</span>(<span class="type">rune</span>)))</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">The length of str is: 27</span><br><span class="line">Character on position 0 is: G </span><br><span class="line">Character on position 1 is: o </span><br><span class="line">Character on position 2 is:   </span><br><span class="line">Character on position 3 is: i </span><br><span class="line">Character on position 4 is: s </span><br><span class="line">Character on position 5 is:   </span><br><span class="line">Character on position 6 is: a </span><br><span class="line">Character on position 7 is:   </span><br><span class="line">Character on position 8 is: b </span><br><span class="line">Character on position 9 is: e </span><br><span class="line">Character on position 10 is: a </span><br><span class="line">Character on position 11 is: u </span><br><span class="line">Character on position 12 is: t </span><br><span class="line">Character on position 13 is: i </span><br><span class="line">Character on position 14 is: f </span><br><span class="line">Character on position 15 is: u </span><br><span class="line">Character on position 16 is: l </span><br><span class="line">Character on position 17 is:   </span><br><span class="line">Character on position 18 is: l </span><br><span class="line">Character on position 19 is: a </span><br><span class="line">Character on position 20 is: n </span><br><span class="line">Character on position 21 is: g </span><br><span class="line">Character on position 22 is: u </span><br><span class="line">Character on position 23 is: a </span><br><span class="line">Character on position 24 is: g </span><br><span class="line">Character on position 25 is: e </span><br><span class="line">Character on position 26 is: ! </span><br><span class="line"></span><br><span class="line">The length of str2 is: 18</span><br><span class="line">character C starts at byte position 0</span><br><span class="line">character h starts at byte position 1</span><br><span class="line">character i starts at byte position 2</span><br><span class="line">character n starts at byte position 3</span><br><span class="line">character e starts at byte position 4</span><br><span class="line">character s starts at byte position 5</span><br><span class="line">character e starts at byte position 6</span><br><span class="line">character : starts at byte position 7</span><br><span class="line">character   starts at byte position 8</span><br><span class="line">character 日 starts at byte position 9</span><br><span class="line">character 本 starts at byte position 12</span><br><span class="line">character 語 starts at byte position 15</span><br><span class="line"></span><br><span class="line">index int(rune) rune    char bytes</span><br><span class="line">0       67      U+0043 'C' 43</span><br><span class="line">1       104      U+0068 'h' 68</span><br><span class="line">2       105      U+0069 'i' 69</span><br><span class="line">3       110      U+006E 'n' 6E</span><br><span class="line">4       101      U+0065 'e' 65</span><br><span class="line">5       115      U+0073 's' 73</span><br><span class="line">6       101      U+0065 'e' 65</span><br><span class="line">7       58      U+003A ':' 3A</span><br><span class="line">8       32      U+0020 ' ' 20</span><br><span class="line">9       26085      U+65E5 '日' E6 97 A5</span><br><span class="line">12      26412      U+672C '本' E6 9C AC</span><br><span class="line">15      35486      U+8A9E '語' E8 AA 9E</span><br></pre></td></tr></tbody></table></figure>
+<p>请将输出结果和进行对比。</p>
+<p>我们可以看到，常用英文字符使用 1 个字节表示，而汉字（严格来说，“Chinese: 日本語”的Chinese应该是Japanese**）使用 3 个字符表示。</p>
+<h2 id="命名的返回值named-return-variables"><a class="markdownIt-Anchor" href="#命名的返回值named-return-variables"></a> 命名的返回值（named return variables）</h2>
+<p>如下 里的函数带有一个 <code>int</code> 参数，返回两个 <code>int</code> 值；其中一个函数的返回值在函数调用时就已经被赋予了一个初始零值。</p>
+<p><code>getX2AndX3</code> 与 <code>getX2AndX3_2</code> 两个函数演示了如何使用非命名返回值与命名返回值的特性。当需要返回多个非命名返回值时，需要使用 <code>()</code> 把它们括起来，比如 <code>(int, int)</code>。</p>
+<p>命名返回值作为结果形参（result parameters）被初始化为相应类型的零值，当需要返回的时候，我们只需要一条简单的不带参数的return语句。需要注意的是，即使只有一个命名返回值，也需要使用 <code>()</code> 括起来</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import "fmt"</span><br><span class="line"></span><br><span class="line">var num int = 10</span><br><span class="line">var numx2, numx3 int</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">    numx2, numx3 = getX2AndX3(num)</span><br><span class="line">    PrintValues()</span><br><span class="line">    numx2, numx3 = getX2AndX3_2(num)</span><br><span class="line">    PrintValues()</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func PrintValues() {</span><br><span class="line">    fmt.Printf("num = %d, 2x num = %d, 3x num = %d\n", num, numx2, numx3)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func getX2AndX3(input int) (int, int) {</span><br><span class="line">    return 2 * input, 3 * input</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func getX2AndX3_2(input int) (x2 int, x3 int) {</span><br><span class="line">    x2 = 2 * input</span><br><span class="line">    x3 = 3 * input</span><br><span class="line">    // return x2, x3</span><br><span class="line">    return</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>输出结果：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">num = 10, 2x num = 20, 3x num = 30    </span><br><span class="line">num = 10, 2x num = 20, 3x num = 30 </span><br></pre></td></tr></tbody></table></figure>
+<p>警告：</p>
+<ul>
+<li>return 或 return var 都是可以的。</li>
+<li>不过 <code>return var = expression</code>（表达式） 会引发一个编译错误：<code>syntax error: unexpected =, expecting semicolon or newline or }</code>。</li>
+</ul>
+<p>即使函数使用了命名返回值，你依旧可以无视它而返回明确的值。</p>
+<p>任何一个非命名返回值（使用非命名返回值是很糟的编程习惯）在 <code>return</code> 语句里面都要明确指出包含返回值的变量或是一个可计算的值（就像上面警告所指出的那样）。</p>
+<p><strong>尽量使用命名返回值：会使代码更清晰、更简短，同时更加容易读懂。</strong></p>
+<h2 id="改变外部变量outside-variable"><a class="markdownIt-Anchor" href="#改变外部变量outside-variable"></a> 改变外部变量（outside variable）</h2>
+<p>传递指针给函数不但可以节省内存（因为没有复制变量的值），而且赋予了函数直接修改外部变量的能力，所以被修改的变量不再需要使用 <code>return</code> 返回。如下的例子，<code>reply</code> 是一个指向 <code>int</code> 变量的指针，通过这个指针，我们在函数内修改了这个 <code>int</code> 变量的数值。</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">    "fmt"</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">// this function changes reply:</span><br><span class="line">func Multiply(a, b int, reply *int) {</span><br><span class="line">    *reply = a * b</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">    n := 0</span><br><span class="line">    reply := &amp;n</span><br><span class="line">    Multiply(10, 5, reply)</span><br><span class="line">    fmt.Println("Multiply:", *reply) // Multiply: 50</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>这仅仅是个指导性的例子，当需要在函数内改变一个占用内存比较大的变量时，性能优势就更加明显了。然而，如果不小心使用的话，传递一个指针很容易引发一些不确定的事，所以，我们要十分小心那些可以改变外部变量的函数，在必要时，需要添加注释以便其他人能够更加清楚的知道函数里面到底发生了什么。</p>
+<h1 id="defer-和追踪"><a class="markdownIt-Anchor" href="#defer-和追踪"></a> defer 和追踪</h1>
+<p>关键字 defer 允许我们推迟到函数返回之前（或任意位置执行 <code>return</code> 语句之后）一刻才执行某个语句或函数（为什么要在返回之后才执行这些语句？因为 <code>return</code> 语句同样可以包含一些操作，而不是单纯地返回某个值）。</p>
+<p>关键字 defer 的用法类似于面向对象编程语言 Java 和 C# 的 <code>finally</code> 语句块，它一般用于释放某些已分配的资源。</p>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> {</span><br><span class="line">    function1()</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">function1</span><span class="params">()</span></span> {</span><br><span class="line">    fmt.Printf(<span class="string">"In function1 at the top\n"</span>)</span><br><span class="line">    <span class="keyword">defer</span> function2()</span><br><span class="line">    fmt.Printf(<span class="string">"In function1 at the bottom!\n"</span>)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">function2</span><span class="params">()</span></span> {</span><br><span class="line">    fmt.Printf(<span class="string">"Function2: Deferred until the end of the calling function!"</span>)</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">In Function1 at the top</span><br><span class="line">In Function1 at the bottom!</span><br><span class="line">Function2: Deferred until the end of the calling function!</span><br></pre></td></tr></tbody></table></figure>
+<p>请将 defer 关键字去掉并对比输出结果。</p>
+<p>使用 defer 的语句同样可以接受参数，下面这个例子就会在执行 defer 语句时打印 <code>0</code>：</p>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">a</span><span class="params">()</span></span> {</span><br><span class="line">    i := <span class="number">0</span></span><br><span class="line">    <span class="keyword">defer</span> fmt.Println(i)</span><br><span class="line">    i++</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>当有多个 defer 行为被注册时，它们会以逆序执行（类似栈，即后进先出）：</p>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f</span><span class="params">()</span></span> {</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">5</span>; i++ {</span><br><span class="line">        <span class="keyword">defer</span> fmt.Printf(<span class="string">"%d "</span>, i)</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>上面的代码将会输出：<code>4 3 2 1 0</code>。</p>
+<p>关键字 defer 允许我们进行一些函数执行完成后的收尾工作，例如：</p>
+<ol>
+<li>关闭文件流</li>
+</ol>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// open a file  </span><br><span class="line">defer file.Close()</span><br></pre></td></tr></tbody></table></figure>
+<ol>
+<li>解锁一个加锁的资源</li>
+</ol>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mu.Lock()  </span><br><span class="line">defer mu.Unlock() </span><br></pre></td></tr></tbody></table></figure>
+<ol>
+<li>打印最终报告</li>
+</ol>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">printHeader()  </span><br><span class="line">defer printFooter()</span><br></pre></td></tr></tbody></table></figure>
+<ol>
+<li>关闭数据库链接</li>
+</ol>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// open a database connection  </span><br><span class="line">defer disconnectFromDB()</span><br></pre></td></tr></tbody></table></figure>
+<p>合理使用 defer 语句能够使得代码更加简洁。</p>
+<p>以下代码模拟了上面描述的第 4 种情况：</p>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> {</span><br><span class="line">    doDBOperations()</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">connectToDB</span><span class="params">()</span></span> {</span><br><span class="line">    fmt.Println(<span class="string">"ok, connected to db"</span>)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">disconnectFromDB</span><span class="params">()</span></span> {</span><br><span class="line">    fmt.Println(<span class="string">"ok, disconnected from db"</span>)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">doDBOperations</span><span class="params">()</span></span> {</span><br><span class="line">    connectToDB()</span><br><span class="line">    fmt.Println(<span class="string">"Defering the database disconnect."</span>)</span><br><span class="line">    <span class="keyword">defer</span> disconnectFromDB() <span class="comment">//function called here with defer</span></span><br><span class="line">    fmt.Println(<span class="string">"Doing some DB operations ..."</span>)</span><br><span class="line">    fmt.Println(<span class="string">"Oops! some crash or network error ..."</span>)</span><br><span class="line">    fmt.Println(<span class="string">"Returning from function here!"</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="comment">//terminate the program</span></span><br><span class="line">    <span class="comment">// deferred function executed here just before actually returning, even if</span></span><br><span class="line">    <span class="comment">// there is a return or abnormal termination before</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ok, connected to db</span><br><span class="line">Defering the database disconnect.</span><br><span class="line">Doing some DB operations ...</span><br><span class="line">Oops! some crash or network error ...</span><br><span class="line">Returning from function here!</span><br><span class="line">ok, disconnected from db</span><br></pre></td></tr></tbody></table></figure>
+<p><strong>使用 defer 语句实现代码追踪</strong></p>
+<p>一个基础但十分实用的实现代码执行追踪的方案就是在进入和离开某个函数打印相关的消息，即可以提炼为下面两个函数：</p>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">trace</span><span class="params">(s <span class="type">string</span>)</span></span> { fmt.Println(<span class="string">"entering:"</span>, s) }</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">untrace</span><span class="params">(s <span class="type">string</span>)</span></span> { fmt.Println(<span class="string">"leaving:"</span>, s) }</span><br></pre></td></tr></tbody></table></figure>
+<p>以下代码展示了何时调用这两个函数：</p>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">trace</span><span class="params">(s <span class="type">string</span>)</span></span>   { fmt.Println(<span class="string">"entering:"</span>, s) }</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">untrace</span><span class="params">(s <span class="type">string</span>)</span></span> { fmt.Println(<span class="string">"leaving:"</span>, s) }</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">a</span><span class="params">()</span></span> {</span><br><span class="line">    trace(<span class="string">"a"</span>)</span><br><span class="line">    <span class="keyword">defer</span> untrace(<span class="string">"a"</span>)</span><br><span class="line">    fmt.Println(<span class="string">"in a"</span>)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">b</span><span class="params">()</span></span> {</span><br><span class="line">    trace(<span class="string">"b"</span>)</span><br><span class="line">    <span class="keyword">defer</span> untrace(<span class="string">"b"</span>)</span><br><span class="line">    fmt.Println(<span class="string">"in b"</span>)</span><br><span class="line">    a()</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> {</span><br><span class="line">    b()</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">entering: b</span><br><span class="line">in b</span><br><span class="line">entering: a</span><br><span class="line">in a</span><br><span class="line">leaving: a</span><br><span class="line">leaving: b</span><br></pre></td></tr></tbody></table></figure>
+<p>上面的代码还可以修改为更加简便的版本</p>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">trace</span><span class="params">(s <span class="type">string</span>)</span></span> <span class="type">string</span> {</span><br><span class="line">    fmt.Println(<span class="string">"entering:"</span>, s)</span><br><span class="line">    <span class="keyword">return</span> s</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">un</span><span class="params">(s <span class="type">string</span>)</span></span> {</span><br><span class="line">    fmt.Println(<span class="string">"leaving:"</span>, s)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">a</span><span class="params">()</span></span> {</span><br><span class="line">    <span class="keyword">defer</span> un(trace(<span class="string">"a"</span>))</span><br><span class="line">    fmt.Println(<span class="string">"in a"</span>)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">b</span><span class="params">()</span></span> {</span><br><span class="line">    <span class="keyword">defer</span> un(trace(<span class="string">"b"</span>))</span><br><span class="line">    fmt.Println(<span class="string">"in b"</span>)</span><br><span class="line">    a()</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> {</span><br><span class="line">    b()</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p><strong>使用 defer 语句来记录函数的参数与返回值</strong></p>
+<p>下面的代码展示了另一种在调试时使用 defer 语句的手法：</p>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"io"</span></span><br><span class="line">    <span class="string">"log"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">func1</span><span class="params">(s <span class="type">string</span>)</span></span> (n <span class="type">int</span>, err <span class="type">error</span>) {</span><br><span class="line">    <span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> {</span><br><span class="line">        log.Printf(<span class="string">"func1(%q) = %d, %v"</span>, s, n, err)</span><br><span class="line">    }()</span><br><span class="line">    <span class="keyword">return</span> <span class="number">7</span>, io.EOF</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> {</span><br><span class="line">    func1(<span class="string">"Go"</span>)</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Output: 2011/10/04 10:46:11 func1("Go") = 7, EOF</span><br></pre></td></tr></tbody></table></figure>
+<h1 id="将函数作为参数"><a class="markdownIt-Anchor" href="#将函数作为参数"></a> 将函数作为参数</h1>
+<p>函数可以作为其它函数的参数进行传递，然后在其它函数内调用执行，一般称之为回调。下面是一个将函数作为参数的简单例子（function_parameter.go）：</p>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> {</span><br><span class="line">    callback(<span class="number">1</span>, Add)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Add</span><span class="params">(a, b <span class="type">int</span>)</span></span> {</span><br><span class="line">    fmt.Printf(<span class="string">"The sum of %d and %d is: %d\n"</span>, a, b, a+b)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">callback</span><span class="params">(y <span class="type">int</span>, f <span class="keyword">func</span>(<span class="type">int</span>, <span class="type">int</span>)</span></span>) {</span><br><span class="line">    f(y, <span class="number">2</span>) <span class="comment">// this becomes Add(1, 2)</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">The sum of 1 and 2 is: 3</span><br></pre></td></tr></tbody></table></figure>
+<h1 id="将函数作为返回值"><a class="markdownIt-Anchor" href="#将函数作为返回值"></a> 将函数作为返回值</h1>
+<p>在程序 <code>function_return.go</code> 中我们将会看到函数 Add2 和 Adder 均会返回签名为 <code>func(b int) int</code> 的函数：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">func Add2() (func(b int) int)</span><br><span class="line">func Adder(a int) (func(b int) int)</span><br></pre></td></tr></tbody></table></figure>
+<p>函数 Add2 不接受任何参数，但函数 Adder 接受一个 int 类型的整数作为参数。</p>
+<p>我们也可以将 Adder 返回的函数存到变量中（function_return.go）。</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import "fmt"</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">    // make an Add2 function, give it a name p2, and call it:</span><br><span class="line">    p2 := Add2()</span><br><span class="line">    fmt.Printf("Call Add2 for 3 gives: %v\n", p2(3))</span><br><span class="line">    // make a special Adder function, a gets value 2:</span><br><span class="line">    TwoAdder := Adder(2)</span><br><span class="line">    fmt.Printf("The result is: %v\n", TwoAdder(3))</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func Add2() func(b int) int {</span><br><span class="line">    return func(b int) int {</span><br><span class="line">        return b + 2</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func Adder(a int) func(b int) int {</span><br><span class="line">    return func(b int) int {</span><br><span class="line">        return a + b</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Call Add2 for 3 gives: 5</span><br><span class="line">The result is: 5</span><br></pre></td></tr></tbody></table></figure>
+<p>下例为一个略微不同的实现（function_closure.go）：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import "fmt"</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">    var f = Adder()</span><br><span class="line">    fmt.Print(f(1), " - ")</span><br><span class="line">    fmt.Print(f(20), " - ")</span><br><span class="line">    fmt.Print(f(300))</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func Adder() func(int) int {</span><br><span class="line">    var x int</span><br><span class="line">    return func(delta int) int {</span><br><span class="line">        x += delta</span><br><span class="line">        return x</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>函数 Adder() 现在被赋值到变量 f 中（类型为 <code>func(int) int</code>）。</p>
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1 - 21 - 321</span><br></pre></td></tr></tbody></table></figure>
+<p>三次调用函数 f 的过程中函数 Adder() 中变量 delta 的值分别为：1、20 和 300。</p>
+<p>我们可以看到，在多次调用中，变量 x 的值是被保留的，即 <code>0 + 1 = 1</code>，然后 <code>1 + 20 = 21</code>，最后 <code>21 + 300 = 321</code>：闭包函数保存并积累其中的变量的值，不管外部函数退出与否，它都能够继续操作外部函数中的局部变量。</p>
+<p>这些局部变量同样可以是参数，例如之前例子中的 <code>Adder(as int)</code>。</p>
+<p>这些例子清楚地展示了如何在 Go 语言中使用闭包。</p>
+<p>在闭包中使用到的变量可以是在闭包函数体内声明的，也可以是在外部函数声明的：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var g int</span><br><span class="line">go func(i int) {</span><br><span class="line">    s := 0</span><br><span class="line">    for j := 0; j &lt; i; j++ { s += j }</span><br><span class="line">    g = s</span><br><span class="line">}(1000) // Passes argument 1000 to the function literal.</span><br></pre></td></tr></tbody></table></figure>
+<p>这样闭包函数就能够被应用到整个集合的元素上，并修改它们的值。然后这些变量就可以用于表示或计算全局或平均值。</p>
+<h1 id="通过内存缓存来提升性能"><a class="markdownIt-Anchor" href="#通过内存缓存来提升性能"></a> 通过内存缓存来提升性能</h1>
+<p>当在进行大量的计算时，提升性能最直接有效的一种方式就是避免重复计算。通过在内存中缓存和重复利用相同计算的结果，称之为内存缓存。最明显的例子就是生成斐波那契数列的程序（详见第 6.6 和 6.11 节）：</p>
+<p>要计算数列中第 n 个数字，需要先得到之前两个数的值，但很明显绝大多数情况下前两个数的值都是已经计算过的。即每个更后面的数都是基于之前计算结果的重复计算。</p>
+<p>而我们要做就是将第 n 个数的值存在数组中索引为 n 的位置（详见第 7 章），然后在数组中查找是否已经计算过，如果没有找到，则再进行计算。</p>
+<p>程序 Listing 6.17 - fibonacci_memoization.go 就是依照这个原则实现的，下面是计算到第 40 位数字的性能对比：</p>
+<ul>
+<li>普通写法：4.730270 秒</li>
+<li>内存缓存：0.001000 秒</li>
+</ul>
+<p>内存缓存的优势显而易见，而且您还可以将它应用到其它类型的计算中，例如使用 map（详见第 7 章）而不是数组或切片：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">    "fmt"</span><br><span class="line">    "time"</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">const LIM = 41</span><br><span class="line"></span><br><span class="line">var fibs [LIM]uint64</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">    var result uint64 = 0</span><br><span class="line">    start := time.Now()</span><br><span class="line">    for i := 0; i &lt; LIM; i++ {</span><br><span class="line">        result = fibonacci(i)</span><br><span class="line">        fmt.Printf("fibonacci(%d) is: %d\n", i, result)</span><br><span class="line">    }</span><br><span class="line">    end := time.Now()</span><br><span class="line">    delta := end.Sub(start)</span><br><span class="line">    fmt.Printf("longCalculation took this amount of time: %s\n", delta)</span><br><span class="line">}</span><br><span class="line">func fibonacci(n int) (res uint64) {</span><br><span class="line">    // memoization: check if fibonacci(n) is already known in array:</span><br><span class="line">    if fibs[n] != 0 {</span><br><span class="line">        res = fibs[n]</span><br><span class="line">        return</span><br><span class="line">    }</span><br><span class="line">    if n &lt;= 1 {</span><br><span class="line">        res = 1</span><br><span class="line">    } else {</span><br><span class="line">        res = fibonacci(n-1) + fibonacci(n-2)</span><br><span class="line">    }</span><br><span class="line">    fibs[n] = res</span><br><span class="line">    return</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>内存缓存的技术在使用计算成本相对昂贵的函数时非常有用（不仅限于例子中的递归），譬如大量进行相同参数的运算。这种技术还可以应用于纯函数中，即相同输入必定获得相同输出的函数。</p>
+<h1 id="声明-初始化和-make"><a class="markdownIt-Anchor" href="#声明-初始化和-make"></a> 声明、初始化和 make</h1>
+<h2 id="概念"><a class="markdownIt-Anchor" href="#概念"></a> 概念</h2>
+<p>map 是引用类型，可以使用如下声明：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var map1 map[keytype]valuetype</span><br><span class="line">var map1 map[string]int</span><br></pre></td></tr></tbody></table></figure>
+<p>（<code>[keytype]</code> 和 <code>valuetype</code> 之间允许有空格，但是 gofmt 移除了空格）</p>
+<p>在声明的时候不需要知道 map 的长度，map 是可以动态增长的。</p>
+<p>未初始化的 map 的值是 nil。</p>
+<p>key 可以是任意可以用 == 或者 != 操作符比较的类型，比如 string、int、float。所以数组、切片和结构体不能作为 key (译者注：含有数组切片的结构体不能作为 key，只包含内建类型的 struct 是可以作为 key 的），但是指针和接口类型可以。如果要用结构体作为 key 可以提供 <code>Key()</code> 和 <code>Hash()</code> 方法，这样可以通过结构体的域计算出唯一的数字或者字符串的 key。</p>
+<p>value 可以是任意类型的；通过使用空接口类型（详见第 11.9 节），我们可以存储任意值，但是使用这种类型作为值时需要先做一次类型断言（详见第 11.3 节）。</p>
+<p>map 传递给函数的代价很小：在 32 位机器上占 4 个字节，64 位机器上占 8 个字节，无论实际上存储了多少数据。通过 key 在 map 中寻找值是很快的，比线性查找快得多，但是仍然比从数组和切片的索引中直接读取要慢 100 倍；所以如果你很在乎性能的话还是建议用切片来解决问题。</p>
+<p>map 也可以用函数作为自己的值，这样就可以用来做分支结构（详见第 5 章）：key 用来选择要执行的函数。</p>
+<p>如果 key1 是 map1 的key，那么 <code>map1[key1]</code> 就是对应 key1 的值，就如同数组索引符号一样（数组可以视为一种简单形式的 map，key 是从 0 开始的整数）。</p>
+<p>key1 对应的值可以通过赋值符号来设置为 val1：<code>map1[key1] = val1</code>。</p>
+<p>令 <code>v := map1[key1]</code> 可以将 key1 对应的值赋值给 v；如果 map 中没有 key1 存在，那么 v 将被赋值为 map1 的值类型的空值。</p>
+<p>常用的 <code>len(map1)</code> 方法可以获得 map 中的 pair 数目，这个数目是可以伸缩的，因为 map-pairs 在运行时可以动态添加和删除。</p>
+<p>示例 8.1 <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/unknwon/the-way-to-go_ZH_CN/blob/master/eBook/examples/chapter_8/make_maps.go">make_maps.go</a></p>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> {</span><br><span class="line">    <span class="keyword">var</span> mapLit <span class="keyword">map</span>[<span class="type">string</span>]<span class="type">int</span></span><br><span class="line">    <span class="comment">//var mapCreated map[string]float32</span></span><br><span class="line">    <span class="keyword">var</span> mapAssigned <span class="keyword">map</span>[<span class="type">string</span>]<span class="type">int</span></span><br><span class="line"></span><br><span class="line">    mapLit = <span class="keyword">map</span>[<span class="type">string</span>]<span class="type">int</span>{<span class="string">"one"</span>: <span class="number">1</span>, <span class="string">"two"</span>: <span class="number">2</span>}</span><br><span class="line">    mapCreated := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="type">string</span>]<span class="type">float32</span>)</span><br><span class="line">    mapAssigned = mapLit</span><br><span class="line"></span><br><span class="line">    mapCreated[<span class="string">"key1"</span>] = <span class="number">4.5</span></span><br><span class="line">    mapCreated[<span class="string">"key2"</span>] = <span class="number">3.14159</span></span><br><span class="line">    mapAssigned[<span class="string">"two"</span>] = <span class="number">3</span></span><br><span class="line"></span><br><span class="line">    fmt.Printf(<span class="string">"Map literal at \"one\" is: %d\n"</span>, mapLit[<span class="string">"one"</span>])</span><br><span class="line">    fmt.Printf(<span class="string">"Map created at \"key2\" is: %f\n"</span>, mapCreated[<span class="string">"key2"</span>])</span><br><span class="line">    fmt.Printf(<span class="string">"Map assigned at \"two\" is: %d\n"</span>, mapLit[<span class="string">"two"</span>])</span><br><span class="line">    fmt.Printf(<span class="string">"Map literal at \"ten\" is: %d\n"</span>, mapLit[<span class="string">"ten"</span>])</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>输出结果：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Map literal at "one" is: 1</span><br><span class="line">Map created at "key2" is: 3.141590</span><br><span class="line">Map assigned at "two" is: 3</span><br><span class="line">Mpa literal at "ten" is: 0</span><br></pre></td></tr></tbody></table></figure>
+<p>mapLit 说明了 <code>map literals</code> 的使用方法： map 可以用 <code>{key1: val1, key2: val2}</code> 的描述方法来初始化，就像数组和结构体一样。</p>
+<p>map 是 <strong>引用类型</strong> 的： 内存用 make 方法来分配。</p>
+<p>map 的初始化：<code>var map1 = make(map[keytype]valuetype)</code>。</p>
+<p>或者简写为：<code>map1 := make(map[keytype]valuetype)</code>。</p>
+<p>上面例子中的 mapCreated 就是用这种方式创建的：<code>mapCreated := make(map[string]float32)</code>。</p>
+<p>相当于：<code>mapCreated := map[string]float32{}</code>。</p>
+<p>mapAssigned 也是 mapList 的引用，对 mapAssigned 的修改也会影响到 mapLit 的值。</p>
+<p><strong>不要使用 new，永远用 make 来构造 map</strong></p>
+<p><strong>注意</strong> 如果你错误的使用 new() 分配了一个引用对象，你会获得一个空引用的指针，相当于声明了一个未初始化的变量并且取了它的地址：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mapCreated := new(map[string]float32)</span><br></pre></td></tr></tbody></table></figure>
+<p>接下来当我们调用：<code>mapCreated["key1"] = 4.5</code> 的时候，编译器会报错：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">invalid operation: mapCreated["key1"] (index of type *map[string]float32).</span><br></pre></td></tr></tbody></table></figure>
+<p>为了说明值可以是任意类型的，这里给出了一个使用 <code>func() int</code> 作为值的 map：</p>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> {</span><br><span class="line">    mf := <span class="keyword">map</span>[<span class="type">int</span>]<span class="function"><span class="keyword">func</span><span class="params">()</span></span> <span class="type">int</span>{</span><br><span class="line">        <span class="number">1</span>: <span class="function"><span class="keyword">func</span><span class="params">()</span></span> <span class="type">int</span> { <span class="keyword">return</span> <span class="number">10</span> },</span><br><span class="line">        <span class="number">2</span>: <span class="function"><span class="keyword">func</span><span class="params">()</span></span> <span class="type">int</span> { <span class="keyword">return</span> <span class="number">20</span> },</span><br><span class="line">        <span class="number">5</span>: <span class="function"><span class="keyword">func</span><span class="params">()</span></span> <span class="type">int</span> { <span class="keyword">return</span> <span class="number">50</span> },</span><br><span class="line">    }</span><br><span class="line">    fmt.Println(mf)</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>输出结果为：<code>map[1:0x10903be0 5:0x10903ba0 2:0x10903bc0]</code>: 整形都被映射到函数地址。</p>
+<h2 id="map-容量"><a class="markdownIt-Anchor" href="#map-容量"></a> map 容量</h2>
+<p>和数组不同，map 可以根据新增的 key-value 对动态的伸缩，因此它不存在固定长度或者最大限制。但是你也可以选择标明 map 的初始容量 <code>capacity</code>，就像这样：<code>make(map[keytype]valuetype, cap)</code>。例如：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">map2 := make(map[string]float32, 100)</span><br></pre></td></tr></tbody></table></figure>
+<p>当 map 增长到容量上限的时候，如果再增加新的 key-value 对，map 的大小会自动加 1。所以出于性能的考虑，对于大的 map 或者会快速扩张的 map，即使只是大概知道容量，也最好先标明。</p>
+<p>这里有一个 map 的具体例子，即将音阶和对应的音频映射起来：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">noteFrequency := map[string]float32 {</span><br><span class="line">    "C0": 16.35, "D0": 18.35, "E0": 20.60, "F0": 21.83,</span><br><span class="line">    "G0": 24.50, "A0": 27.50, "B0": 30.87, "A4": 440}</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="用切片作为-map-的值"><a class="markdownIt-Anchor" href="#用切片作为-map-的值"></a> 用切片作为 map 的值</h2>
+<p>既然一个 key 只能对应一个 value，而 value 又是一个原始类型，那么如果一个 key 要对应多个值怎么办？例如，当我们要处理unix机器上的所有进程，以父进程（pid 为整形）作为 key，所有的子进程（以所有子进程的 pid 组成的切片）作为 value。通过将 value 定义为 <code>[]int</code> 类型或者其他类型的切片，就可以优雅的解决这个问题。</p>
+<p>这里有一些定义这种 map 的例子：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mp1 := make(map[int][]int)</span><br><span class="line">mp2 := make(map[int]*[]int)</span><br></pre></td></tr></tbody></table></figure>
+<h1 id="切片"><a class="markdownIt-Anchor" href="#切片"></a> 切片</h1>
+<h2 id="721-概念"><a class="markdownIt-Anchor" href="#721-概念"></a> 7.2.1 概念</h2>
+<p>切片（slice）是对数组一个连续片段的引用（该数组我们称之为相关数组，通常是匿名的），所以切片是一个引用类型（因此更类似于 C/C++ 中的数组类型，或者 Python 中的 list 类型）。这个片段可以是整个数组，或者是由起始和终止索引标识的一些项的子集。需要注意的是，终止索引标识的项不包括在切片内。切片提供了一个相关数组的动态窗口。</p>
+<p>切片是可索引的，并且可以由 <code>len()</code> 函数获取长度。</p>
+<p>给定项的切片索引可能比相关数组的相同元素的索引小。和数组不同的是，切片的长度可以在运行时修改，最小为 0 最大为相关数组的长度：切片是一个 <strong>长度可变的数组</strong>。</p>
+<p>切片提供了计算容量的函数 <code>cap()</code> 可以测量切片最长可以达到多少：它等于切片的长度 + 数组除切片之外的长度。如果 s 是一个切片，<code>cap(s)</code> 就是从 <code>s[0]</code> 到数组末尾的数组长度。切片的长度永远不会超过它的容量，所以对于 切片 s 来说该不等式永远成立：<code>0 &lt;= len(s) &lt;= cap(s)</code>。</p>
+<p>多个切片如果表示同一个数组的片段，它们可以共享数据；因此一个切片和相关数组的其他切片是共享存储的，相反，不同的数组总是代表不同的存储。数组实际上是切片的构建块。</p>
+<p><strong>优点</strong> 因为切片是引用，所以它们不需要使用额外的内存并且比使用数组更有效率，所以在 Go 代码中 切片比数组更常用。</p>
+<p>声明切片的格式是： <code>var identifier []type</code>（不需要说明长度）。</p>
+<p>一个切片在未初始化之前默认为 nil，长度为 0。</p>
+<p>切片的初始化格式是：<code>var slice1 []type = arr1[start:end]</code>。</p>
+<p>这表示 slice1 是由数组 arr1 从 start 索引到 <code>end-1</code> 索引之间的元素构成的子集（切分数组，start:end 被称为 slice 表达式）。所以 <code>slice1[0]</code> 就等于 <code>arr1[start]</code>。这可以在 arr1 被填充前就定义好。</p>
+<p>如果某个人写：<code>var slice1 []type = arr1[:]</code> 那么 slice1 就等于完整的 arr1 数组（所以这种表示方式是 <code>arr1[0:len(arr1)]</code> 的一种缩写）。另外一种表述方式是：<code>slice1 = &amp;arr1</code>。</p>
+<p><code>arr1[2:]</code> 和 <code>arr1[2:len(arr1)]</code> 相同，都包含了数组从第三个到最后的所有元素。</p>
+<p><code>arr1[:3]</code> 和 <code>arr1[0:3]</code> 相同，包含了从第一个到第三个元素（不包括第四个）。</p>
+<p>如果你想去掉 slice1 的最后一个元素，只要 <code>slice1 = slice1[:len(slice1)-1]</code>。</p>
+<p>一个由数字 1、2、3 组成的切片可以这么生成：<code>s := [3]int{1,2,3}[:]</code>(注: 应先用<code>s := [3]int{1, 2, 3}</code>生成数组, 再使用<code>s[:]</code>转成切片) 甚至更简单的 <code>s := []int{1,2,3}</code>。</p>
+<p><code>s2 := s[:]</code> 是用切片组成的切片，拥有相同的元素，但是仍然指向相同的相关数组。</p>
+<p>一个切片 s 可以这样扩展到它的大小上限：<code>s = s[:cap(s)]</code>，如果再扩大的话就会导致运行时错误（参见第 7.7 节）。</p>
+<p>对于每一个切片（包括 string），以下状态总是成立的：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s == s[:i] + s[i:] // i是一个整数且: 0 &lt;= i &lt;= len(s)</span><br><span class="line">len(s) &lt;= cap(s)</span><br></pre></td></tr></tbody></table></figure>
+<p>切片也可以用类似数组的方式初始化：<code>var x = []int{2, 3, 5, 7, 11}</code>。这样就创建了一个长度为 5 的数组并且创建了一个相关切片。</p>
+<p>切片在内存中的组织方式实际上是一个有 3 个域的结构体：指向相关数组的指针，切片长度以及切片容量。下图给出了一个长度为 2，容量为 4 的切片y。</p>
+<ul>
+<li><code>y[0] = 3</code> 且 <code>y[1] = 5</code>。</li>
+<li>切片 <code>y[0:4]</code> 由 元素 3，5，7 和 11 组成。</li>
+</ul>
+<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/unknwon/the-way-to-go_ZH_CN/blob/master/eBook/images/7.2_fig7.2.png?raw=true"><img src="https://github.com/unknwon/the-way-to-go_ZH_CN/raw/master/eBook/images/7.2_fig7.2.png?raw=true" alt="img"></a></p>
+<p>示例 7.7 <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/unknwon/the-way-to-go_ZH_CN/blob/master/eBook/examples/chapter_7/array_slices.go">array_slices.go</a></p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line">import "fmt"</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">    var arr1 [6]int</span><br><span class="line">    var slice1 []int = arr1[2:5] // item at index 5 not included!</span><br><span class="line"></span><br><span class="line">    // load the array with integers: 0,1,2,3,4,5</span><br><span class="line">    for i := 0; i &lt; len(arr1); i++ {</span><br><span class="line">        arr1[i] = i</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    // print the slice</span><br><span class="line">    for i := 0; i &lt; len(slice1); i++ {</span><br><span class="line">        fmt.Printf("Slice at %d is %d\n", i, slice1[i])</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    fmt.Printf("The length of arr1 is %d\n", len(arr1))</span><br><span class="line">    fmt.Printf("The length of slice1 is %d\n", len(slice1))</span><br><span class="line">    fmt.Printf("The capacity of slice1 is %d\n", cap(slice1))</span><br><span class="line"></span><br><span class="line">    // grow the slice</span><br><span class="line">    slice1 = slice1[0:4]</span><br><span class="line">    for i := 0; i &lt; len(slice1); i++ {</span><br><span class="line">        fmt.Printf("Slice at %d is %d\n", i, slice1[i])</span><br><span class="line">    }</span><br><span class="line">    fmt.Printf("The length of slice1 is %d\n", len(slice1))</span><br><span class="line">    fmt.Printf("The capacity of slice1 is %d\n", cap(slice1))</span><br><span class="line"></span><br><span class="line">    // grow the slice beyond capacity</span><br><span class="line">    //slice1 = slice1[0:7 ] // panic: runtime error: slice bound out of range</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Slice at 0 is 2  </span><br><span class="line">Slice at 1 is 3  </span><br><span class="line">Slice at 2 is 4  </span><br><span class="line">The length of arr1 is 6  </span><br><span class="line">The length of slice1 is 3  </span><br><span class="line">The capacity of slice1 is 4  </span><br><span class="line">Slice at 0 is 2  </span><br><span class="line">Slice at 1 is 3  </span><br><span class="line">Slice at 2 is 4  </span><br><span class="line">Slice at 3 is 5  </span><br><span class="line">The length of slice1 is 4  </span><br><span class="line">The capacity of slice1 is 4  </span><br></pre></td></tr></tbody></table></figure>
+<p>如果 s2 是一个 slice，你可以将 s2 向后移动一位 <code>s2 = s2[1:]</code>，但是末尾没有移动。切片只能向后移动，<code>s2 = s2[-1:]</code> 会导致编译错误。切片不能被重新分片以获取数组的前一个元素。</p>
+<p><strong>注意</strong> 绝对不要用指针指向 slice。切片本身已经是一个引用类型，所以它本身就是一个指针!!</p>
+<p>问题 7.2： 给定切片 <code>b:= []byte{'g', 'o', 'l', 'a', 'n', 'g'}</code>，那么 <code>b[1:4]</code>、<code>b[:2]</code>、<code>b[2:]</code> 和 <code>b[:]</code> 分别是什么？</p>
+<h2 id="722-将切片传递给函数"><a class="markdownIt-Anchor" href="#722-将切片传递给函数"></a> 7.2.2 将切片传递给函数</h2>
+<p>如果你有一个函数需要对数组做操作，你可能总是需要把参数声明为切片。当你调用该函数时，把数组分片，创建为一个 切片引用并传递给该函数。这里有一个计算数组元素和的方法:</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">func sum(a []int) int {</span><br><span class="line">    s := 0</span><br><span class="line">    for i := 0; i &lt; len(a); i++ {</span><br><span class="line">        s += a[i]</span><br><span class="line">    }</span><br><span class="line">    return s</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">    var arr = [5]int{0, 1, 2, 3, 4}</span><br><span class="line">    sum(arr[:])</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="723-用-make-创建一个切片"><a class="markdownIt-Anchor" href="#723-用-make-创建一个切片"></a> 7.2.3 用 make() 创建一个切片</h2>
+<p>当相关数组还没有定义时，我们可以使用 make() 函数来创建一个切片 同时创建好相关数组：<code>var slice1 []type = make([]type, len)</code>。</p>
+<p>也可以简写为 <code>slice1 := make([]type, len)</code>，这里 <code>len</code> 是数组的长度并且也是 <code>slice</code> 的初始长度。</p>
+<p>所以定义 <code>s2 := make([]int, 10)</code>，那么 <code>cap(s2) == len(s2) == 10</code>。</p>
+<p>make 接受 2 个参数：元素的类型以及切片的元素个数。</p>
+<p>如果你想创建一个 slice1，它不占用整个数组，而只是占用以 len 为个数个项，那么只要：<code>slice1 := make([]type, len, cap)</code>。</p>
+<p>make 的使用方式是：<code>func make([]T, len, cap)</code>，其中 cap 是可选参数。</p>
+<p>所以下面两种方法可以生成相同的切片:</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">make([]int, 50, 100)</span><br><span class="line">new([100]int)[0:50]</span><br></pre></td></tr></tbody></table></figure>
+<p>下图描述了使用 make 方法生成的切片的内存结构：[<img src="https://github.com/unknwon/the-way-to-go_ZH_CN/raw/master/eBook/images/7.2_fig7.2.1.png?raw=true" alt="img"></p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line">import "fmt"</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">    var slice1 []int = make([]int, 10)</span><br><span class="line">    // load the array/slice:</span><br><span class="line">    for i := 0; i &lt; len(slice1); i++ {</span><br><span class="line">        slice1[i] = 5 * i</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    // print the slice:</span><br><span class="line">    for i := 0; i &lt; len(slice1); i++ {</span><br><span class="line">        fmt.Printf("Slice at %d is %d\n", i, slice1[i])</span><br><span class="line">    }</span><br><span class="line">    fmt.Printf("\nThe length of slice1 is %d\n", len(slice1))</span><br><span class="line">    fmt.Printf("The capacity of slice1 is %d\n", cap(slice1))</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Slice at 0 is 0  </span><br><span class="line">Slice at 1 is 5  </span><br><span class="line">Slice at 2 is 10  </span><br><span class="line">Slice at 3 is 15  </span><br><span class="line">Slice at 4 is 20  </span><br><span class="line">Slice at 5 is 25  </span><br><span class="line">Slice at 6 is 30  </span><br><span class="line">Slice at 7 is 35  </span><br><span class="line">Slice at 8 is 40  </span><br><span class="line">Slice at 9 is 45  </span><br><span class="line"></span><br><span class="line">The length of slice1 is 10  </span><br><span class="line">The capacity of slice1 is 10  </span><br></pre></td></tr></tbody></table></figure>
+<p>因为字符串是纯粹不可变的字节数组，它们也可以被切分成 切片。</p>
+<p>练习 7.4： fobinacci_funcarray.go: 为练习 7.3 写一个新的版本，主函数调用一个使用序列个数作为参数的函数，该函数返回一个大小为序列个数的 Fibonacci 切片。</p>
+<h2 id="724-new-和-make-的区别"><a class="markdownIt-Anchor" href="#724-new-和-make-的区别"></a> 7.2.4 new() 和 make() 的区别</h2>
+<p>看起来二者没有什么区别，都在堆上分配内存，但是它们的行为不同，适用于不同的类型。</p>
+<ul>
+<li>new(T) 为每个新的类型T分配一片内存，初始化为 0 并且返回类型为*T的内存地址：这种方法 <strong>返回一个指向类型为 T，值为 0 的地址的指针</strong>，它适用于值类型如数组和结构体（参见第 10 章）；它相当于 <code>&amp;T{}</code>。</li>
+<li>make(T) <strong>返回一个类型为 T 的初始值</strong>，它只适用于3种内建的引用类型：切片、map 和 channel（参见第 8 章，第 13 章）。</li>
+</ul>
+<p>换言之，new 函数分配内存，make 函数初始化；下图给出了区别：</p>
+<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/unknwon/the-way-to-go_ZH_CN/blob/master/eBook/images/7.2_fig7.3.png?raw=true"><img src="https://github.com/unknwon/the-way-to-go_ZH_CN/raw/master/eBook/images/7.2_fig7.3.png?raw=true" alt="img"></a></p>
+<p>在图 7.3 的第一幅图中：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var p *[]int = new([]int) // *p == nil; with len and cap 0</span><br><span class="line">p := new([]int)</span><br></pre></td></tr></tbody></table></figure>
+<p>在第二幅图中， <code>p := make([]int, 0)</code> ，切片 已经被初始化，但是指向一个空的数组。</p>
+<p>以上两种方式实用性都不高。下面的方法：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var v []int = make([]int, 10, 50)</span><br></pre></td></tr></tbody></table></figure>
+<p>或者</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">v := make([]int, 10, 50)</span><br></pre></td></tr></tbody></table></figure>
+<p>这样分配一个有 50 个 int 值的数组，并且创建了一个长度为 10，容量为 50 的 切片 v，该 切片 指向数组的前 10 个元素。</p>
+<p><strong>问题 7.3</strong> 给定 <code>s := make([]byte, 5)</code>，len(s) 和 cap(s) 分别是多少？<code>s = s[2:4]</code>，len(s) 和 cap(s) 又分别是多少？<br>
+<strong>问题 7.4</strong> 假设 <code>s1 := []byte{'p', 'o', 'e', 'm'}</code> 且 <code>s2 := s1[2:]</code>，s2 的值是多少？如果我们执行 <code>s2[1] = 't'</code>，s1 和 s2 现在的值又分别是多少？</p>
+<p><em>译者注：如何理解new、make、slice、map、channel的关系</em></p>
+<p><em>1.slice、map以及channel都是golang内建的一种引用类型，三者在内存中存在多个组成部分， 需要对内存组成部分初始化后才能使用，而make就是对三者进行初始化的一种操作方式</em></p>
+<p><em>2. new 获取的是存储指定变量内存地址的一个变量，对于变量内部结构并不会执行相应的初始化操作， 所以slice、map、channel需要make进行初始化并获取对应的内存地址，而非new简单的获取内存地址</em></p>
+<h2 id="725-多维-切片"><a class="markdownIt-Anchor" href="#725-多维-切片"></a> 7.2.5 多维 切片</h2>
+<p>和数组一样，切片通常也是一维的，但是也可以由一维组合成高维。通过分片的分片（或者切片的数组），长度可以任意动态变化，所以 Go 语言的多维切片可以任意切分。而且，内层的切片必须单独分配（通过 make 函数）。</p>
+<h2 id="726-bytes-包"><a class="markdownIt-Anchor" href="#726-bytes-包"></a> 7.2.6 bytes 包</h2>
+<p>类型 <code>[]byte</code> 的切片十分常见，Go 语言有一个 bytes 包专门用来解决这种类型的操作方法。</p>
+<p>bytes 包和字符串包十分类似（参见第 4.7 节）。而且它还包含一个十分有用的类型 Buffer:</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import "bytes"</span><br><span class="line"></span><br><span class="line">type Buffer struct {</span><br><span class="line">    ...</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>这是一个长度可变的 bytes 的 buffer，提供 Read 和 Write 方法，因为读写长度未知的 bytes 最好使用 buffer。</p>
+<p>Buffer 可以这样定义：<code>var buffer bytes.Buffer</code>。</p>
+<p>或者使用 new 获得一个指针：<code>var r *bytes.Buffer = new(bytes.Buffer)</code>。</p>
+<p>或者通过函数：<code>func NewBuffer(buf []byte) *Buffer</code>，创建一个 Buffer 对象并且用 buf 初始化好；NewBuffer 最好用在从 buf 读取的时候使用。</p>
+<p><strong>通过 buffer 串联字符串</strong></p>
+<p>类似于 Java 的 StringBuilder 类。</p>
+<p>在下面的代码段中，我们创建一个 buffer，通过 <code>buffer.WriteString(s)</code> 方法将字符串 s 追加到后面，最后再通过 <code>buffer.String()</code> 方法转换为 string：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var buffer bytes.Buffer</span><br><span class="line">for {</span><br><span class="line">    if s, ok := getNextString(); ok { //method getNextString() not shown here</span><br><span class="line">        buffer.WriteString(s)</span><br><span class="line">    } else {</span><br><span class="line">        break</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line">fmt.Print(buffer.String(), "\n")</span><br></pre></td></tr></tbody></table></figure>
+<p>这种实现方式比使用 <code>+=</code> 要更节省内存和 CPU，尤其是要串联的字符串数目特别多的时候。</p>
+<h2 id="修改字符串中的某个字符"><a class="markdownIt-Anchor" href="#修改字符串中的某个字符"></a> 修改字符串中的某个字符</h2>
+<p>Go 语言中的字符串是不可变的，也就是说 <code>str[index]</code> 这样的表达式是不可以被放在等号左侧的。如果尝试运行 <code>str[i] = 'D'</code> 会得到错误：<code>cannot assign to str[i]</code>。</p>
+<p>因此，您必须先将字符串转换成字节数组，然后再通过修改数组中的元素值来达到修改字符串的目的，最后将字节数组转换回字符串格式。</p>
+<p>例如，将字符串 “hello” 转换为 “cello”：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">s := "hello"</span><br><span class="line">c := []byte(s)</span><br><span class="line">c[0] = 'c'</span><br><span class="line">s2 := string(c) // s2 == "cello"</span><br></pre></td></tr></tbody></table></figure>
+<p>所以，您可以通过操作切片来完成对字符串的操作。</p>
+<h2 id="765-字节数组对比函数"><a class="markdownIt-Anchor" href="#765-字节数组对比函数"></a> 7.6.5 字节数组对比函数</h2>
+<p>下面的 <code>Compare</code> 函数会返回两个字节数组字典顺序的整数对比结果，即 <code>0 if a == b, -1 if a &lt; b, 1 if a &gt; b</code>。</p>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Compare</span><span class="params">(a, b[]<span class="type">byte</span>)</span></span> <span class="type">int</span> {</span><br><span class="line">    <span class="keyword">for</span> i:=<span class="number">0</span>; i &lt; <span class="built_in">len</span>(a) &amp;&amp; i &lt; <span class="built_in">len</span>(b); i++ {</span><br><span class="line">        <span class="keyword">switch</span> {</span><br><span class="line">        <span class="keyword">case</span> a[i] &gt; b[i]:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">        <span class="keyword">case</span> a[i] &lt; b[i]:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">    <span class="comment">// 数组的长度可能不同</span></span><br><span class="line">    <span class="keyword">switch</span> {</span><br><span class="line">    <span class="keyword">case</span> <span class="built_in">len</span>(a) &lt; <span class="built_in">len</span>(b):</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    <span class="keyword">case</span> <span class="built_in">len</span>(a) &gt; <span class="built_in">len</span>(b):</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span> <span class="comment">// 数组相等</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="搜索及排序切片和数组"><a class="markdownIt-Anchor" href="#搜索及排序切片和数组"></a> 搜索及排序切片和数组</h2>
+<p>标准库提供了 <code>sort</code> 包来实现常见的搜索和排序操作。您可以使用 <code>sort</code> 包中的函数 <code>func Ints(a []int)</code> 来实现对 int 类型的切片排序。例如 <code>sort.Ints(arri)</code>，其中变量 arri 就是需要被升序排序的数组或切片。为了检查某个数组是否已经被排序，可以通过函数 <code>IntsAreSorted(a []int) bool</code> 来检查，如果返回 true 则表示已经被排序。</p>
+<p>类似的，可以使用函数 <code>func Float64s(a []float64)</code> 来排序 float64 的元素，或使用函数 <code>func Strings(a []string)</code> 排序字符串元素。</p>
+<p>想要在数组或切片中搜索一个元素，该数组或切片必须先被排序（因为标准库的搜索算法使用的是二分法）。然后，您就可以使用函数 <code>func SearchInts(a []int, n int) int</code> 进行搜索，并返回对应结果的索引值。</p>
+<p>当然，还可以搜索 float64 和字符串：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">func SearchFloat64s(a []float64, x float64) int</span><br><span class="line">func SearchStrings(a []string, x string) int</span><br></pre></td></tr></tbody></table></figure>
+<p>您可以通过查看 <a target="_blank" rel="noopener external nofollow noreferrer" href="http://golang.org/pkg/sort/">官方文档</a> 来获取更详细的信息。</p>
+<p>这就是如何使用 <code>sort</code> 包的方法，我们会在第 11.6 节对它的细节进行深入，并实现一个属于我们自己的版本。</p>
+<h2 id="append-函数常见操作"><a class="markdownIt-Anchor" href="#append-函数常见操作"></a> append 函数常见操作</h2>
+<p>我们在第 7.5 节提到的 append 非常有用，它能够用于各种方面的操作：</p>
+<ol>
+<li>
+<p>将切片 b 的元素追加到切片 a 之后：<code>a = append(a, b...)</code></p>
+</li>
+<li>
+<p>复制切片 a 的元素到新的切片 b 上：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">b = make([]T, len(a))</span><br><span class="line">copy(b, a)</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li>
+<p>删除位于索引 i 的元素：<code>a = append(a[:i], a[i+1:]...)</code></p>
+</li>
+<li>
+<p>切除切片 a 中从索引 i 至 j 位置的元素：<code>a = append(a[:i], a[j:]...)</code></p>
+</li>
+<li>
+<p>为切片 a 扩展 j 个元素长度：<code>a = append(a, make([]T, j)...)</code></p>
+</li>
+<li>
+<p>在索引 i 的位置插入元素 x：<code>a = append(a[:i], append([]T{x}, a[i:]...)...)</code></p>
+</li>
+<li>
+<p>在索引 i 的位置插入长度为 j 的新切片：<code>a = append(a[:i], append(make([]T, j), a[i:]...)...)</code></p>
+</li>
+<li>
+<p>在索引 i 的位置插入切片 b 的所有元素：<code>a = append(a[:i], append(b, a[i:]...)...)</code></p>
+</li>
+<li>
+<p>取出位于切片 a 最末尾的元素 x：<code>x, a = a[len(a)-1], a[:len(a)-1]</code></p>
+</li>
+<li>
+<p>将元素 x 追加到切片 a：<code>a = append(a, x)</code></p>
+</li>
+</ol>
+<p>因此，您可以使用切片和 append 操作来表示任意可变长度的序列。</p>
+<p>从数学的角度来看，切片相当于向量，如果需要的话可以定义一个向量作为切片的别名来进行操作。</p>
+</article><div class="post-copyright"><div class="post-copyright__title"><span class="post-copyright-info"><h>golang杂耍大师混乱的笔记</h></span></div><div class="post-copyright__type"><span class="post-copyright-info"><a href="https://blog.youmingsama.cn/posts/8f098f8e/">https://blog.youmingsama.cn/posts/8f098f8e/</a></span></div><div class="post-copyright-m"><div class="post-copyright-m-info"><div class="post-copyright-a" style="display: inline-block;width: 120px"><h>作者</h><div class="post-copyright-cc-info"><h>youmingsama</h></div></div><div class="post-copyright-c" style="display: inline-block;width: 120px"><h>发布于</h><div class="post-copyright-cc-info"><h>2020-05-04</h></div></div><div class="post-copyright-u" style="display: inline-block;width: 120px"><h>更新于</h><div class="post-copyright-cc-info"><h>2020-05-04</h></div></div><div class="post-copyright-c" style="display: inline-block;width: 180px"><h>许可协议</h><div class="post-copyright-cc-info"><a class="icon" rel="noopener external nofollow noreferrer" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a rel="noopener external nofollow noreferrer" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a></div></div></div></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/golang/">golang</a></div><div class="post_share"><div class="social-share" data-image="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/img/bqb.jpg" data-sites="wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn1.tianli0.top/gh/overtrue/share.js@master/dist/js/social-share.min.js" defer=""></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/ce3ef34b/"><img class="prev-cover" src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/img/kaguya.jpg" onerror="onerror=null;src='https://api.vvhan.com/api/acgimg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">从零开始的go语言生活</div></div></a></div><div class="next-post pull-right"><a href="/posts/7126b21b/"><img class="next-cover" src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/ing/coolneko.jpg" onerror="onerror=null;src='https://api.vvhan.com/api/acgimg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">java多线程原理篇大概</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/ce3ef34b/" title="从零开始的go语言生活"><img class="cover" src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/img/kaguya.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-04-29</div><div class="title">从零开始的go语言生活</div></div></a></div></div></div><hr><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="fgx"><div class="avatar_img"><img style="border-radius:10px" src="/img/avatar.png" onerror="this.onerror=null;this.src='https://apis.yisous.xyz/api/randomAvatar'" alt="avatar"></div><div class="author-info__description"></div><div class="rights"><div class="author-info__name">youmingsama</div><div class="card-info-data site-data is-center"><a class="adiv" href="/archives/"><div class="headline">文章</div><div class="length-num">36</div></a><a class="adiv" href="/tags/"><div class="headline">标签</div><div class="length-num">25</div></a><a class="adiv" href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div></div></div><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/youmingsama" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="iconfont icon-github-o"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="Rss"><i class="iconfont icon-rss"></i></a><a class="social-icon" href="mailto:FLDYSYMhahaha229@outlook.com" rel="external nofollow noreferrer" target="_blank" title="Email"><i class="iconfont icon-email"></i></a><a class="social-icon" href="https://discord.com/channels/1071845973116080309/1071845973610999810" rel="external nofollow noreferrer" target="_blank" title="Discord"><i class="iconfont icon-discord"></i></a><a class="social-icon" href="https://www.notion.so/216ff0dfea524c788b698474ab61148f" rel="external nofollow noreferrer" target="_blank" title="Notion"><i class="iconfont icon-Notion"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">本网站的Twikoo评论系统使用Cravatar头像系统，请自行绑定邮箱配置</div></div><div class="card-widget card-history"><div class="card-content"><div class="item-headline"><i class="fas fa-clock fa-spin"></i><span>那年今日</span></div><div id="history-baidu" style="height: 100px;overflow: hidden;"><div class="history_swiper-container" id="history-container" style="width: 100%;height: 100%;"><div class="swiper-wrapper" id="history_container_wrapper" style="height:20px"></div></div></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8E%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%AD%E8%AF%BB%E5%8F%96%E5%86%85%E5%AE%B9"><span class="toc-number">1.</span> <span class="toc-text"> 从字符串中读取内容</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%8E%E5%85%B6%E5%AE%83%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%BD%AC%E6%8D%A2"><span class="toc-number">2.</span> <span class="toc-text"> 字符串与其它类型的转换</span></a></li></ol><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%97%B6%E9%97%B4%E5%92%8C%E6%97%A5%E6%9C%9F"><span class="toc-number"></span> <span class="toc-text"> 时间和日期</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E5%A4%9A%E8%BF%94%E5%9B%9E%E5%80%BC%E5%87%BD%E6%95%B0%E7%9A%84%E9%94%99%E8%AF%AF"><span class="toc-number"></span> <span class="toc-text"> 测试多返回值函数的错误</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#or-range-%E7%BB%93%E6%9E%84"><span class="toc-number">1.</span> <span class="toc-text"> or-range 结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%91%BD%E5%90%8D%E7%9A%84%E8%BF%94%E5%9B%9E%E5%80%BCnamed-return-variables"><span class="toc-number">2.</span> <span class="toc-text"> 命名的返回值（named return variables）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%B9%E5%8F%98%E5%A4%96%E9%83%A8%E5%8F%98%E9%87%8Foutside-variable"><span class="toc-number">3.</span> <span class="toc-text"> 改变外部变量（outside variable）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#defer-%E5%92%8C%E8%BF%BD%E8%B8%AA"><span class="toc-number"></span> <span class="toc-text"> defer 和追踪</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B0%86%E5%87%BD%E6%95%B0%E4%BD%9C%E4%B8%BA%E5%8F%82%E6%95%B0"><span class="toc-number"></span> <span class="toc-text"> 将函数作为参数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B0%86%E5%87%BD%E6%95%B0%E4%BD%9C%E4%B8%BA%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="toc-number"></span> <span class="toc-text"> 将函数作为返回值</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%80%9A%E8%BF%87%E5%86%85%E5%AD%98%E7%BC%93%E5%AD%98%E6%9D%A5%E6%8F%90%E5%8D%87%E6%80%A7%E8%83%BD"><span class="toc-number"></span> <span class="toc-text"> 通过内存缓存来提升性能</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A3%B0%E6%98%8E-%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C-make"><span class="toc-number"></span> <span class="toc-text"> 声明、初始化和 make</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text"> 概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#map-%E5%AE%B9%E9%87%8F"><span class="toc-number">2.</span> <span class="toc-text"> map 容量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E5%88%87%E7%89%87%E4%BD%9C%E4%B8%BA-map-%E7%9A%84%E5%80%BC"><span class="toc-number">3.</span> <span class="toc-text"> 用切片作为 map 的值</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%87%E7%89%87"><span class="toc-number"></span> <span class="toc-text"> 切片</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#721-%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text"> 7.2.1 概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#722-%E5%B0%86%E5%88%87%E7%89%87%E4%BC%A0%E9%80%92%E7%BB%99%E5%87%BD%E6%95%B0"><span class="toc-number">2.</span> <span class="toc-text"> 7.2.2 将切片传递给函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#723-%E7%94%A8-make-%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%88%87%E7%89%87"><span class="toc-number">3.</span> <span class="toc-text"> 7.2.3 用 make() 创建一个切片</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#724-new-%E5%92%8C-make-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">4.</span> <span class="toc-text"> 7.2.4 new() 和 make() 的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#725-%E5%A4%9A%E7%BB%B4-%E5%88%87%E7%89%87"><span class="toc-number">5.</span> <span class="toc-text"> 7.2.5 多维 切片</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#726-bytes-%E5%8C%85"><span class="toc-number">6.</span> <span class="toc-text"> 7.2.6 bytes 包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%AD%E7%9A%84%E6%9F%90%E4%B8%AA%E5%AD%97%E7%AC%A6"><span class="toc-number">7.</span> <span class="toc-text"> 修改字符串中的某个字符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#765-%E5%AD%97%E8%8A%82%E6%95%B0%E7%BB%84%E5%AF%B9%E6%AF%94%E5%87%BD%E6%95%B0"><span class="toc-number">8.</span> <span class="toc-text"> 7.6.5 字节数组对比函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%90%9C%E7%B4%A2%E5%8F%8A%E6%8E%92%E5%BA%8F%E5%88%87%E7%89%87%E5%92%8C%E6%95%B0%E7%BB%84"><span class="toc-number">9.</span> <span class="toc-text"> 搜索及排序切片和数组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#append-%E5%87%BD%E6%95%B0%E5%B8%B8%E8%A7%81%E6%93%8D%E4%BD%9C"><span class="toc-number">10.</span> <span class="toc-text"> append 函数常见操作</span></a></li></ol></li></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/e0da0190/" title="rust学习资源与进阶资料"><img src="https://pic.youmingsama.fun/kksk/dajiejie.jpg" onerror="this.onerror=null;this.src='https://api.vvhan.com/api/acgimg'" alt="rust学习资源与进阶资料"></a><div class="content"><a class="title" href="/posts/e0da0190/" title="rust学习资源与进阶资料">rust学习资源与进阶资料</a><time datetime="2022-11-08T00:00:00.000Z" title="发表于 2022-11-08 00:00:00">2022-11-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/385296e3/" title="新坑预定"><img src="https://npm.elemecdn.com/youmingsama_img@1.0.7/saimaniang.jpg" onerror="this.onerror=null;this.src='https://api.vvhan.com/api/acgimg'" alt="新坑预定"></a><div class="content"><a class="title" href="/posts/385296e3/" title="新坑预定">新坑预定</a><time datetime="2021-08-01T00:00:00.000Z" title="发表于 2021-08-01 00:00:00">2021-08-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/9e073fd6/" title="买耳机送老婆:水月雨ssp"><img src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/pivcgame/img/水月雨.jpg" onerror="this.onerror=null;this.src='https://api.vvhan.com/api/acgimg'" alt="买耳机送老婆:水月雨ssp"></a><div class="content"><a class="title" href="/posts/9e073fd6/" title="买耳机送老婆:水月雨ssp">买耳机送老婆:水月雨ssp</a><time datetime="2021-08-01T00:00:00.000Z" title="发表于 2021-08-01 00:00:00">2021-08-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/bad5c14e/" title="京都读后感"><img src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/img2/亭阁.png" onerror="this.onerror=null;this.src='https://api.vvhan.com/api/acgimg'" alt="京都读后感"></a><div class="content"><a class="title" href="/posts/bad5c14e/" title="京都读后感">京都读后感</a><time datetime="2021-05-19T00:00:00.000Z" title="发表于 2021-05-19 00:00:00">2021-05-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/2ad933a0/" title="拆机翻车指南("><img src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/pivcgame//img/贞德.jpg" onerror="this.onerror=null;this.src='https://api.vvhan.com/api/acgimg'" alt="拆机翻车指南("></a><div class="content"><a class="title" href="/posts/2ad933a0/" title="拆机翻车指南(">拆机翻车指南(</a><time datetime="2021-05-13T00:00:00.000Z" title="发表于 2021-05-13 00:00:00">2021-05-13</time></div></div></div></div><div class="card-widget card-weather" style="width:100%,height:270px"><div class="item-headline"><i class="fas fa-cloud-sun"></i><span>天气</span></div><div id="he-plugin-standard"></div><script>WIDGET = {
+  "CONFIG": {
+    "layout": "2",
+    "width": 270,
+    "height": 270,
+    "background": "5",
+    "dataColor": "000000",
+    "key": "170186298b184055bafbb4d30e4322a7"
+  }
+}</script><script src="https://widget.qweather.net/standard/static/js/he-standard-common.js?v=2.0"></script></div></div></div></main><footer id="footer" style="background: transparent"><div id="footer-wrap"><div class="social-icons"></div><div class="copyright">©2022 - 2023 By youmingsama</div><div class="framework-info"></div><div class="footer_custom_text" id="footer_custom_text">这个小破站已运行{y}年{d}天{s}时{min}分{sec}秒</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"></div><div id="rightside-config-show"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">简</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><a id="switch_commentBarrage" href="javascript:switchCommentBarrage();" rel="external nofollow noreferrer" title="开关弹幕"><i class="iconfont icon-danmu"></i></a><a id="opensettings" href="javascript:toggleWinbox();" rel="external nofollow noreferrer" title="博客设置"><i class="fa fa-wrench"></i></a><button id="go-up" type="button" title="回到顶部" onclick="rmf.scrollToTop()"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"></div></div><hr><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div class="js-pjax" id="rightMenu"><div class="rightMenu-group rightMenu-small"><a class="rightMenu-item" href="javascript:window.history.back();" rel="external nofollow noreferrer"><i class="fa fa-arrow-left"></i></a><a class="rightMenu-item" href="javascript:window.history.forward();" rel="external nofollow noreferrer"><i class="fa fa-arrow-right"></i></a><a class="rightMenu-item" href="javascript:window.location.reload();" rel="external nofollow noreferrer"><i class="fa fa-refresh"></i></a><a class="rightMenu-item" href="javascript:rmf.scrollToTop();" rel="external nofollow noreferrer"><i class="fa fa-arrow-up"></i></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-text"><a class="rightMenu-item" href="javascript:rmf.copySelect();" rel="external nofollow noreferrer"><i class="fa fa-copy"></i><span>复制</span></a><a class="rightMenu-item" href="javascript:window.open(&quot;https://www.baidu.com/s?wd=&quot;+window.getSelection().toString());window.location.reload();" rel="external nofollow noreferrer"><i class="iconfont icon-baidu"></i><span>百度搜索</span></a><a class="rightMenu-item" href="javascript:rmf.searchinThisPage();" rel="external nofollow noreferrer"><i class="fas fa-search"></i><span>站内搜索</span></a><a class="rightMenu-item" href="#post-comment" onclick="rmf.yinyong()"><i class="fa-solid fa-message"></i><span>引用文本评论</span></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-too"><a class="rightMenu-item" href="javascript:window.open(window.getSelection().toString());window.location.reload();" rel="external nofollow noreferrer"><i class="fa fa-link"></i><span>转到链接</span></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-paste"><a class="rightMenu-item" href="javascript:rmf.paste()" rel="external nofollow noreferrer"><i class="fa fa-copy"></i><span>粘贴</span></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-post"><a class="rightMenu-item" href="#post-comment"><i class="fas fa-comment"></i><span>空降评论</span></a><a class="rightMenu-item" href="javascript:switchCommentBarrage()" rel="external nofollow noreferrer"><i class="iconfont icon-danmu"></i><span>开/关评论弹幕</span></a><a class="rightMenu-item" href="javascript:rmf.copyWordsLink()" rel="external nofollow noreferrer"><i class="fa fa-link"></i><span>复制本文地址</span></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-to"><a class="rightMenu-item" href="javascript:rmf.openWithNewTab()" rel="external nofollow noreferrer"><i class="fa fa-window-restore"></i><span>新窗口打开</span></a><a class="rightMenu-item" id="menu-too" href="javascript:rmf.open()" rel="external nofollow noreferrer"><i class="fa fa-link"></i><span>转到链接</span></a><a class="rightMenu-item" href="javascript:rmf.copyLink()" rel="external nofollow noreferrer"><i class="fa fa-copy"></i><span>复制链接</span></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-img"><a class="rightMenu-item" href="javascript:rmf.saveAs()" rel="external nofollow noreferrer"><i class="fa fa-download"></i><span>保存图片</span></a><a class="rightMenu-item" href="javascript:rmf.openWithNewTab()" rel="external nofollow noreferrer"><i class="fa fa-window-restore"></i><span>在新窗口打开</span></a><a class="rightMenu-item" href="javascript:rmf.click()" rel="external nofollow noreferrer"><i class="fa fa-arrows-alt"></i><span>全屏显示</span></a><a class="rightMenu-item" href="javascript:rmf.copyLink()" rel="external nofollow noreferrer"><i class="fa fa-copy"></i><span>复制图片链接</span></a></div><div class="rightMenu-group rightMenu-line"><a class="rightMenu-item" href="javascript:toRandomPost()" rel="external nofollow noreferrer"><i class="fa fa-paper-plane"></i><span>随便逛逛</span></a><a class="rightMenu-item" href="javascript:rmf.switchDarkMode();" rel="external nofollow noreferrer"><i class="fa fa-moon"></i><span>昼夜切换</span></a><a class="rightMenu-item" href="javascript:rmf.translate();" rel="external nofollow noreferrer"><i class="iconfont icon-fanti"></i><span>繁简转换</span></a><a class="rightMenu-item" href="javascript:rmf.switchReadMode();" rel="external nofollow noreferrer"><i class="fa fa-book"></i><span>阅读模式</span></a><a class="rightMenu-item" href="javascript:pjax.loadUrl(&quot;/license/&quot;);" rel="external nofollow noreferrer"><i class="fa fa-info-circle"></i><span>版权声明</span></a><a class="rightMenu-item" href="javascript:toggleWinbox();" rel="external nofollow noreferrer"><i class="fas fa-cog"></i><span>博客设置</span></a><a class="rightMenu-item" href="javascript:fullScreen();" rel="external nofollow noreferrer"><i class="fas fa-expand"></i><span>进入全屏</span></a></div></div><div class="js-pjax" id="settingWindow"><span class="setting-title"> <span id="stt">控制面板</span><a id="close-console" onclick="toggleWinbox();">×</a></span><button id="backer" onclick="$('.asetting').hide();$('.settingx').show();$('#backer').hide()"><i class="fa fa-chevron-left"></i><span>返回</span></button><div class="settings"><div id="setting-buttons"><button class="settingx" onclick="$('#theme-settings').show();$('.settingx').hide();$('#backer').show();"><i class="fas fa-layer-group"></i><span>外观</span></button><button class="settingx" onclick="$('#font-settings').show();$('.settingx').hide();$('#backer').show();"><i class="fa fa-font"></i><span>字体</span></button><button class="settingx" onclick="$('#background-settings').show();$('.settingx').hide();$('#backer').show();"><i class="far fa-image"></i><span>背景</span></button><button class="settingx" onclick="$('#con-echarts').show();$('.settingx').hide();$('#backer').show();var evt = document.createEvent(&quot;HTMLEvents&quot;);evt.initEvent(&quot;resize&quot;, false, false);window.dispatchEvent(evt);"><i class="fas fa-chart-pie"></i><span>统计</span></button><button class="settingx" onclick="$('#con-abouts').show();$('.settingx').hide();$('#backer').show();"><i class="fa fa-cloud-download"></i><span>关于</span></button></div><div id="setting-hides"><div class="asetting" id="theme-settings"><h2 class="content-head">性能设置</h2><p></p><div class="content" style="display:flex"><input id="blur" type="checkbox" onclick="setBlur()"><div class="content-text">禁用模糊效果</div></div><div class="content" style="display:flex"><input id="fpson" type="checkbox" onclick="fpssw()" style="flex-shrink: 0"><div class="content-text"><span>开启帧率检测（</span><a href="javascript:window.location.reload()" rel="external nofollow noreferrer">刷新</a><span>后生效）</span></div></div><p></p><p></p><h2 class="content-head">主题设置</h2><div class="content" style="display:flex"><input id="hideAplayer" type="checkbox" onclick="toggleAplayer()"><div class="content-text">显示aplayer</div></div><div class="content" style="display:flex"><input id="hideSakura" type="checkbox" onclick="toggleSakuras()"><div class="content-text">落樱特效</div></div><div class="content" style="display:flex"><input id="autoTheme" type="checkbox" onclick="toggleAutoTheme()"><div class="content-text">明暗模式自动切换</div></div><div class="content" style="display:flex"><input id="autoColor" type="checkbox" onclick="autoColor()"><div class="content-text">自动主题色（跟随文章封面）</div></div>未完工<div class="content" style="display:flex"><input id="hideAplayer" type="checkbox" onclick="toggleNav()"><div class="content-text">固定导航栏</div></div>###<div class="content" style="display:flex"><button class="content-button" onclick="switchTheme()">切换主题</button></div><p></p><p></p><h3 class="content-head">主题色</h3><div class="content" id="themeColorSettings" style="display:flex"><input id="red" type="radio" name="colors" onclick="setColor('red')"><input id="orange" type="radio" name="colors" onclick="setColor('orange')"><input id="yellow" type="radio" name="colors" onclick="setColor('yellow')"><input id="green" type="radio" name="colors" onclick="setColor('green')"><input id="blue" type="radio" name="colors" onclick="setColor('blue')"><input id="heoblue" type="radio" name="colors" onclick="setColor('heoblue')"><input id="darkblue" type="radio" name="colors" onclick="setColor('darkblue')"><input id="purple" type="radio" name="colors" onclick="setColor('purple')"><input id="pink" type="radio" name="colors" onclick="setColor('pink')" checked="checked"><input id="black" type="radio" name="colors" onclick="setColor('black')"><input id="blackgray" type="radio" name="colors" onclick="setColor('blackgray')"></div><p></p></div><div class="asetting" id="font-settings"><h2 class="content-head">字体设置</h2><p id="swfs"><a class="swf" href="javascript:;" rel="noopener external nofollow" style="font-family:'HYTMR'!important;color:black" onclick="setFont('HYTMR')">汉仪唐美人</a><br><a class="swf" href="javascript:;" rel="noopener external nofollow" style="font-family:'HYPailou'!important;color:black" onclick="setFont('HYPailou')">汉仪新蒂牌楼</a><br><a class="swf" href="javascript:;" rel="noopener external nofollow" style="font-family:'FZXJLJ'!important;color:black" onclick="setFont('FZXJLJ')">方正金陵体</a><br><a class="swf" href="javascript:;" rel="noopener external nofollow" style="font-family:'FZXS'!important;color:black" onclick="setFont('FZXS')">方正像素体</a><br><a class="swf" href="javascript:;" rel="noopener external nofollow" style="font-family:'ZhuZiAWan'!important;color:black" onclick="setFont('ZhuZiAWan')">筑紫A丸ゴシック</a><br><a class="swf" href="javascript:;" rel="noopener external nofollow" style="font-family:'FZODZK'!important;color:black" onclick="setFont('FZODZK')">方正欧蝶正楷</a><br><a class="swf" href="javascript:;" rel="noopener external nofollow" style="font-family:'Source Serif'!important;color:black" onclick="setFont('Source Serif')">思源宋体</a><br><a class="swf" href="javascript:;" rel="noopener external nofollow" style="font-family:'Source Sans'!important;color:black" onclick="setFont('Source Sans')">思源黑体</a><br><a class="swf" href="javascript:;" rel="noopener external nofollow" style="font-family:-apple-system, IBM Plex Mono ,monosapce,'微软雅黑', sans-serif;" onclick="setFont('main')">系统默认</a><br></p></div><div class="asetting" id="background-settings"><h2 style="margin-left:10px">背景设置</h2><div></div><span>注意:切换背景功能仅在Acrylic主题中生效，在Simple主题中无效</span><button class="content-button" onclick="localStorage.removeItem('blogbg');location.reload();"><i class="fa-solid fa-arrows-rotate"></i><span> 点我恢复默认背景</span></button><button class="content-button" onclick="switchTheme()">切换主题</button><h3>图片（手机）</h3><div class="bgbox"><a class="pimgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2022/08/30/630d6d4d539a5.webp)" onclick="changeBg('url(https://bu.dusays.com/2022/08/30/630d6d4d539a5.webp)')"></a><a class="pimgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2022/08/30/630d6d4e15c9d.webp)" onclick="changeBg('url(https://bu.dusays.com/2022/08/30/630d6d4e15c9d.webp)')"></a><a class="pimgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2022/08/30/630d6f22c03c6.webp)" onclick="changeBg('url(https://bu.dusays.com/2022/08/30/630d6f22c03c6.webp)')"></a><a class="pimgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://pic.youmingsama.fun/blog_pic/ytm.webp)" onclick="changeBg('url(https://pic.youmingsama.fun/blog_pic/ytm.webp)')"></a><a class="pimgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2022/08/30/630d6d50b439b.webp)" onclick="changeBg('url(https://bu.dusays.com/2022/08/30/630d6d50b439b.webp)')"></a></div><h3>图片（电脑）</h3><div class="bgbox"><a class="imgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2022/08/30/630d6d5574d0e.webp)" onclick="changeBg('url(https://bu.dusays.com/2022/08/30/630d6d5574d0e.webp)')"></a><a class="imgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2022/08/30/630d6d529adf9.webp)" onclick="changeBg('url(https://bu.dusays.com/2022/08/30/630d6d529adf9.webp)')"></a><a class="imgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2022/08/30/630d6d5159b31.webp)" onclick="changeBg('url(https://bu.dusays.com/2022/08/30/630d6d5159b31.webp)')"></a><a class="imgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2022/08/30/630d718bbeef6.webp)" onclick="changeBg('url(https://bu.dusays.com/2022/08/30/630d718bbeef6.webp)')"></a><a class="imgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2022/08/30/630d72f237d19.jpg)" onclick="changeBg('url(https://bu.dusays.com/2022/08/30/630d72f237d19.jpg)')"></a><a class="imgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2022/08/30/630d72f2032c8.jpg)" onclick="changeBg('url(https://bu.dusays.com/2022/08/30/630d72f2032c8.jpg)')"></a><a class="imgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2021/12/01/7792ff0082ec4.jpg)" onclick="changeBg('url(https://bu.dusays.com/2021/12/01/7792ff0082ec4.jpg)')"></a><a class="imgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2022/08/30/630d72ee6d4f3.png)" onclick="changeBg('url(https://bu.dusays.com/2022/08/30/630d72ee6d4f3.png)')"></a><a class="imgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2022/08/30/630d72ed76532.jpg)" onclick="changeBg('url(https://bu.dusays.com/2022/08/30/630d72ed76532.jpg)')"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://bu.dusays.com/2022/09/17/6324aea549be6.webp)')"><img src="https://bu.dusays.com/2022/09/17/6324aea549be6.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://bu.dusays.com/2022/09/17/6324aec701a68.webp)')"><img src="https://bu.dusays.com/2022/09/17/6324aec701a68.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://bu.dusays.com/2022/09/17/6324aef4a5543.webp)')"><img src="https://bu.dusays.com/2022/09/17/6324aef4a5543.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://bu.dusays.com/2022/09/17/6324af3622884.webp)')"><img src="https://bu.dusays.com/2022/09/17/6324af3622884.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/5.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/5.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/6.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/6.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/7.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/7.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://bu.dusays.com/2022/12/08/6391b77ed767c.png)')"><img src="https://bu.dusays.com/2022/12/08/6391b77ed767c.png"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/9.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/9.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/10.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/10.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/11.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/11.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/12.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/12.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/13.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/13.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/14.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/14.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/15.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/15.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/16.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/16.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/17.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/17.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/18.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/18.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/19.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/19.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/20.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/20.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/21.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/21.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/22.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/22.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/23.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/23.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/24.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/24.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/25.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/25.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/26.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/26.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/27.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/27.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/28.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/28.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/29.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/29.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/30.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/30.webp"></a></div><h3>渐变色</h3><div class="bgbox"><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: linear-gradient(to right, #eecda3, #ef629f)" onclick="changeBg('linear-gradient(to right, #eecda3, #ef629f)')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: linear-gradient(to right, #B7D31E, #42CE1E)" onclick="changeBg('linear-gradient(to right, #B7D31E, #42CE1E)')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: linear-gradient(to right, #06DE86, #06A5DE)" onclick="changeBg('linear-gradient(to right, #06DE86, #06A5DE)')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: linear-gradient(to right, #189BC4, #183DC4)" onclick="changeBg('linear-gradient(to right, #189BC4, #183DC4)')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: linear-gradient(to right, #C018C4, #C41818)" onclick="changeBg('linear-gradient(to right, #C018C4, #C41818)')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: linear-gradient(to right, #8B00BB, #030094)" onclick="changeBg('linear-gradient(to right, #8B00BB, #030094)')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: linear-gradient(to right, #eecda3, #ef629f)" onclick="changeBg('linear-gradient(to right, #eecda3, #ef629f)')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: linear-gradient(90deg, #ffd7e4 0%, #c8f1ff 100%)" onclick="changeBg('linear-gradient(90deg, #ffd7e4 0%, #c8f1ff 100%)')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: linear-gradient(45deg, #e5737b, #c6999e, #96b9c2, #00d6e8)" onclick="changeBg('linear-gradient(45deg, #e5737b, #c6999e, #96b9c2, #00d6e8)')"></a></div><h3>纯色</h3><div class="bgbox"><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: #7D9D9C" onclick="changeBg('#7D9D9C')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: #fff" onclick="changeBg('#fff')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: #49A6E9" onclick="changeBg('#49A6E9')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: #F7CEFF" onclick="changeBg('#F7CEFF')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: #FFFFCE" onclick="changeBg('#FFFFCE')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: #CFFFCE" onclick="changeBg('#CFFFCE')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: #17EFE9" onclick="changeBg('#17EFE9')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: #9F17EF" onclick="changeBg('#9F17EF')"></a></div></div><div class="asetting" id="con-echarts"><h1>文章统计</h1><h2>监控</h2><iframe src="https://status.yisous.xyz" width="100%" height="500px" frameborder="no"></iframe><h2>文章统计</h2><script src="https://npm.elemecdn.com/echarts@4.9.0/dist/echarts.min.js"></script><div id="posts-chart" data-start="2021-01" style="border-radius: 8px; height: 300px; padding: 10px;"></div>
+  <script id="postsChart">
+    var color = document.documentElement.getAttribute('data-theme') === 'light' ? '#4c4948' : 'rgba(255,255,255,0.7)'
+    var postsChart = echarts.init(document.getElementById('posts-chart'), 'light');
+    var postsOption = {
+      title: {
+        text: '文章发布统计图',
+        x: 'center',
+        textStyle: {
+          color: color
+        }
+      },
+      tooltip: {
+        trigger: 'axis'
+      },
+      xAxis: {
+        name: '日期',
+        type: 'category',
+        boundaryGap: false,
+        nameTextStyle: {
+          color: color
+        },
+        axisTick: {
+          show: false
+        },
+        axisLabel: {
+          show: true,
+          color: color
+        },
+        axisLine: {
+          show: true,
+          lineStyle: {
+            color: color
+          }
+        },
+        data: ["2021-01","2021-02","2021-03","2021-04","2021-05","2021-06","2021-07","2021-08","2021-09","2021-10","2021-11","2021-12","2022-01","2022-02","2022-03","2022-04","2022-05","2022-06","2022-07","2022-08","2022-09","2022-10","2022-11","2022-12","2023-01","2023-02","2023-03","2023-04","2023-05","2023-06"]
+      },
+      yAxis: {
+        name: '文章篇数',
+        type: 'value',
+        nameTextStyle: {
+          color: color
+        },
+        splitLine: {
+          show: false
+        },
+        axisTick: {
+          show: false
+        },
+        axisLabel: {
+          show: true,
+          color: color
+        },
+        axisLine: {
+          show: true,
+          lineStyle: {
+            color: color
+          }
+        }
+      },
+      series: [{
+        name: '文章篇数',
+        type: 'line',
+        smooth: true,
+        lineStyle: {
+            width: 0
+        },
+        showSymbol: false,
+        itemStyle: {
+          opacity: 1,
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+            offset: 0,
+            color: 'rgba(128, 255, 165)'
+          },
+          {
+            offset: 1,
+            color: 'rgba(1, 191, 236)'
+          }])
+        },
+        areaStyle: {
+          opacity: 1,
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+            offset: 0,
+            color: 'rgba(128, 255, 165)'
+          }, {
+            offset: 1,
+            color: 'rgba(1, 191, 236)'
+          }])
+        },
+        data: [0,1,2,3,2,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0],
+        markLine: {
+          data: [{
+            name: '平均值',
+            type: 'average',
+            label: {
+              color: color
+            }
+          }]
+        }
+      }]
+    };
+    postsChart.setOption(postsOption);
+    window.addEventListener('resize', () => { 
+      postsChart.resize();
+    });
+    postsChart.on('click', 'series', (event) => {
+      if (event.componentType === 'series') window.location.href = '/archives/' + event.name.replace('-', '/');
+    });
+  </script><div id="tags-chart" data-length="10" style="border-radius: 8px; height: 300px; padding: 10px;"></div>
+  <script id="tagsChart">
+    var color = document.documentElement.getAttribute('data-theme') === 'light' ? '#4c4948' : 'rgba(255,255,255,0.7)'
+    var tagsChart = echarts.init(document.getElementById('tags-chart'), 'light');
+    var tagsOption = {
+      title: {
+        text: 'Top 10 标签统计图',
+        x: 'center',
+        textStyle: {
+          color: color
+        }
+      },
+      tooltip: {},
+      xAxis: {
+        name: '标签',
+        type: 'category',
+        nameTextStyle: {
+          color: color
+        },
+        axisTick: {
+          show: false
+        },
+        axisLabel: {
+          show: true,
+          color: color,
+          interval: 0
+        },
+        axisLine: {
+          show: true,
+          lineStyle: {
+            color: color
+          }
+        },
+        data: ["data structure","算法","碎碎念","不知道在讲啥","游戏","golang","歌歌","物语系列","网络安全","buggggg"]
+      },
+      yAxis: {
+        name: '文章篇数',
+        type: 'value',
+        splitLine: {
+          show: false
+        },
+        nameTextStyle: {
+          color: color
+        },
+        axisTick: {
+          show: false
+        },
+        axisLabel: {
+          show: true,
+          color: color
+        },
+        axisLine: {
+          show: true,
+          lineStyle: {
+            color: color
+          }
+        }
+      },
+      series: [{
+        name: '文章篇数',
+        type: 'bar',
+        data: [{"name":"data structure","value":12,"path":"tags/data-structure/"},{"name":"算法","value":6,"path":"tags/算法/"},{"name":"碎碎念","value":3,"path":"tags/碎碎念/"},{"name":"不知道在讲啥","value":3,"path":"tags/不知道在讲啥/"},{"name":"游戏","value":2,"path":"tags/游戏/"},{"name":"golang","value":2,"path":"tags/golang/"},{"name":"歌歌","value":1,"path":"tags/歌歌/"},{"name":"物语系列","value":1,"path":"tags/物语系列/"},{"name":"网络安全","value":1,"path":"tags/网络安全/"},{"name":"buggggg","value":1,"path":"tags/buggggg/"},{"name":"蒟蒻弱弱弱弱弱","value":1,"path":"tags/蒟蒻弱弱弱弱弱/"},{"name":"code","value":1,"path":"tags/code/"},{"name":"cloudflare","value":1,"path":"tags/cloudflare/"},{"name":"http","value":1,"path":"tags/http/"},{"name":"java!!!","value":1,"path":"tags/java/"},{"name":"多线程","value":1,"path":"tags/多线程/"},{"name":"rust","value":1,"path":"tags/rust/"},{"name":"算法啦","value":1,"path":"tags/算法啦/"},{"name":"jpg","value":1,"path":"tags/jpg/"},{"name":"翻车","value":1,"path":"tags/翻车/"},{"name":"待定捏","value":1,"path":"tags/待定捏/"},{"name":"含泪入手","value":1,"path":"tags/含泪入手/"},{"name":"水月雨","value":1,"path":"tags/水月雨/"},{"name":"谷歌","value":1,"path":"tags/谷歌/"},{"name":"文学","value":1,"path":"tags/文学/"}],
+        itemStyle: {
+          borderRadius: [5, 5, 0, 0],
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+            offset: 0,
+            color: 'rgba(128, 255, 165)'
+          },
+          {
+            offset: 1,
+            color: 'rgba(1, 191, 236)'
+          }])
+        },
+        emphasis: {
+          itemStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+              offset: 0,
+              color: 'rgba(128, 255, 195)'
+            },
+            {
+              offset: 1,
+              color: 'rgba(1, 211, 255)'
+            }])
+          }
+        },
+        markLine: {
+          data: [{
+            name: '平均值',
+            type: 'average',
+            label: {
+              color: color
+            }
+          }]
+        }
+      }]
+    };
+    tagsChart.setOption(tagsOption);
+    window.addEventListener('resize', () => { 
+      tagsChart.resize();
+    });
+    tagsChart.on('click', 'series', (event) => {
+      if(event.data.path) window.location.href = '/' + event.data.path;
+    });
+  </script><div id="categories-chart" data-parent="true" style="border-radius: 8px; height: 300px; padding: 10px;"></div>
+  <script id="categoriesChart">
+    var color = document.documentElement.getAttribute('data-theme') === 'light' ? '#4c4948' : 'rgba(255,255,255,0.7)'
+    var categoriesChart = echarts.init(document.getElementById('categories-chart'), 'light');
+    var categoryParentFlag = false
+    var categoriesOption = {
+      title: {
+        text: '文章分类统计图',
+        x: 'center',
+        textStyle: {
+          color: color
+        }
+      },
+      legend: {
+        top: 'bottom',
+        data: ["bug的炼金工坊","print*,\"hello world!!!\"","摸鱼大师","碎碎念","Roman","游戏","呐！","文学"],
+        textStyle: {
+          color: color
+        }
+      },
+      tooltip: {
+        trigger: 'item'
+      },
+      series: []
+    };
+    categoriesOption.series.push(
+      categoryParentFlag ? 
+      {
+        nodeClick :false,
+        name: '文章篇数',
+        type: 'sunburst',
+        radius: ['15%', '90%'],
+        center: ['50%', '55%'],
+        sort: 'desc',
+        data: [{"name":"bug的炼金工坊","value":15,"path":"categories/bug的炼金工坊/","id":"clj8925wa000jw9oo94xpfe3b","parentId":"0"},{"name":"print*,\"hello world!!!\"","value":8,"path":"categories/print-hello-world/","id":"clj8925wt002aw9oo38fp86bs","parentId":"0"},{"name":"摸鱼大师","value":4,"path":"categories/摸鱼大师/","id":"clj8925x2003ew9oo155hh2xp","parentId":"0"},{"name":"碎碎念","value":3,"path":"categories/碎碎念/","id":"clj8925x60042w9oo53ek73oy","parentId":"0"},{"name":"Roman","value":2,"path":"categories/Roman/","id":"clj8925w00004w9oohtvk9mbk","parentId":"0"},{"name":"游戏","value":2,"path":"categories/游戏/","id":"clj8925wq0022w9ooerr17492","parentId":"0"},{"name":"呐！","value":1,"path":"categories/呐！/","id":"clj8925x00035w9oo7qdmdeh3","parentId":"0"},{"name":"文学","value":1,"path":"categories/文学/","id":"clj8925x8004ew9oo0gqs59ox","parentId":"0"}],
+        itemStyle: {
+          borderColor: '#fff',
+          borderWidth: 2,
+          emphasis: {
+            focus: 'ancestor',
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(255, 255, 255, 0.5)'
+          }
+        }
+      }
+      :
+      {
+        name: '文章篇数',
+        type: 'pie',
+        radius: [30, 80],
+        roseType: 'area',
+        label: {
+          color: color,
+          formatter: '{b} : {c} ({d}%)'
+        },
+        data: [{"name":"bug的炼金工坊","value":15,"path":"categories/bug的炼金工坊/","id":"clj8925wa000jw9oo94xpfe3b","parentId":"0"},{"name":"print*,\"hello world!!!\"","value":8,"path":"categories/print-hello-world/","id":"clj8925wt002aw9oo38fp86bs","parentId":"0"},{"name":"摸鱼大师","value":4,"path":"categories/摸鱼大师/","id":"clj8925x2003ew9oo155hh2xp","parentId":"0"},{"name":"碎碎念","value":3,"path":"categories/碎碎念/","id":"clj8925x60042w9oo53ek73oy","parentId":"0"},{"name":"Roman","value":2,"path":"categories/Roman/","id":"clj8925w00004w9oohtvk9mbk","parentId":"0"},{"name":"游戏","value":2,"path":"categories/游戏/","id":"clj8925wq0022w9ooerr17492","parentId":"0"},{"name":"呐！","value":1,"path":"categories/呐！/","id":"clj8925x00035w9oo7qdmdeh3","parentId":"0"},{"name":"文学","value":1,"path":"categories/文学/","id":"clj8925x8004ew9oo0gqs59ox","parentId":"0"}],
+        itemStyle: {
+          emphasis: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(255, 255, 255, 0.5)'
+          }
+        }
+      }
+    )
+    categoriesChart.setOption(categoriesOption);
+    window.addEventListener('resize', () => { 
+    categoriesChart.resize();
+    })
+    categoriesChart.on('click', 'series', (event) => {
+      if(event.data.path) window.location.href = '/' + event.data.path;
+    });
+  </script><h2>访问统计显示不出来请刷新页面<script data-pjax="" id="LA-DATA-WIDGET" crossorigin="anonymous" charset="UTF-8" src="https://v6-widget.51.la/v6/JnlSnWLD7XChjrlx/quote.js?theme=0&amp;col=true&amp;f=12&amp;badge=icon_0&amp;icon=center"></script></h2></div><div class="asetting" id="con-abouts"><h1>关于</h1>Hexo-theme-Acryple v1.0.100<br>Ariasaka Console v0.01<br>欢迎<a href="/messageboard">反馈！</a></div></div></div><div id="setting-sidesl"><button class="reSettings con-rightside" title="恢复默认设置"><i class="fa fa-repeat"></i></button><div id="setting-sides"><button class="con-rightside" title="繁简转换" id="con-translate" onclick="javascript:rmf.translate();"><i class="iconfont icon-fanti"></i></button><button class="con-rightside" title="昼夜切换" id="con-mode" onclick="rmf.switchDarkMode();"><i class="fa fa-adjust"></i></button><button class="con-rightside" title="阅读模式" id="con-reading" onclick="rmf.switchReadMode();"><i class="fa fa-book-open"></i></button><button class="con-rightside" title="单双栏切换" id="con-toggleaside" onclick="toggleAside();"><i class="fas fa-arrows-alt-h"></i></button><button class="con-rightside" title="左右栏切换" id="con-toggleleftaside" onclick="switchAside();"><i class="fas fa-binoculars"></i></button><button class="con-rightside" title="开关弹幕" id="con-barrage" onclick="switchCommentBarrage();"><i class="iconfont icon-danmu"></i></button><button class="con-rightside" title="全屏" id="con-fullscreen" onclick="fullScreen();"><i class="fas fa-expand"></i></button></div></div></div><!-- hexo injector body_end start --><script data-pjax="">
+  function butterfly_swiper_injector_config(){
+    var parent_div_git = document.getElementsByClassName('swiper-div')[0];
+    var item_html = '<div class="recent-post-item" style="height: auto;width: 100%"><div class="blog-slider swiper-container-fade swiper-container-horizontal" id="swiper_container"><div class="blog-slider__wrp swiper-wrapper" style="transition-duration: 0ms;"><div class="blog-slider__item swiper-slide" style="background:url(https://pic.youmingsama.fun/kksk/dajiejie.jpg);border-radius:12px;opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><div class="blog-slider__content"><span class="blog-slider__code">2022-11-08</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;posts/e0da0190/&quot;);" href="javascript:void(0);" rel="external nofollow noreferrer" alt="">rust学习资源与进阶资料</a><div class="blog-slider__text">再怎么看我也不知道怎么描述它的啦！</div></div></div><div class="blog-slider__item swiper-slide" style="background:url(https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo_1/img2/明日方舟.png);border-radius:12px;opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><div class="blog-slider__content"><span class="blog-slider__code">2021-03-07</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;posts/ea3732f5/&quot;);" href="javascript:void(0);" rel="external nofollow noreferrer" alt="">第一次的Cloudflare worker</a><div class="blog-slider__text">再怎么看我也不知道怎么描述它的啦！</div></div></div></div><div class="blog-slider__pagination swiper-pagination-clickable swiper-pagination-bullets"></div><div class="swiper-button-prev"></div><div class="swiper-button-next"></div></div></div>';
+    console.log('已挂载butterfly_swiper')
+    parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  var elist = 'undefined'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_swiper_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_swiper_injector_config();
+  }
+  </script><script defer="" src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/5.4.5/js/swiper.min.js"></script><script defer="" data-pjax="" src="https://npm.elemecdn.com/hexo-butterfly-swiper-lyx/lib/swiper_init.js"></script><script async="" src="//at.alicdn.com/t/c/font_2269988_gvntri7bk1r.js"></script><!-- hexo injector body_end end --><div><script src="https://npm.elemecdn.com/vue@2.6.11"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn1.tianli0.top/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="https://cdn1.tianli0.top/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/local-search.js"></script><script>window.addEventListener('DOMContentLoaded',function(){
+var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+    setTimeout(function(){document.getElementById('loading-box').classList.add("loadend")},700)
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+    document.getElementById('loading-box').classList.remove("loadend")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())} )
+window.addEventListener('pjax:start',function(){
+var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+    setTimeout(function(){document.getElementById('loading-box').classList.add("loadend")},700)
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+    document.getElementById('loading-box').classList.remove("loadend")
+
+  }
+}
+window.addEventListener('pjax:complete',preloader.endLoading())} )</script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn1.tianli0.top/npm/katex@latest/dist/katex.min.css"><script src="https://cdn1.tianli0.top/npm/katex@latest/dist/contrib/copy-tex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn1.tianli0.top/npm/katex@latest/dist/contrib/copy-tex.css"><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://tk.youmingsama.cn/',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://tk.youmingsama.cn/',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: true
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn1.tianli0.top/npm/twikoo@1.6.7/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !false) {
+    if (false) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script><script>var gitcalendar = new Vue({
+  el: '#gitcalendar',
+  data: {
+    simplemode: false,
+    user: 'youmingsama',
+    fixed: 'fixed',
+    px: 'px',
+    x: '',
+    y: '',
+    span1: '',
+    span2: '',
+    month: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+    monthchange: [],
+    oneyearbeforeday: '',
+    thisday: '',
+    amonthago: '',
+    aweekago: '',
+    weekdatacore: 0,
+    datacore: 0,
+    total: 0,
+    datadate: '',
+    data: [],
+    positionplusdata: [],
+    firstweek: [],
+    lastweek: [],
+    beforeweek: [],
+    thisweekdatacore: 0,
+    mounthbeforeday: 0,
+    mounthfirstindex: 0,
+    crispedges: 'crispedges',
+    thisdayindex: 0,
+    amonthagoindex: 0,
+    amonthagoweek: [],
+    firstdate: [],
+    first2date: [],
+    montharrbefore: [],
+    monthindex: 0,
+    color: ['#ebedf0', '#f1f8ff', '#dbedff', '#c8e1ff', '#79b8ff', '#2188ff', '#0366d6', '#005cc5', '#044289', '#032f62', '#05264c']
+  },
+  methods: {
+    selectStyle(data, event) {
+      document.querySelector('.angle-wrapper').style.display = 'block'
+      this.span1 = data.date;
+      this.span2 = data.count;
+      this.x = event.clientX - 100;
+      this.y = event.clientY - 60
+    },
+    outStyle() {
+      document.querySelector('.angle-wrapper').style.display = 'none'
+    },
+    thiscolor(x) {
+      if (x === 0) {
+        let i = parseInt(x / 2);
+        return this.color[0]
+      } else if (x < 2) {
+        return this.color[1]
+      } else if (x < 20) {
+        let i = parseInt(x / 2);
+        return this.color[i]
+      } else {
+        return this.color[9]
+      }
+    },
+  }
+});
+var apiurl = 'gcapi.yisous.xyz' ? 'https://gcapi.yisous.xyz/api?' : 'https://githubapi.ryanchristian.dev/user/'
+var githubapiurl = apiurl + gitcalendar.user;
+//canvas绘图
+function responsiveChart() {
+  let c = document.getElementById("gitcanvas");
+  if (c) {
+    let cmessage = document.getElementById("gitmessage");
+    let ctx = c.getContext("2d");
+    c.width = document.getElementById("gitcalendarcanvasbox").offsetWidth;
+    let linemaxwitdh = 0.96 * c.width / gitcalendar.data.length;
+    c.height = 9 * linemaxwitdh;
+    let lineminwitdh = 0.8 * linemaxwitdh;
+    let setposition = {
+      x: 0.02 * c.width,
+      y: 0.025 * c.width
+    };
+    for (let week in gitcalendar.data) {
+      weekdata = gitcalendar.data[week];
+      for (let day in weekdata) {
+        let dataitem = {
+          date: "",
+          count: "",
+          x: 0,
+          y: 0
+        };
+        gitcalendar.positionplusdata.push(dataitem);
+        ctx.fillStyle = gitcalendar.thiscolor(weekdata[day].count);
+        setposition.y = Math.round(setposition.y * 100) / 100;
+        dataitem.date = weekdata[day].date;
+        dataitem.count = weekdata[day].count;
+        dataitem.x = setposition.x;
+        dataitem.y = setposition.y;
+        ctx.fillRect(setposition.x, setposition.y, lineminwitdh, lineminwitdh);
+        setposition.y = setposition.y + linemaxwitdh
+      };
+      setposition.y = 0.025 * c.width;
+      setposition.x = setposition.x + linemaxwitdh
+    };
+    ctx.font = "600  Arial";
+    ctx.fillStyle = '#aaa';
+    ctx.fillText("日", 0, 1.9 * linemaxwitdh);
+    ctx.fillText("二", 0, 3.9 * linemaxwitdh);
+    ctx.fillText("四", 0, 5.9 * linemaxwitdh);
+    ctx.fillText("六", 0, 7.9 * linemaxwitdh);
+    let monthindexlist = c.width / 24;
+    for (let index in gitcalendar.monthchange) {
+      ctx.fillText(gitcalendar.monthchange[index], monthindexlist, 0.7 * linemaxwitdh);
+      monthindexlist = monthindexlist + c.width / 12
+    };
+    cmessage.onmousemove = function(event) {
+      document.querySelector('.angle-wrapper').style.display = 'none'
+    };
+    c.onmousemove = function(event) {
+      document.querySelector('.angle-wrapper').style.display = 'none'
+      getMousePos(c, event);
+    };
+
+    function getMousePos(canvas, event) {
+      var rect = canvas.getBoundingClientRect();
+      var x = event.clientX - rect.left * (canvas.width / rect.width);
+      var y = event.clientY - rect.top * (canvas.height / rect.height);
+      //console.log("x:"+x+",y:"+y);
+      for (let item of gitcalendar.positionplusdata) {
+        let lenthx = x - item.x;
+        let lenthy = y - item.y;
+        //console.log(lenthx,lenthy);
+        if (0 < lenthx && lenthx < lineminwitdh) {
+          if (0 < lenthy && lenthy < lineminwitdh) {
+            //console.log(item.date,item.count)
+            document.querySelector('.angle-wrapper').style.display = 'block'
+            gitcalendar.span1 = item.date;
+            gitcalendar.span2 = item.count;
+            gitcalendar.x = event.clientX - 100;
+            gitcalendar.y = event.clientY - 60
+          }
+        }
+        //if(0< x - item.x <lineminwitdh&&0< y - item.y <lineminwitdh){
+        //console.log(item.count,item.date);
+        //}
+      }
+    }
+  }
+}
+//数据统计算法
+function addlastmonth() {
+  if (gitcalendar.thisdayindex === 0) {
+    thisweekcore(52);
+    thisweekcore(51);
+    thisweekcore(50);
+    thisweekcore(49);
+    thisweekcore(48);
+    gitcalendar.thisweekdatacore += gitcalendar.firstdate[6].count;
+    gitcalendar.amonthago = gitcalendar.firstdate[6].date
+  } else {
+    thisweekcore(52);
+    thisweekcore(51);
+    thisweekcore(50);
+    thisweekcore(49);
+    thisweek2core();
+    gitcalendar.amonthago = gitcalendar.first2date[gitcalendar.thisdayindex - 1].date
+  }
+};
+
+function thisweek2core() {
+  for (let i = gitcalendar.thisdayindex - 1; i < gitcalendar.first2date.length; i++) {
+    gitcalendar.thisweekdatacore += gitcalendar.first2date[i].count
+  }
+};
+
+function thisweekcore(index) {
+  for (let item of gitcalendar.data[index]) {
+    gitcalendar.thisweekdatacore += item.count
+  }
+};
+
+function addlastweek() {
+  for (let item of gitcalendar.lastweek) {
+    gitcalendar.weekdatacore += item.count
+  }
+};
+
+function addbeforeweek() {
+  for (let i = gitcalendar.thisdayindex; i < gitcalendar.beforeweek.length; i++) {
+    gitcalendar.weekdatacore += gitcalendar.beforeweek[i].count
+  }
+};
+
+function addweek(data) {
+  if (gitcalendar.thisdayindex === 6) {
+    gitcalendar.aweekago = gitcalendar.lastweek[0].date;
+    addlastweek()
+  } else {
+    lastweek = data.contributions[51];
+    gitcalendar.aweekago = lastweek[gitcalendar.thisdayindex + 1].date;
+    addlastweek();
+    addbeforeweek()
+  }
+}
+
+fetch(githubapiurl)
+  .then(data => data.json())
+  .then(data => {
+    gitcalendar.data = data.contributions;
+    gitcalendar.total = data.total;
+    gitcalendar.first2date = gitcalendar.data[48];
+    gitcalendar.firstdate = gitcalendar.data[47];
+    gitcalendar.firstweek = data.contributions[0];
+    gitcalendar.lastweek = data.contributions[52];
+    gitcalendar.beforeweek = data.contributions[51];
+    gitcalendar.thisdayindex = gitcalendar.lastweek.length - 1;
+    gitcalendar.thisday = gitcalendar.lastweek[gitcalendar.thisdayindex].date;
+    gitcalendar.oneyearbeforeday = gitcalendar.firstweek[0].date;
+    gitcalendar.monthindex = gitcalendar.thisday.substring(5, 7) * 1;
+    gitcalendar.montharrbefore = gitcalendar.month.splice(gitcalendar.monthindex, 12 - gitcalendar.monthindex);
+    gitcalendar.monthchange = gitcalendar.montharrbefore.concat(gitcalendar.month);
+    addweek(data);
+    addlastmonth();
+    responsiveChart();
+  })
+  .catch(function(error) {
+    console.log(error);
+  });
+
+//手机版更换为svg绘制
+if (document.getElementById("gitcalendarcanvasbox").offsetWidth < 500) {
+  gitcalendar.simplemode = false
+}
+
+//当改变窗口大小时重新绘制canvas
+window.onresize = function() {
+  if (gitcalendar.simplemode) responsiveChart()
+}
+
+//解决滚动滑轮时出现的标签显示
+window.onscroll = function() {
+  if (document.querySelector('.angle-wrapper')) {
+    document.querySelector('.angle-wrapper').style.display = 'none'
+  }
+};</script></div><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[图片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[链接]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[代码]') // replace code
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getComment = () => {
+    const runTwikoo = () => {
+      twikoo.getRecentComments({
+        envId: 'https://tk.youmingsama.cn/',
+        region: '',
+        pageSize: 6,
+        includeReply: true
+      }).then(function (res) {
+        const twikooArray = res.map(e => {
+          return {
+            'content': changeContent(e.comment),
+            'avatar': e.avatar,
+            'nick': e.nick,
+            'url': e.url + '#' + e.id,
+            'date': new Date(e.created).toISOString()
+          }
+        })
+
+        saveToLocal.set('twikoo-newest-comments', JSON.stringify(twikooArray), 10/(60*24))
+        generateHtml(twikooArray)
+      }).catch(function (err) {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.innerHTML= "无法获取评论，请确认相关配置是否正确"
+      })
+    }
+
+    if (typeof twikoo === 'object') {
+      runTwikoo()
+    } else {
+      getScript('https://cdn1.tianli0.top/npm/twikoo@1.6.7/dist/twikoo.all.min.js').then(runTwikoo)
+    }
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          const name = 'src'
+          result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'></a>`
+        }
+        
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}' title='${array[i].content}'>${array[i].content}</a>
+        <div class='name'><span>${array[i].nick} / </span><time datetime="${array[i].date}">${btf.diffDate(array[i].date, true)}</time></div>
+        </div></div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('twikoo-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><script type="text/javascript" src="/js/fixbugpjax.js"></script><script src="/js/sakura.js"></script><div class="aplayer no-destroy" data-id="7803928554" data-server="netease" data-type="playlist" data-listfolded="false" data-preload="metadata" data-theme="var(--lyx-theme)" data-fixed="true" data-autoplay="false" data-volume="0.1" style="z-index:514"> </div><script type="text/javascript" src="/js/aplayersave.js"></script><script type="text/javascript" src="/js/noie.js"></script><script src="https://cdn1.tianli0.top/npm/leancloud-storage@4.13.1/dist/av-min.js"></script><script src="https://cdn1.tianli0.top/gh/nextapps-de/winbox/dist/winbox.bundle.min.js"></script><script src="https://cdn1.tianli0.top/npm/sweetalert2@8"></script><script type="text/javascript" data-pjax="" src="/js/rightmenu.js"></script><script type="text/javascript" src="/js/copy.js"></script><script type="text/javascript" src="/js/welcome.js"></script><script type="text/javascript" src="https://cdn1.tianli0.top/npm/jquery@latest/dist/jquery.min.js"></script><script type="text/javascript" src="/js/resizeTop.js"></script><script type="text/javascript" src="/js/languages.js"></script><script type="text/javascript" src="/js/browser.js"></script><script type="text/javascript" src="/js/smooth-scrolling.js"></script><script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script><script type="text/javascript" src="/js/sitetime.js"></script><script type="text/javascript" src="/js/seo.js"></script><script data-pjax="" type="text/javascript" src="/js/heimu.js"></script><script data-pjax="" src="/js/bbtalklunbo.js"></script><script data-pjax="" src="/js/fps.js"></script><script data-pjax="" src="/js/dis.js"></script><script data-pjax="" src="/js/settings.js"></script><script src="/js/owo.js"></script><script src="/js/welcomeconsole.js"></script><script src="/js/hide.show.js"></script><script src="https://f.zhheo.com/JS-Heo/bb/showbb_in_index.js" data-pjax="" =""="" defer=""></script><script data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}" src="https://cdn.bootcss.com/pace/1.0.2/pace.min.js"></script><script data-pjax="" src="/js/baiduhistory.js"></script><script src="/js/random.js"></script><script src="/js/lunar.js"></script><script src="/js/day.js"></script><script data-pjax="" src="/js/nav.js"></script><script src="/js/cursor.js"></script><script data-pjax="" type="text/javascript" src="/js/dianzan.js"></script><script type="text/javascript" src="/js/commentsCount.js"></script><script type="text/javascript" src="/js/latest.js"></script><script data-pjax="" defer="" src="/js/fixed_card_widget.js"></script><script type="text/javascript" src="https://cdn1.tianli0.top/npm/node-snackbar@latest/src/js/snackbar.min.js"></script><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/aplayer@1/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn1.tianli0.top/npm/aplayer@1/dist/APlayer.min.js"></script><script src="https://cdn1.tianli0.top/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script src="https://cdn1.tianli0.top/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax","#fixedcard-dashboard"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"]):not([href="/speaks/"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async="" data-pjax="" src="https://cdn.dusays.com/bsz.js"></script><div id="fixedcard-dashboard"><button class="fixedcard-activebtn" type="button" title="我的信息" onclick="FixedCardWidget(&quot;class&quot;,&quot;card-info&quot;,&quot;0&quot;)"><i class="fas fa-address-book"></i></button><button class="fixedcard-activebtn" type="button" title="公告" onclick="FixedCardWidget(&quot;class&quot;,&quot;card-announcement&quot;,&quot;0&quot;)"><i class="fas fa-bullhorn"></i></button><button class="fixedcard-activebtn" type="button" title="天气" onclick="FixedCardWidget(&quot;class&quot;,&quot;card-weather&quot;,&quot;0&quot;)"><i class="fas fa-cloud-sun"></i></button><button class="fixedcard-activebtn" type="button" title="最新文章" onclick="FixedCardWidget(&quot;class&quot;,&quot;card-recent-post&quot;,&quot;0&quot;)"><i class="fas fa-history"></i></button><button class="fixedcard-activebtn" type="button" title="最新评论" onclick="FixedCardWidget(&quot;id&quot;,&quot;card-newest-comments&quot;,&quot;0&quot;)"><i class="fas fa-comment-dots"></i></button><button class="fixedcard-activebtn" type="button" title="文章日历" onclick="FixedCardWidget(&quot;class&quot;,&quot;card-calendar&quot;,&quot;0&quot;)"><i class="fas fa-calendar"></i></button><div class="fixedcard-user-avatar fixedcard-activebtn" onclick="RemoveFixedCardWidget()"><img class="fixedcard-user-avatar-img" src="/img/avatar.png" title="youmingsama"></div></div></div><div class="barrageswiper swiper-container"><div class="comment-barrage js-pjax swiper-wrapper"></div><link rel="stylesheet" href="/css/commentBarrage.css"><script data-pjax="" src="/js/commentBarrage.js"></script></div></body></html>

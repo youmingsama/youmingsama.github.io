@@ -1,0 +1,1162 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>树同学是个好同志 | youmingsama</title><meta name="keywords" content="data structure"><meta name="author" content="youmingsama"><meta name="copyright" content="youmingsama"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="树同学她是个好同志 思前想后我决定递归先鸽了，相比于我们的递归同学。我觉得树同学才是我的真爱！！！当然我只是选择先爱我们的树同学，递归同学您就往后稍稍得嘞。   树 对于少量的数据我们可以用链表快速高效的访问，但对于大量的输入数据，链表就显得完全力不从心了，因为链表的线性访问，实在是太慢了。虽然链表可以提供比数组更大的灵活性，但很难使用他们对组织分层表示。栈和队列虽然也反映了某些层次，但他们是一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="树同学是个好同志">
+<meta property="og:url" content="https://blog.youmingsama.cn/posts/fd6da870/index.html">
+<meta property="og:site_name" content="youmingsama">
+<meta property="og:description" content="树同学她是个好同志 思前想后我决定递归先鸽了，相比于我们的递归同学。我觉得树同学才是我的真爱！！！当然我只是选择先爱我们的树同学，递归同学您就往后稍稍得嘞。   树 对于少量的数据我们可以用链表快速高效的访问，但对于大量的输入数据，链表就显得完全力不从心了，因为链表的线性访问，实在是太慢了。虽然链表可以提供比数组更大的灵活性，但很难使用他们对组织分层表示。栈和队列虽然也反映了某些层次，但他们是一">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://youmingsama.github.io/PicGo/%E5%9B%9B%E5%AD%A3/jie.jpg">
+<meta property="article:published_time" content="2020-03-14T00:00:00.000Z">
+<meta property="article:modified_time" content="2023-06-23T07:25:57.098Z">
+<meta property="article:author" content="youmingsama">
+<meta property="article:tag" content="data structure">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://youmingsama.github.io/PicGo/%E5%9B%9B%E5%AD%A3/jie.jpg"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://blog.youmingsama.cn/posts/fd6da870/"><link rel="preconnect" href="//cdn1.tianli0.top"><link rel="preconnect" href="//cdn.dusays.com"><link rel="manifest" href="/manifest.json"><link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/img/32.png"><link rel="icon" type="image/png" sizes="16x16" href="/img/16.png"><link rel="mask-icon" href="/img/safari-pinned-tab.svg" color="#5bbad5"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"简","msgToSimplifiedChinese":"繁"},
+  noticeOutdate: {"limitDay":120,"position":"top","messagePrev":"距离上次更新已经过了","messageNext":"天，文章所描述的內容可能已经发生变化，请留意"},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":500},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: youmingsama","link":"链接: ","source":"来源: youmingsama","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"top-right"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn1.tianli0.top/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn1.tianli0.top/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '树同学是个好同志',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-06-23 07:25:57'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/ariasakablog.css"><link id="css" rel="stylesheet" href="/css/stylessimple.css"><link rel="stylesheet" href="/css/iconfont.css"><style>#article-container h1:before, h2:before, h3:before, h4:before, h5:before, h6:before { -webkit-animation: avatar_turn_around 3s linear infinite; -moz-animation: avatar_turn_around 3s linear infinite; -o-animation: avatar_turn_around 3s linear infinite; -ms-animation: avatar_turn_around 3s linear infinite; animation: avatar_turn_around 3s linear infinite; }</style><style id="barragesColor"></style><style id="settingStyle"></style><style id="yjjs"></style><style id="themeColor"></style><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+SC"><link rel="stylesheet" href="https://cdn1.tianli0.top/gh/Zfour/Butterfly-card-history/baiduhistory/css/main.css"><link rel="stylesheet" href="/css/commentBarrage.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif+SC"><link rel="stylesheet" type="text/css" href="https://cdn1.tianli0.top/npm/node-snackbar@latest/dist/snackbar.min.css"><script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script><script>LA.init({id: "JnlSnWLD7XChjrlx",ck: "JnlSnWLD7XChjrlx"})</script><script src="https://sdk.51.la/perf/js-sdk-perf.min.js" crossorigin="anonymous"></script><script>new LingQue.Monitor().init({id:"JnnW6bt2WtyehVan"});</script><script src="/swReg.js"></script></head><body><span id="fps"></span><style id="grays"></style><script src="https://cdn1.tianli0.top/npm/prefetch-page"></script><script>addEventListener('DOMContentLoaded', function () {prefetch({ threshold: 25, delay: 3000, limit: 10 ,customs: ['search.xml']})});requestIdleCallback(function () {prefetch({ threshold: 25, delay: 3000, limit: 10,customs: ['search.xml']})})</script><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/5.4.5/css/swiper.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-swiper-lyx/lib/swiperstyle.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://cdn1.tianli0.top/npm/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="youmingsama" type="application/atom+xml">
+<div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><img src="/img/nyancat.gif" id="loadcat"></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fa fa-newspaper"></i><span> 文章</span><!--i.fas.fa-chevron-down--></a><ul class="menus_item_child"><li><a class="site-page child" href="javascript:toRandomPost()" rel="external nofollow noreferrer"><i class="fa-fw fa fa-paper-plane"></i><span> 随便逛逛</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fa fa-sitemap"></i><span> 本站</span><!--i.fas.fa-chevron-down--></a><ul class="menus_item_child"><li><a class="site-page child" href="/speaks/"><i class="fa-fw fa fa-comments"></i><span> 说说</span></a></li><li><a class="site-page child" href="/links/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></li><li><a class="site-page child" href="/fcircle/"><i class="fa-fw fab fa-galactic-republic"></i><span> 朋友圈</span></a></li><li><a class="site-page child" href="/othersite/"><i class="fa-fw fa fa-tasks"></i><span> 分站</span></a></li><li><a class="site-page child" href="/update/"><i class="fa-fw fa fa-bell"></i><span> 日志</span></a></li><li><a class="site-page child" href="/messageboard/"><i class="fa-fw fa fa-blackboard"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fa-fw fas fa-address-card"></i><span> 我的</span><!--i.fas.fa-chevron-down--></a><ul class="menus_item_child"><li><a class="site-page child" href="/movies/"><i class="fa-fw fa fa-photo-video"></i><span> 电影</span></a></li><li><a class="site-page child" href="/bangumis/"><i class="fa-fw fa-fw fas fa fa-film"></i><span> 追番</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fa fa-info-circle"></i><span> 关于我</span></a></li><li><a class="site-page child" href="/license/"><i class="fa-fw fas fa-balance-scale"></i><span> 声明</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fa-fw fas fa-tools"></i><span> 工具</span><!--i.fas.fa-chevron-down--></a><ul class="menus_item_child"><li><a class="site-page child" href="/kongtiao/"><span> 小空调</span></a></li><li><a class="site-page child" href="/zaobao/"><i class="fa-fw fa fa-newspaper"></i><span> 每日早报</span></a></li><li><a class="site-page child" href="/muyu/"><i class="fa-fw fa fa-cog"></i><span> 木鱼</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fas fa-link"></i><span> 线路</span><!--i.fas.fa-chevron-down--></a><ul class="menus_item_child"><li><a class="site-page child" href="https://blog.youmingsama.cn"><span> Vercel</span></a></li><li><a class="site-page child" href="https://blog.youmingsama.cn"><span> Vercel2</span></a></li><li><a class="site-page child" href="https://blog.youmingsama.cn"><span> Netlify</span></a></li><li><a class="site-page child" target="_blank" rel="noopener external nofollow noreferrer" href="https://blog.youmingsama.top/"><span> Cloudflare</span></a></li><li><a class="site-page child" target="_blank" rel="noopener external nofollow noreferrer" href="https://blog.youmingsama.top/"><span> Cloudflare2</span></a></li><li><a class="site-page child" target="_blank" rel="noopener external nofollow noreferrer" href="https://blog.youmingsama.top/"><span> Github</span></a></li><li><a class="site-page child" target="_blank" rel="noopener external nofollow noreferrer" href="https://blog.youmingsama.top/"><span> Railway</span></a></li><li><a class="site-page child" target="_blank" rel="noopener external nofollow noreferrer" href="https://blog.youmingsama.top/"><span> Railway2</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://youmingsama.github.io/PicGo/四季/jie.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">youmingsama</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fa fa-newspaper"></i><span> 文章</span><!--i.fas.fa-chevron-down--></a><ul class="menus_item_child"><li><a class="site-page child" href="javascript:toRandomPost()" rel="external nofollow noreferrer"><i class="fa-fw fa fa-paper-plane"></i><span> 随便逛逛</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fa fa-sitemap"></i><span> 本站</span><!--i.fas.fa-chevron-down--></a><ul class="menus_item_child"><li><a class="site-page child" href="/speaks/"><i class="fa-fw fa fa-comments"></i><span> 说说</span></a></li><li><a class="site-page child" href="/links/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></li><li><a class="site-page child" href="/fcircle/"><i class="fa-fw fab fa-galactic-republic"></i><span> 朋友圈</span></a></li><li><a class="site-page child" href="/othersite/"><i class="fa-fw fa fa-tasks"></i><span> 分站</span></a></li><li><a class="site-page child" href="/update/"><i class="fa-fw fa fa-bell"></i><span> 日志</span></a></li><li><a class="site-page child" href="/messageboard/"><i class="fa-fw fa fa-blackboard"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fa-fw fas fa-address-card"></i><span> 我的</span><!--i.fas.fa-chevron-down--></a><ul class="menus_item_child"><li><a class="site-page child" href="/movies/"><i class="fa-fw fa fa-photo-video"></i><span> 电影</span></a></li><li><a class="site-page child" href="/bangumis/"><i class="fa-fw fa-fw fas fa fa-film"></i><span> 追番</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fa fa-info-circle"></i><span> 关于我</span></a></li><li><a class="site-page child" href="/license/"><i class="fa-fw fas fa-balance-scale"></i><span> 声明</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fa-fw fas fa-tools"></i><span> 工具</span><!--i.fas.fa-chevron-down--></a><ul class="menus_item_child"><li><a class="site-page child" href="/kongtiao/"><span> 小空调</span></a></li><li><a class="site-page child" href="/zaobao/"><i class="fa-fw fa fa-newspaper"></i><span> 每日早报</span></a></li><li><a class="site-page child" href="/muyu/"><i class="fa-fw fa fa-cog"></i><span> 木鱼</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fas fa-link"></i><span> 线路</span><!--i.fas.fa-chevron-down--></a><ul class="menus_item_child"><li><a class="site-page child" href="https://blog.youmingsama.cn"><span> Vercel</span></a></li><li><a class="site-page child" href="https://blog.youmingsama.cn"><span> Vercel2</span></a></li><li><a class="site-page child" href="https://blog.youmingsama.cn"><span> Netlify</span></a></li><li><a class="site-page child" target="_blank" rel="noopener external nofollow noreferrer" href="https://blog.youmingsama.top/"><span> Cloudflare</span></a></li><li><a class="site-page child" target="_blank" rel="noopener external nofollow noreferrer" href="https://blog.youmingsama.top/"><span> Cloudflare2</span></a></li><li><a class="site-page child" target="_blank" rel="noopener external nofollow noreferrer" href="https://blog.youmingsama.top/"><span> Github</span></a></li><li><a class="site-page child" target="_blank" rel="noopener external nofollow noreferrer" href="https://blog.youmingsama.top/"><span> Railway</span></a></li><li><a class="site-page child" target="_blank" rel="noopener external nofollow noreferrer" href="https://blog.youmingsama.top/"><span> Railway2</span></a></li></ul></div></div><center id="name-container"><a id="page-name" href="javascript:rmf.scrollToTop()" rel="external nofollow noreferrer">PAGE_NAME</a></center></div><div id="toggleButtons"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><!--span=' '+_p('search.title')--></a></div><div id="randoms"><a class="site-page social-icon" href="javascript:toRandomPost()" rel="external nofollow noreferrer"><i class="fa fa-paper-plane"></i></a></div><div id="travellings"><a class="site-page social-icon" target="_blank" rel="noopener external nofollow noreferrer" href="https://travellings.link"><i class="fa fa-subway"></i></a></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">树同学是个好同志</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-03-14T00:00:00.000Z" title="发表于 2020-03-14 00:00:00">2020-03-14</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-06-23T07:25:57.098Z" title="更新于 2023-06-23 07:25:57">2023-06-23</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/bug%E7%9A%84%E7%82%BC%E9%87%91%E5%B7%A5%E5%9D%8A/">bug的炼金工坊</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>11分钟</span></span><span class="post-meta-separator">|</span><span id="" data-flag-title="树同学是个好同志"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="twikoo_visitors"></span></span><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/posts/fd6da870/#post-comment"><span id="twikoo-count"></span></a></span><span class="post-meta-separator">|&nbsp; <span class="post-meta-dianzan"><a class="dianzan" href="javascript:void(0)" rel="external nofollow noreferrer" onclick="dianzan()"><i class="fas fa-thumbs-up"></i></a><span class="post-meta-label"> 点赞:</span><span class="dianzan-count">0</span></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="树同学她是个好同志"><a class="markdownIt-Anchor" href="#树同学她是个好同志"></a> 树同学她是个好同志</h1>
+<p>思前想后我决定递归先鸽了，相比于我们的递归同学。我觉得树同学才是我的真爱！！！当然我只是选择先爱我们的树同学，递归同学您就往后稍稍得嘞。</p>
+<p><img src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/img/dama1.jpg" alt=""></p>
+<h2 id="树"><a class="markdownIt-Anchor" href="#树"></a> 树</h2>
+<p>对于少量的数据我们可以用链表快速高效的访问，但对于大量的输入数据，链表就显得完全力不从心了，因为链表的线性访问，实在是太慢了。虽然链表可以提供比数组更大的灵活性，但很难使用他们对组织分层表示。栈和队列虽然也反映了某些层次，但他们是一维的。基于总总，<s>终于万众期待的转学生树</s>…于是我们创建了一个新的数据类型，称为树。</p>
+<ul>
+<li>
+<p>定义树的一种自然的方法是递归，一棵树是一些节点的集合</p>
+</li>
+<li>
+<p>这个集合可以是空集</p>
+</li>
+<li>
+<p>若非空，则一棵树有称作<code>根(root)</code>的节点r以及0个或者多个非空的子树T1，T2，T3…组成</p>
+</li>
+<li>
+<p>这些子树中每一课都被来自根r的一条有向的边（eage）所连接</p>
+</li>
+<li>
+<p>每一棵子树的根叫做根r的儿子<code>(child)</code>，而r是每一棵子树的父亲<code>(parent)</code></p>
+<p><img src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/img/zishu1.png" alt=""></p>
+<blockquote>
+<p>}树大部分操作的运行时间都在O(log N)</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="树的种类"><a class="markdownIt-Anchor" href="#树的种类"></a> 树的种类</h2>
+<p>我们可能已经听过很多树的名词，例如，红黑树，霍夫曼树，B树，B+树，平衡二叉树等等，而本文将要介绍二叉查找树，很多其他树都是它的变种，不像链表的线性访问，二叉查找树的大部分操作时间复杂度都为O(logN)。</p>
+<h2 id="关于父亲儿子外祖父兄弟孙子之类的"><a class="markdownIt-Anchor" href="#关于父亲儿子外祖父兄弟孙子之类的"></a> 关于父亲儿子外祖父兄弟孙子之类的</h2>
+<p>我觉得这就没有必要讲的吧，各位不懂的…<s>代入啊代入</s></p>
+<h2 id="树的实现"><a class="markdownIt-Anchor" href="#树的实现"></a> 树的实现</h2>
+<p>实现树的一种最常见的方法就是在<code>每一个节点除数据</code>外还需要一些<code>指针</code>，使得该节点每一个son都有一个指针指向它。树并没有规定子节点数量，所以子节点数可以变化很大而且事先不知道。因此没办法建立到各个子节点之间的链接，因为这样太浪费空间了。但是其实解法也很简单：`我们可以将每个节点的所有儿子都放在树节点的链表中。</p>
+<p><strong>我们简单声明一个树的节点</strong></p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="type">int</span> ElementType;</span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="title class_">TreeNode</span> *PtrToNode;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">TreeNode</span>{</span><br><span class="line">    ElementType Element;</span><br><span class="line">    PtrToNode firstchild;<span class="comment">//第一个儿子</span></span><br><span class="line">    PtrToNode nextSibling;<span class="comment">//下一个兄弟</span></span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+<p>emmmmmm看起来很简单对吧</p>
+<p><img src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/img/3135067848242761.jpg" alt=""></p>
+<h2 id="树的遍历及应用"><a class="markdownIt-Anchor" href="#树的遍历及应用"></a> 树的遍历及应用</h2>
+<p>树有很多应用，比如Unix，dos在内的许多操作系统中的目录结构大多数反映分层结构的都是使用树来完成的。树的遍历有这难以比拟的优势。对于一个链表来说如果我们要查找他的一个元素，最坏的情况要从第一个遍历到最后一个，假如说有10000个元素我们就需要遍历到9999个元素才能找到。那么假如是我们是定义在树中即使要定义到最远的那个位置，测试次数也会大大减少。不同节点的树可能也有不同的算法。事实上，人们也已经开发出了这种算法。这里我们重点讨论二叉树。</p>
+<h2 id="二叉树"><a class="markdownIt-Anchor" href="#二叉树"></a> 二叉树</h2>
+<p>~~二叉树顾名思义就是很二。~~一个节点要分为<strong>左节点</strong>和<strong>右节点</strong>。</p>
+<blockquote>
+<p>节点层次:就是从根到该节点所有的弧加一,所以根节点的层次是0,非空节点最低就是2了</p>
+</blockquote>
+<p>以此类推</p>
+<ul>
+<li>
+<p>第一层有1=2^0【由于mathjax的奇怪报错，我放弃使用渲染了，凑合看吧】</p>
+</li>
+<li>
+<p>第二层有2=2^1</p>
+</li>
+<li>
+<p>第三层有4=2^2</p>
+</li>
+<li>
+<p>第四层…</p>
+</li>
+<li>
+<p>第五层…</p>
+</li>
+<li>
+<p>第六层…</p>
+</li>
+</ul>
+<p><img src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/img/%E5%87%BA%E8%AD%A6.jpg" alt=""></p>
+<p>咦？你们铐我干什么？？什么！！！我没有水博客啊你们相信我啊！！！！</p>
+<blockquote>
+<p>满足该条件被称为完全二叉树</p>
+</blockquote>
+<p>不难看出所有的非终端节点都有两个节点，所有叶节点都在同一节点上，第<code>i+1</code>层有2^i个节点。</p>
+<blockquote>
+<p>对于非空二叉树来说，若其所有的非终端节点都有两个子节点，则叶节点的数目m大于非终端节点数目k，且m=k+1</p>
+</blockquote>
+<p>对于一般二叉树来说她的深度要比n小得多，这个平均深度为O（<math xmlns="http://www.w3.org/1998/Math/MathML"></math><br>
+<msqrt><br>
+<mrow class="MJX-TeXAtom-ORD"><br>
+<mi mathvariant="double-struck">N</mi><br>
+</mrow><br>
+</msqrt><br>
+）【这里出现的是根号n，这里用的是mathml，如果出现其他奇怪的符号那就没办法了，火狐上测试是可以正常显示的】对于二叉查找树也被称为有序二叉树 其平均深度是O(log N)，但是呢我们有可能会遇到最糟糕的情况，没错就是完完全全笔笔直直一条直线这种情况深度就大到了N-1；</p>
+<h2 id="二叉树的实现"><a class="markdownIt-Anchor" href="#二叉树的实现"></a> 二叉树的实现</h2>
+<p>不出意外的来说一个二叉树最多有两个儿子【废话】，我们可以用指针直接指向他们，树节点在声明上和双链表很像。</p>
+<p>在声明中，一个节点就是由key加上两个指向其他节点的指针<code>（Left and Right)</code>组成的结构。链表上的很多东西放在树上也同样适用，当进行一次插入操作时调用<code>malloc</code>创建节点【俺一般都用new，毕竟懒】节点调用后可以调用free删除后被释放。树一般华城圆圈并用一些直线连接起来。二叉树本身就是图。当然涉及到树时我们也没有必要画出<code>Null</code>指针，因为N个节点的一颗二叉树就需要N+1NULL指针；</p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="type">int</span> ElementType;</span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="title class_">PtrToNode</span> Tree;</span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="title class_">TreeNode</span> *PtrToNode;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">TreeNode</span>{</span><br><span class="line">    ElementType Element;</span><br><span class="line">    PtrToNode Left;</span><br><span class="line">    PtrToNode Right;</span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="表达式树"><a class="markdownIt-Anchor" href="#表达式树"></a> 表达式树</h2>
+<p>声明一点表达式树的树叶就是操作数。比如是常数或者变量，而其他的节点为操作符，由于这里的所有操作都是二元的，因此棵特定的树为二叉树。</p>
+<p>大致过程为</p>
+<ul>
+<li>如果符号是操作数，那么我们就建立一个单节点树并将一个指向它的指针推入栈中</li>
+<li>如果符号是操作数，则从栈中弹出两棵树T1和T2（先弹出T1），并形成一颗以操作符为根的树，其中T1为右儿子，T2为左儿子；</li>
+<li>然后将新的树压入栈中，继续上述过程。</li>
+</ul>
+<p>来看一个栗子吧假如说输入为<code>a b + c d e + * *</code></p>
+<p>（1）依次读入操作数a 和 b，并压入栈中</p>
+<p><img src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/img/1.png" alt=""></p>
+<p>（2）紧接着“+”被读入，因此指向这两科树的指针被弹出，一颗新的树形成了，而指向该树的指针被压入栈中</p>
+<p><img src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/img/2.png" alt=""></p>
+<p>（3）然后c，d，e被读入，在每个单节点被创建后，指向对应的树的指针被压入到栈中。</p>
+<p><img src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/img/3.png" alt=""></p>
+<p>接下来读入“+”号，因此两棵树合并。</p>
+<p><img src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/img/4.png" alt=""></p>
+<p>再次读入“+”号，因此，我们弹出两个树指针并形成一个新的树，“ * ”是它的根。</p>
+<p><img src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/img/52.png" alt=""></p>
+<p>读入最后一个符号，两棵树合并，而指向最后的树的指针留在栈中。</p>
+<p><img src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/img/5.png" alt=""></p>
+<h2 id="查找树adt-二叉查找树"><a class="markdownIt-Anchor" href="#查找树adt-二叉查找树"></a> 查找树ADT-------二叉查找树</h2>
+<p>二叉树一个非常非常非常重要的应用应该就是查找了吧！！！如果要使一个二叉树变成二叉查找树的性质是，对于每个节点X，他的左子树的<code>所有</code>关键字值小于X的关键字值，而他的右子树中的<code>所有</code>关键字值大于X关键字值。这意味着该树所有的元素都可以使用某一种统一的方式排序,这点非常重要。</p>
+<h2 id="初始化makeempty"><a class="markdownIt-Anchor" href="#初始化makeempty"></a> 初始化MakeEmpty</h2>
+<p>这个操作主要用于初始化</p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">SearchTree <span class="title">makeEmpty</span><span class="params">(SearchTree Tree)</span></span>{</span><br><span class="line">    <span class="keyword">if</span>(Tree==<span class="literal">nullptr</span>){</span><br><span class="line">        <span class="built_in">makeEmpty</span>(Tree-&gt;Left);</span><br><span class="line">        <span class="built_in">makeEmpty</span>(Tree-&gt;Right);</span><br><span class="line">        <span class="built_in">free</span>(Tree);</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>一般的写法是初始化为单节点树，比如<code>TreeNode *tree = nullptr;</code>但是这里用了树的递归定义建立了一棵空树。</p>
+<p><img src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/%E5%9B%9B%E5%AD%A3/2883781127774921.png" alt=""></p>
+<h2 id="find"><a class="markdownIt-Anchor" href="#find"></a> Find</h2>
+<p>这个操作一般需要返回指向树T中具有关键字X节点的指针，如果这种节点不存在就返回NULL；如果T是NULL我们就返回NULL，如果存储在T中的关键字是X，我们就可以返回T；然后还需要注意测试顺序：</p>
+<ul>
+<li>判断是否为空树，否则就要一直在NULL兜圈子了</li>
+<li>最不可能的情况应该放在最后进行</li>
+<li>尾递归尽量用赋值+goto解决，否则可能导致栈空间被用尽，但这里使用时合理的，因为栈空间的量不过才O（log N)而已</li>
+</ul>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Posttion <span class="title">Find</span><span class="params">(ElementType X, SearchTree Tree)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="keyword">if</span> (Tree == <span class="literal">nullptr</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="keyword">if</span> (X &lt; Tree-&gt;Element)</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Find</span>(X, Tree-&gt;Left);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (X &gt; Tree-&gt;Element)</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Find</span>(X, Tree-&gt;Right);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> Tree;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>嘛。这里吧goto代替尾递归的也给加上吧</p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Posttion <span class="title">Find</span><span class="params">(ElementType X, SearchTree Tree)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">next:</span><br><span class="line">    <span class="keyword">if</span> (Tree == <span class="literal">nullptr</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="keyword">if</span> (X &lt; Tree-&gt;Element)</span><br><span class="line">        Tree = Tree-&gt;Left;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (X &gt; Tree-&gt;Element)</span><br><span class="line">    {</span><br><span class="line">        Tree = Tree-&gt;Right;</span><br><span class="line">        <span class="keyword">goto</span> next;</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> Tree;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="findmin和findmax"><a class="markdownIt-Anchor" href="#findmin和findmax"></a> FindMin和FindMax</h2>
+<p>返回树中的最大元和最小元的位置</p>
+<ul>
+<li>
+<p>对于FindMin从根开始只要有左儿子就向左进行，终止点是最小元素。</p>
+</li>
+<li>
+<p>至于FindMax当然是反过来啊！！</p>
+</li>
+</ul>
+<div class="note info flat"><p>递归是如此的简单以至于很多程序猿都不厌其烦的使用它。这里我偏不。</p>
+</div>
+<h3 id="findmin的递归实现"><a class="markdownIt-Anchor" href="#findmin的递归实现"></a> FindMIn的递归实现</h3>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Posttion <span class="title">FindMin</span><span class="params">(SearchTree Tree)</span></span>{</span><br><span class="line">    <span class="keyword">if</span>(Tree==<span class="literal">nullptr</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(Tree-&gt;Left==<span class="literal">nullptr</span>)</span><br><span class="line">     <span class="keyword">return</span> Tree;</span><br><span class="line">     <span class="keyword">else</span> <span class="keyword">return</span> <span class="built_in">FindMin</span>(Tree-&gt;Left);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="findmax的非递归实现"><a class="markdownIt-Anchor" href="#findmax的非递归实现"></a> FindMax的非递归实现</h3>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Posttion <span class="title">FindMax</span><span class="params">(SearchTree Tree)</span></span>{</span><br><span class="line">    <span class="keyword">if</span>(Tree!=<span class="literal">nullptr</span>)</span><br><span class="line">    <span class="keyword">while</span>(Tree-&gt;Right!=<span class="literal">nullptr</span>)</span><br><span class="line">    Tree=Tree-&gt;Right;</span><br><span class="line">    <span class="keyword">return</span> Tree;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<blockquote>
+<p>要小心处理空树这种情况，小心原地兜圈圈</p>
+</blockquote>
+<h2 id="insert"><a class="markdownIt-Anchor" href="#insert"></a> Insert</h2>
+<p>插入的操作是相对简单的啊！将X插入到树T中这件事，可以用Find那样沿着树来查找。如果找到X可以做一些更新啊，否则将X插入到遍历路径的最后一点上。必如说我们要入5，先找到关键字4的节点出，我们需要向右行进，但是右边不存在子树，所以5不在这棵树上。因此我们需要插入5。</p>
+<p><img src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/img/2988714247500569.jpg" alt=""></p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">SearchTree <span class="title">insert</span><span class="params">(ElementType X, SearchTree Tree)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="keyword">if</span> (Tree == <span class="literal">nullptr</span>)</span><br><span class="line">    {</span><br><span class="line">        Tree = <span class="keyword">new</span> TreeNode;</span><br><span class="line">        <span class="keyword">if</span> (Tree == <span class="literal">nullptr</span>)</span><br><span class="line">            cout &lt;&lt; <span class="string">"error"</span>;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        {</span><br><span class="line">            Tree-&gt;Element = X;</span><br><span class="line">            Tree-&gt;Left = Tree-&gt;Right = <span class="literal">nullptr</span>;</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (X &lt; Tree-&gt;Element)</span><br><span class="line">        Tree-&gt;Left = <span class="built_in">insert</span>(X, Tree-&gt;Left);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (X &gt; Tree-&gt;Element)</span><br><span class="line">        Tree-&gt;Right = <span class="built_in">insert</span>(X, Tree-&gt;Right);</span><br><span class="line">    <span class="keyword">return</span> Tree;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>初始的T指向该树的根，根在插入时变化，因此Insert被写成一个指向新树根的指针，所以的两次递归把X插到适当的子树中</li>
+</ul>
+<h2 id="delete"><a class="markdownIt-Anchor" href="#delete"></a> Delete</h2>
+<p>删除算是比较难的操作了，一旦发现要删除的节点我们需要考虑以下几种情况</p>
+<ul>
+<li>节点只有一片树叶，可以立刻被删除</li>
+<li>如果节点有一个儿子，那该节点可以在其父节点调整指针绕过该节点后被删除</li>
+<li><img src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/img/shunaotu.png" alt=""></li>
+</ul>
+<h3 id="比较复杂的情况"><a class="markdownIt-Anchor" href="#比较复杂的情况"></a> 比较复杂的情况</h3>
+<p>相对来说比较复杂的情况是处理具有两个儿子的节点，比较常用的策略是用其右子树的最小数据代替该节点的数据并递归删除那个节点（现在它是空的），因为右子树的最小节点不可能有左儿子，所以第二次删除相对容易。</p>
+<p><img src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/img/ergezishu1.png" alt=""></p>
+<blockquote>
+<p>抱歉啊一不留神做完图发现2没换？？？第二个图的2应该换成3</p>
+</blockquote>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">SearchTree <span class="title">Delete</span><span class="params">(ElementType X, SearchTree Tree)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    Posttion TemCell;</span><br><span class="line">    <span class="keyword">if</span> (Tree == <span class="literal">nullptr</span>)</span><br><span class="line">        cout &lt;&lt; <span class="string">"Element not found"</span></span><br><span class="line">             &lt;&lt; <span class="string">"\n"</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (X &lt; Tree-&gt;Element)</span><br><span class="line">        Tree-&gt;Left = <span class="built_in">Delete</span>(X, Tree-&gt;Left);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (X &gt; Tree-&gt;Element)</span><br><span class="line">        Tree-&gt;Right = <span class="built_in">Delete</span>(X, Tree-&gt;Right);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (Tree-&gt;Left &amp;&amp; Tree-&gt;Right)</span><br><span class="line">    {</span><br><span class="line">        TemCell = <span class="built_in">FindMin</span>(Tree-&gt;Right);</span><br><span class="line">        Tree-&gt;Element = TemCell-&gt;Element;</span><br><span class="line">        Tree-&gt;Right = <span class="built_in">Delete</span>(Tree-&gt;Element, Tree-&gt;Right);</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    {</span><br><span class="line">        TemCell = Tree;</span><br><span class="line">        <span class="keyword">if</span> (Tree-&gt;Left == <span class="literal">nullptr</span>)</span><br><span class="line">            Tree = Tree-&gt;Right;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (Tree-&gt;Right = <span class="literal">nullptr</span>)</span><br><span class="line">            Tree=Tree-&gt;Left;</span><br><span class="line">        <span class="built_in">free</span>(TemCell);</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> Tree;</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<p>这个程序的效率并不高，因为它沿该树进行两趟搜索一查找和删除右子树中最小的节点。</p>
+<h2 id="平均情况"><a class="markdownIt-Anchor" href="#平均情况"></a> 平均情况</h2>
+<p>在之前，出了MakeEmpty之外我们所有的操作都花费了O（log N）因为我们用常数时间在树中降低了一层，这样对树的操作大概降低了一半左右。出了前面提到的MakeEmpty其他都是O（d），其中d表示所访问的关键字深度。</p>
+<p>一棵树所有的节点深度的和被称为<code>内部路径长</code>,如果我们现在要计算二叉查找树的平均内部路径长，其中的平均是对向二叉查找树中所有的可能的插入序列进行的。</p>
+<h4 id="dn是n个节点的内部路径长"><a class="markdownIt-Anchor" href="#dn是n个节点的内部路径长"></a> D（N）是N个节点的内部路径长</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">D(1)</th>
+<th style="text-align:center">0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">具有i节点的左子树</td>
+<td style="text-align:center">D(i)</td>
+</tr>
+<tr>
+<td style="text-align:center">右子树</td>
+<td style="text-align:center">D(N-i-1)</td>
+</tr>
+<tr>
+<td style="text-align:center">D(N)</td>
+<td style="text-align:center">D(i)+D(n-i-1)+N-1</td>
+</tr>
+<tr>
+<td style="text-align:center">D(N)=2/N{(j=0-&gt;N-1)D(j)}+N-1</td>
+<td style="text-align:center">D(N)=O(N log N)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>在原树中所有节点要加深1度</p>
+</blockquote>
+<p>这个看起来让人感觉非常愉悦，但是仅凭这个我们是无法保证这个O（log N）是完全正确的，原因在于去删除操作，我们并不清楚是否所有二叉查找树都是等可能出现的，在删除的时候我们选择该元素的最小右子树代替，这种算法有利于左子树比右子树深，当我们进行大量的删除之后高达几十万次就可以明显的看待两边显著的差别。左子树明显会比右子树要深。为了保证所有的节点不得过深所以就搞来了所谓的AVL树。这是一种超老的平衡查找树。</p>
+<p>溜了溜了【猝不及防】</p>
+<p><img src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/img/img1583054611615.jpeg" alt=""></p>
+</article><div class="post-copyright"><div class="post-copyright__title"><span class="post-copyright-info"><h>树同学是个好同志</h></span></div><div class="post-copyright__type"><span class="post-copyright-info"><a href="https://blog.youmingsama.cn/posts/fd6da870/">https://blog.youmingsama.cn/posts/fd6da870/</a></span></div><div class="post-copyright-m"><div class="post-copyright-m-info"><div class="post-copyright-a" style="display: inline-block;width: 120px"><h>作者</h><div class="post-copyright-cc-info"><h>youmingsama</h></div></div><div class="post-copyright-c" style="display: inline-block;width: 120px"><h>发布于</h><div class="post-copyright-cc-info"><h>2020-03-14</h></div></div><div class="post-copyright-u" style="display: inline-block;width: 120px"><h>更新于</h><div class="post-copyright-cc-info"><h>2023-06-23</h></div></div><div class="post-copyright-c" style="display: inline-block;width: 180px"><h>许可协议</h><div class="post-copyright-cc-info"><a class="icon" rel="noopener external nofollow noreferrer" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a rel="noopener external nofollow noreferrer" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a></div></div></div></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/data-structure/">data structure</a></div><div class="post_share"><div class="social-share" data-image="https://youmingsama.github.io/PicGo/四季/jie.jpg" data-sites="wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn1.tianli0.top/gh/overtrue/share.js@master/dist/js/social-share.min.js" defer=""></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/ffe3b3b2/"><img class="prev-cover" src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/四季/nuan.jpg" onerror="onerror=null;src='https://api.vvhan.com/api/acgimg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">再探队列</div></div></a></div><div class="next-post pull-right"><a href="/posts/973716ad/"><img class="next-cover" src="https://youmingsama.github.io/PicGo/四季/wu.png" onerror="onerror=null;src='https://api.vvhan.com/api/acgimg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">AVL树</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/973716ad/" title="AVL树"><img class="cover" src="https://youmingsama.github.io/PicGo/四季/wu.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-03-23</div><div class="title">AVL树</div></div></a></div><div><a href="/posts/a1205a06/" title="Hash表"><img class="cover" src="https://youmingsama.github.io/PicGo/img/阿尼娅1.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-03-31</div><div class="title">Hash表</div></div></a></div><div><a href="/posts/ffe3b3b2/" title="再探队列"><img class="cover" src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/四季/nuan.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-03-10</div><div class="title">再探队列</div></div></a></div><div><a href="/posts/efa11b01/" title="并查集真的是太棒了"><img class="cover" src="https://pic.youmingsama.fun/kksk/好.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-23</div><div class="title">并查集真的是太棒了</div></div></a></div><div><a href="/posts/a23bcc6c/" title="指针学不会咋办"><img class="cover" src="http://m.qpic.cn/psc?/V13PUOHK1OhDps/4pNOqgOvBLvj4yTC9qc55eN3Ao1rgJGbu9OZPQL1MGx46wc6dJbFRIHpxYjF6rXgPi5Jl90e7Is69as2hrACAe2yJemTgkPVYYEZsoS3SW4!/b&amp;bo=AARAAgAAAAARB3Y!&amp;rf=viewer_4" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-03-05</div><div class="title">指针学不会咋办</div></div></a></div><div><a href="/posts/834bc38f/" title="栈学不会咋办嘛"><img class="cover" src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/img/psb112.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-03-06</div><div class="title">栈学不会咋办嘛</div></div></a></div></div></div><hr><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="fgx"><div class="avatar_img"><img style="border-radius:10px" src="/img/avatar.png" onerror="this.onerror=null;this.src='https://apis.yisous.xyz/api/randomAvatar'" alt="avatar"></div><div class="author-info__description"></div><div class="rights"><div class="author-info__name">youmingsama</div><div class="card-info-data site-data is-center"><a class="adiv" href="/archives/"><div class="headline">文章</div><div class="length-num">36</div></a><a class="adiv" href="/tags/"><div class="headline">标签</div><div class="length-num">25</div></a><a class="adiv" href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div></div></div><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/youmingsama" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="iconfont icon-github-o"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="Rss"><i class="iconfont icon-rss"></i></a><a class="social-icon" href="mailto:FLDYSYMhahaha229@outlook.com" rel="external nofollow noreferrer" target="_blank" title="Email"><i class="iconfont icon-email"></i></a><a class="social-icon" href="https://discord.com/channels/1071845973116080309/1071845973610999810" rel="external nofollow noreferrer" target="_blank" title="Discord"><i class="iconfont icon-discord"></i></a><a class="social-icon" href="https://www.notion.so/216ff0dfea524c788b698474ab61148f" rel="external nofollow noreferrer" target="_blank" title="Notion"><i class="iconfont icon-Notion"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">本网站的Twikoo评论系统使用Cravatar头像系统，请自行绑定邮箱配置</div></div><div class="card-widget card-history"><div class="card-content"><div class="item-headline"><i class="fas fa-clock fa-spin"></i><span>那年今日</span></div><div id="history-baidu" style="height: 100px;overflow: hidden;"><div class="history_swiper-container" id="history-container" style="width: 100%;height: 100%;"><div class="swiper-wrapper" id="history_container_wrapper" style="height:20px"></div></div></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A0%91%E5%90%8C%E5%AD%A6%E5%A5%B9%E6%98%AF%E4%B8%AA%E5%A5%BD%E5%90%8C%E5%BF%97"><span class="toc-number">1.</span> <span class="toc-text"> 树同学她是个好同志</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%91"><span class="toc-number">1.1.</span> <span class="toc-text"> 树</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%91%E7%9A%84%E7%A7%8D%E7%B1%BB"><span class="toc-number">1.2.</span> <span class="toc-text"> 树的种类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E7%88%B6%E4%BA%B2%E5%84%BF%E5%AD%90%E5%A4%96%E7%A5%96%E7%88%B6%E5%85%84%E5%BC%9F%E5%AD%99%E5%AD%90%E4%B9%8B%E7%B1%BB%E7%9A%84"><span class="toc-number">1.3.</span> <span class="toc-text"> 关于父亲儿子外祖父兄弟孙子之类的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%91%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.4.</span> <span class="toc-text"> 树的实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86%E5%8F%8A%E5%BA%94%E7%94%A8"><span class="toc-number">1.5.</span> <span class="toc-text"> 树的遍历及应用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="toc-number">1.6.</span> <span class="toc-text"> 二叉树</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.7.</span> <span class="toc-text"> 二叉树的实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%A0%91"><span class="toc-number">1.8.</span> <span class="toc-text"> 表达式树</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E6%89%BE%E6%A0%91adt-%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91"><span class="toc-number">1.9.</span> <span class="toc-text"> 查找树ADT-------二叉查找树</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96makeempty"><span class="toc-number">1.10.</span> <span class="toc-text"> 初始化MakeEmpty</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#find"><span class="toc-number">1.11.</span> <span class="toc-text"> Find</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#findmin%E5%92%8Cfindmax"><span class="toc-number">1.12.</span> <span class="toc-text"> FindMin和FindMax</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#findmin%E7%9A%84%E9%80%92%E5%BD%92%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.12.1.</span> <span class="toc-text"> FindMIn的递归实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#findmax%E7%9A%84%E9%9D%9E%E9%80%92%E5%BD%92%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.12.2.</span> <span class="toc-text"> FindMax的非递归实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#insert"><span class="toc-number">1.13.</span> <span class="toc-text"> Insert</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#delete"><span class="toc-number">1.14.</span> <span class="toc-text"> Delete</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AF%94%E8%BE%83%E5%A4%8D%E6%9D%82%E7%9A%84%E6%83%85%E5%86%B5"><span class="toc-number">1.14.1.</span> <span class="toc-text"> 比较复杂的情况</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B9%B3%E5%9D%87%E6%83%85%E5%86%B5"><span class="toc-number">1.15.</span> <span class="toc-text"> 平均情况</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#dn%E6%98%AFn%E4%B8%AA%E8%8A%82%E7%82%B9%E7%9A%84%E5%86%85%E9%83%A8%E8%B7%AF%E5%BE%84%E9%95%BF"><span class="toc-number">1.15.0.1.</span> <span class="toc-text"> D（N）是N个节点的内部路径长</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/e0da0190/" title="rust学习资源与进阶资料"><img src="https://pic.youmingsama.fun/kksk/dajiejie.jpg" onerror="this.onerror=null;this.src='https://api.vvhan.com/api/acgimg'" alt="rust学习资源与进阶资料"></a><div class="content"><a class="title" href="/posts/e0da0190/" title="rust学习资源与进阶资料">rust学习资源与进阶资料</a><time datetime="2022-11-08T00:00:00.000Z" title="发表于 2022-11-08 00:00:00">2022-11-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/385296e3/" title="新坑预定"><img src="https://npm.elemecdn.com/youmingsama_img@1.0.7/saimaniang.jpg" onerror="this.onerror=null;this.src='https://api.vvhan.com/api/acgimg'" alt="新坑预定"></a><div class="content"><a class="title" href="/posts/385296e3/" title="新坑预定">新坑预定</a><time datetime="2021-08-01T00:00:00.000Z" title="发表于 2021-08-01 00:00:00">2021-08-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/9e073fd6/" title="买耳机送老婆:水月雨ssp"><img src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/pivcgame/img/水月雨.jpg" onerror="this.onerror=null;this.src='https://api.vvhan.com/api/acgimg'" alt="买耳机送老婆:水月雨ssp"></a><div class="content"><a class="title" href="/posts/9e073fd6/" title="买耳机送老婆:水月雨ssp">买耳机送老婆:水月雨ssp</a><time datetime="2021-08-01T00:00:00.000Z" title="发表于 2021-08-01 00:00:00">2021-08-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/bad5c14e/" title="京都读后感"><img src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/img2/亭阁.png" onerror="this.onerror=null;this.src='https://api.vvhan.com/api/acgimg'" alt="京都读后感"></a><div class="content"><a class="title" href="/posts/bad5c14e/" title="京都读后感">京都读后感</a><time datetime="2021-05-19T00:00:00.000Z" title="发表于 2021-05-19 00:00:00">2021-05-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/2ad933a0/" title="拆机翻车指南("><img src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/pivcgame//img/贞德.jpg" onerror="this.onerror=null;this.src='https://api.vvhan.com/api/acgimg'" alt="拆机翻车指南("></a><div class="content"><a class="title" href="/posts/2ad933a0/" title="拆机翻车指南(">拆机翻车指南(</a><time datetime="2021-05-13T00:00:00.000Z" title="发表于 2021-05-13 00:00:00">2021-05-13</time></div></div></div></div><div class="card-widget card-weather" style="width:100%,height:270px"><div class="item-headline"><i class="fas fa-cloud-sun"></i><span>天气</span></div><div id="he-plugin-standard"></div><script>WIDGET = {
+  "CONFIG": {
+    "layout": "2",
+    "width": 270,
+    "height": 270,
+    "background": "5",
+    "dataColor": "000000",
+    "key": "170186298b184055bafbb4d30e4322a7"
+  }
+}</script><script src="https://widget.qweather.net/standard/static/js/he-standard-common.js?v=2.0"></script></div></div></div></main><footer id="footer" style="background: transparent"><div id="footer-wrap"><div class="social-icons"></div><div class="copyright">©2022 - 2023 By youmingsama</div><div class="framework-info"></div><div class="footer_custom_text" id="footer_custom_text">这个小破站已运行{y}年{d}天{s}时{min}分{sec}秒</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"></div><div id="rightside-config-show"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">简</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><a id="switch_commentBarrage" href="javascript:switchCommentBarrage();" rel="external nofollow noreferrer" title="开关弹幕"><i class="iconfont icon-danmu"></i></a><a id="opensettings" href="javascript:toggleWinbox();" rel="external nofollow noreferrer" title="博客设置"><i class="fa fa-wrench"></i></a><button id="go-up" type="button" title="回到顶部" onclick="rmf.scrollToTop()"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"></div></div><hr><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div class="js-pjax" id="rightMenu"><div class="rightMenu-group rightMenu-small"><a class="rightMenu-item" href="javascript:window.history.back();" rel="external nofollow noreferrer"><i class="fa fa-arrow-left"></i></a><a class="rightMenu-item" href="javascript:window.history.forward();" rel="external nofollow noreferrer"><i class="fa fa-arrow-right"></i></a><a class="rightMenu-item" href="javascript:window.location.reload();" rel="external nofollow noreferrer"><i class="fa fa-refresh"></i></a><a class="rightMenu-item" href="javascript:rmf.scrollToTop();" rel="external nofollow noreferrer"><i class="fa fa-arrow-up"></i></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-text"><a class="rightMenu-item" href="javascript:rmf.copySelect();" rel="external nofollow noreferrer"><i class="fa fa-copy"></i><span>复制</span></a><a class="rightMenu-item" href="javascript:window.open(&quot;https://www.baidu.com/s?wd=&quot;+window.getSelection().toString());window.location.reload();" rel="external nofollow noreferrer"><i class="iconfont icon-baidu"></i><span>百度搜索</span></a><a class="rightMenu-item" href="javascript:rmf.searchinThisPage();" rel="external nofollow noreferrer"><i class="fas fa-search"></i><span>站内搜索</span></a><a class="rightMenu-item" href="#post-comment" onclick="rmf.yinyong()"><i class="fa-solid fa-message"></i><span>引用文本评论</span></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-too"><a class="rightMenu-item" href="javascript:window.open(window.getSelection().toString());window.location.reload();" rel="external nofollow noreferrer"><i class="fa fa-link"></i><span>转到链接</span></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-paste"><a class="rightMenu-item" href="javascript:rmf.paste()" rel="external nofollow noreferrer"><i class="fa fa-copy"></i><span>粘贴</span></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-post"><a class="rightMenu-item" href="#post-comment"><i class="fas fa-comment"></i><span>空降评论</span></a><a class="rightMenu-item" href="javascript:switchCommentBarrage()" rel="external nofollow noreferrer"><i class="iconfont icon-danmu"></i><span>开/关评论弹幕</span></a><a class="rightMenu-item" href="javascript:rmf.copyWordsLink()" rel="external nofollow noreferrer"><i class="fa fa-link"></i><span>复制本文地址</span></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-to"><a class="rightMenu-item" href="javascript:rmf.openWithNewTab()" rel="external nofollow noreferrer"><i class="fa fa-window-restore"></i><span>新窗口打开</span></a><a class="rightMenu-item" id="menu-too" href="javascript:rmf.open()" rel="external nofollow noreferrer"><i class="fa fa-link"></i><span>转到链接</span></a><a class="rightMenu-item" href="javascript:rmf.copyLink()" rel="external nofollow noreferrer"><i class="fa fa-copy"></i><span>复制链接</span></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-img"><a class="rightMenu-item" href="javascript:rmf.saveAs()" rel="external nofollow noreferrer"><i class="fa fa-download"></i><span>保存图片</span></a><a class="rightMenu-item" href="javascript:rmf.openWithNewTab()" rel="external nofollow noreferrer"><i class="fa fa-window-restore"></i><span>在新窗口打开</span></a><a class="rightMenu-item" href="javascript:rmf.click()" rel="external nofollow noreferrer"><i class="fa fa-arrows-alt"></i><span>全屏显示</span></a><a class="rightMenu-item" href="javascript:rmf.copyLink()" rel="external nofollow noreferrer"><i class="fa fa-copy"></i><span>复制图片链接</span></a></div><div class="rightMenu-group rightMenu-line"><a class="rightMenu-item" href="javascript:toRandomPost()" rel="external nofollow noreferrer"><i class="fa fa-paper-plane"></i><span>随便逛逛</span></a><a class="rightMenu-item" href="javascript:rmf.switchDarkMode();" rel="external nofollow noreferrer"><i class="fa fa-moon"></i><span>昼夜切换</span></a><a class="rightMenu-item" href="javascript:rmf.translate();" rel="external nofollow noreferrer"><i class="iconfont icon-fanti"></i><span>繁简转换</span></a><a class="rightMenu-item" href="javascript:rmf.switchReadMode();" rel="external nofollow noreferrer"><i class="fa fa-book"></i><span>阅读模式</span></a><a class="rightMenu-item" href="javascript:pjax.loadUrl(&quot;/license/&quot;);" rel="external nofollow noreferrer"><i class="fa fa-info-circle"></i><span>版权声明</span></a><a class="rightMenu-item" href="javascript:toggleWinbox();" rel="external nofollow noreferrer"><i class="fas fa-cog"></i><span>博客设置</span></a><a class="rightMenu-item" href="javascript:fullScreen();" rel="external nofollow noreferrer"><i class="fas fa-expand"></i><span>进入全屏</span></a></div></div><div class="js-pjax" id="settingWindow"><span class="setting-title"> <span id="stt">控制面板</span><a id="close-console" onclick="toggleWinbox();">×</a></span><button id="backer" onclick="$('.asetting').hide();$('.settingx').show();$('#backer').hide()"><i class="fa fa-chevron-left"></i><span>返回</span></button><div class="settings"><div id="setting-buttons"><button class="settingx" onclick="$('#theme-settings').show();$('.settingx').hide();$('#backer').show();"><i class="fas fa-layer-group"></i><span>外观</span></button><button class="settingx" onclick="$('#font-settings').show();$('.settingx').hide();$('#backer').show();"><i class="fa fa-font"></i><span>字体</span></button><button class="settingx" onclick="$('#background-settings').show();$('.settingx').hide();$('#backer').show();"><i class="far fa-image"></i><span>背景</span></button><button class="settingx" onclick="$('#con-echarts').show();$('.settingx').hide();$('#backer').show();var evt = document.createEvent(&quot;HTMLEvents&quot;);evt.initEvent(&quot;resize&quot;, false, false);window.dispatchEvent(evt);"><i class="fas fa-chart-pie"></i><span>统计</span></button><button class="settingx" onclick="$('#con-abouts').show();$('.settingx').hide();$('#backer').show();"><i class="fa fa-cloud-download"></i><span>关于</span></button></div><div id="setting-hides"><div class="asetting" id="theme-settings"><h2 class="content-head">性能设置</h2><p></p><div class="content" style="display:flex"><input id="blur" type="checkbox" onclick="setBlur()"><div class="content-text">禁用模糊效果</div></div><div class="content" style="display:flex"><input id="fpson" type="checkbox" onclick="fpssw()" style="flex-shrink: 0"><div class="content-text"><span>开启帧率检测（</span><a href="javascript:window.location.reload()" rel="external nofollow noreferrer">刷新</a><span>后生效）</span></div></div><p></p><p></p><h2 class="content-head">主题设置</h2><div class="content" style="display:flex"><input id="hideAplayer" type="checkbox" onclick="toggleAplayer()"><div class="content-text">显示aplayer</div></div><div class="content" style="display:flex"><input id="hideSakura" type="checkbox" onclick="toggleSakuras()"><div class="content-text">落樱特效</div></div><div class="content" style="display:flex"><input id="autoTheme" type="checkbox" onclick="toggleAutoTheme()"><div class="content-text">明暗模式自动切换</div></div><div class="content" style="display:flex"><input id="autoColor" type="checkbox" onclick="autoColor()"><div class="content-text">自动主题色（跟随文章封面）</div></div>未完工<div class="content" style="display:flex"><input id="hideAplayer" type="checkbox" onclick="toggleNav()"><div class="content-text">固定导航栏</div></div>###<div class="content" style="display:flex"><button class="content-button" onclick="switchTheme()">切换主题</button></div><p></p><p></p><h3 class="content-head">主题色</h3><div class="content" id="themeColorSettings" style="display:flex"><input id="red" type="radio" name="colors" onclick="setColor('red')"><input id="orange" type="radio" name="colors" onclick="setColor('orange')"><input id="yellow" type="radio" name="colors" onclick="setColor('yellow')"><input id="green" type="radio" name="colors" onclick="setColor('green')"><input id="blue" type="radio" name="colors" onclick="setColor('blue')"><input id="heoblue" type="radio" name="colors" onclick="setColor('heoblue')"><input id="darkblue" type="radio" name="colors" onclick="setColor('darkblue')"><input id="purple" type="radio" name="colors" onclick="setColor('purple')"><input id="pink" type="radio" name="colors" onclick="setColor('pink')" checked="checked"><input id="black" type="radio" name="colors" onclick="setColor('black')"><input id="blackgray" type="radio" name="colors" onclick="setColor('blackgray')"></div><p></p></div><div class="asetting" id="font-settings"><h2 class="content-head">字体设置</h2><p id="swfs"><a class="swf" href="javascript:;" rel="noopener external nofollow" style="font-family:'HYTMR'!important;color:black" onclick="setFont('HYTMR')">汉仪唐美人</a><br><a class="swf" href="javascript:;" rel="noopener external nofollow" style="font-family:'HYPailou'!important;color:black" onclick="setFont('HYPailou')">汉仪新蒂牌楼</a><br><a class="swf" href="javascript:;" rel="noopener external nofollow" style="font-family:'FZXJLJ'!important;color:black" onclick="setFont('FZXJLJ')">方正金陵体</a><br><a class="swf" href="javascript:;" rel="noopener external nofollow" style="font-family:'FZXS'!important;color:black" onclick="setFont('FZXS')">方正像素体</a><br><a class="swf" href="javascript:;" rel="noopener external nofollow" style="font-family:'ZhuZiAWan'!important;color:black" onclick="setFont('ZhuZiAWan')">筑紫A丸ゴシック</a><br><a class="swf" href="javascript:;" rel="noopener external nofollow" style="font-family:'FZODZK'!important;color:black" onclick="setFont('FZODZK')">方正欧蝶正楷</a><br><a class="swf" href="javascript:;" rel="noopener external nofollow" style="font-family:'Source Serif'!important;color:black" onclick="setFont('Source Serif')">思源宋体</a><br><a class="swf" href="javascript:;" rel="noopener external nofollow" style="font-family:'Source Sans'!important;color:black" onclick="setFont('Source Sans')">思源黑体</a><br><a class="swf" href="javascript:;" rel="noopener external nofollow" style="font-family:-apple-system, IBM Plex Mono ,monosapce,'微软雅黑', sans-serif;" onclick="setFont('main')">系统默认</a><br></p></div><div class="asetting" id="background-settings"><h2 style="margin-left:10px">背景设置</h2><div></div><span>注意:切换背景功能仅在Acrylic主题中生效，在Simple主题中无效</span><button class="content-button" onclick="localStorage.removeItem('blogbg');location.reload();"><i class="fa-solid fa-arrows-rotate"></i><span> 点我恢复默认背景</span></button><button class="content-button" onclick="switchTheme()">切换主题</button><h3>图片（手机）</h3><div class="bgbox"><a class="pimgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2022/08/30/630d6d4d539a5.webp)" onclick="changeBg('url(https://bu.dusays.com/2022/08/30/630d6d4d539a5.webp)')"></a><a class="pimgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2022/08/30/630d6d4e15c9d.webp)" onclick="changeBg('url(https://bu.dusays.com/2022/08/30/630d6d4e15c9d.webp)')"></a><a class="pimgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2022/08/30/630d6f22c03c6.webp)" onclick="changeBg('url(https://bu.dusays.com/2022/08/30/630d6f22c03c6.webp)')"></a><a class="pimgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://pic.youmingsama.fun/blog_pic/ytm.webp)" onclick="changeBg('url(https://pic.youmingsama.fun/blog_pic/ytm.webp)')"></a><a class="pimgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2022/08/30/630d6d50b439b.webp)" onclick="changeBg('url(https://bu.dusays.com/2022/08/30/630d6d50b439b.webp)')"></a></div><h3>图片（电脑）</h3><div class="bgbox"><a class="imgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2022/08/30/630d6d5574d0e.webp)" onclick="changeBg('url(https://bu.dusays.com/2022/08/30/630d6d5574d0e.webp)')"></a><a class="imgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2022/08/30/630d6d529adf9.webp)" onclick="changeBg('url(https://bu.dusays.com/2022/08/30/630d6d529adf9.webp)')"></a><a class="imgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2022/08/30/630d6d5159b31.webp)" onclick="changeBg('url(https://bu.dusays.com/2022/08/30/630d6d5159b31.webp)')"></a><a class="imgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2022/08/30/630d718bbeef6.webp)" onclick="changeBg('url(https://bu.dusays.com/2022/08/30/630d718bbeef6.webp)')"></a><a class="imgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2022/08/30/630d72f237d19.jpg)" onclick="changeBg('url(https://bu.dusays.com/2022/08/30/630d72f237d19.jpg)')"></a><a class="imgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2022/08/30/630d72f2032c8.jpg)" onclick="changeBg('url(https://bu.dusays.com/2022/08/30/630d72f2032c8.jpg)')"></a><a class="imgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2021/12/01/7792ff0082ec4.jpg)" onclick="changeBg('url(https://bu.dusays.com/2021/12/01/7792ff0082ec4.jpg)')"></a><a class="imgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2022/08/30/630d72ee6d4f3.png)" onclick="changeBg('url(https://bu.dusays.com/2022/08/30/630d72ee6d4f3.png)')"></a><a class="imgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2022/08/30/630d72ed76532.jpg)" onclick="changeBg('url(https://bu.dusays.com/2022/08/30/630d72ed76532.jpg)')"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://bu.dusays.com/2022/09/17/6324aea549be6.webp)')"><img src="https://bu.dusays.com/2022/09/17/6324aea549be6.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://bu.dusays.com/2022/09/17/6324aec701a68.webp)')"><img src="https://bu.dusays.com/2022/09/17/6324aec701a68.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://bu.dusays.com/2022/09/17/6324aef4a5543.webp)')"><img src="https://bu.dusays.com/2022/09/17/6324aef4a5543.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://bu.dusays.com/2022/09/17/6324af3622884.webp)')"><img src="https://bu.dusays.com/2022/09/17/6324af3622884.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/5.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/5.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/6.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/6.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/7.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/7.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://bu.dusays.com/2022/12/08/6391b77ed767c.png)')"><img src="https://bu.dusays.com/2022/12/08/6391b77ed767c.png"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/9.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/9.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/10.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/10.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/11.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/11.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/12.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/12.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/13.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/13.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/14.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/14.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/15.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/15.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/16.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/16.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/17.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/17.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/18.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/18.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/19.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/19.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/20.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/20.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/21.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/21.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/22.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/22.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/23.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/23.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/24.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/24.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/25.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/25.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/26.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/26.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/27.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/27.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/28.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/28.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/29.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/29.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/30.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/30.webp"></a></div><h3>渐变色</h3><div class="bgbox"><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: linear-gradient(to right, #eecda3, #ef629f)" onclick="changeBg('linear-gradient(to right, #eecda3, #ef629f)')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: linear-gradient(to right, #B7D31E, #42CE1E)" onclick="changeBg('linear-gradient(to right, #B7D31E, #42CE1E)')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: linear-gradient(to right, #06DE86, #06A5DE)" onclick="changeBg('linear-gradient(to right, #06DE86, #06A5DE)')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: linear-gradient(to right, #189BC4, #183DC4)" onclick="changeBg('linear-gradient(to right, #189BC4, #183DC4)')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: linear-gradient(to right, #C018C4, #C41818)" onclick="changeBg('linear-gradient(to right, #C018C4, #C41818)')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: linear-gradient(to right, #8B00BB, #030094)" onclick="changeBg('linear-gradient(to right, #8B00BB, #030094)')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: linear-gradient(to right, #eecda3, #ef629f)" onclick="changeBg('linear-gradient(to right, #eecda3, #ef629f)')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: linear-gradient(90deg, #ffd7e4 0%, #c8f1ff 100%)" onclick="changeBg('linear-gradient(90deg, #ffd7e4 0%, #c8f1ff 100%)')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: linear-gradient(45deg, #e5737b, #c6999e, #96b9c2, #00d6e8)" onclick="changeBg('linear-gradient(45deg, #e5737b, #c6999e, #96b9c2, #00d6e8)')"></a></div><h3>纯色</h3><div class="bgbox"><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: #7D9D9C" onclick="changeBg('#7D9D9C')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: #fff" onclick="changeBg('#fff')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: #49A6E9" onclick="changeBg('#49A6E9')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: #F7CEFF" onclick="changeBg('#F7CEFF')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: #FFFFCE" onclick="changeBg('#FFFFCE')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: #CFFFCE" onclick="changeBg('#CFFFCE')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: #17EFE9" onclick="changeBg('#17EFE9')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: #9F17EF" onclick="changeBg('#9F17EF')"></a></div></div><div class="asetting" id="con-echarts"><h1>文章统计</h1><h2>监控</h2><iframe src="https://status.yisous.xyz" width="100%" height="500px" frameborder="no"></iframe><h2>文章统计</h2><script src="https://npm.elemecdn.com/echarts@4.9.0/dist/echarts.min.js"></script><div id="posts-chart" data-start="2021-01" style="border-radius: 8px; height: 300px; padding: 10px;"></div>
+  <script id="postsChart">
+    var color = document.documentElement.getAttribute('data-theme') === 'light' ? '#4c4948' : 'rgba(255,255,255,0.7)'
+    var postsChart = echarts.init(document.getElementById('posts-chart'), 'light');
+    var postsOption = {
+      title: {
+        text: '文章发布统计图',
+        x: 'center',
+        textStyle: {
+          color: color
+        }
+      },
+      tooltip: {
+        trigger: 'axis'
+      },
+      xAxis: {
+        name: '日期',
+        type: 'category',
+        boundaryGap: false,
+        nameTextStyle: {
+          color: color
+        },
+        axisTick: {
+          show: false
+        },
+        axisLabel: {
+          show: true,
+          color: color
+        },
+        axisLine: {
+          show: true,
+          lineStyle: {
+            color: color
+          }
+        },
+        data: ["2021-01","2021-02","2021-03","2021-04","2021-05","2021-06","2021-07","2021-08","2021-09","2021-10","2021-11","2021-12","2022-01","2022-02","2022-03","2022-04","2022-05","2022-06","2022-07","2022-08","2022-09","2022-10","2022-11","2022-12","2023-01","2023-02","2023-03","2023-04","2023-05","2023-06"]
+      },
+      yAxis: {
+        name: '文章篇数',
+        type: 'value',
+        nameTextStyle: {
+          color: color
+        },
+        splitLine: {
+          show: false
+        },
+        axisTick: {
+          show: false
+        },
+        axisLabel: {
+          show: true,
+          color: color
+        },
+        axisLine: {
+          show: true,
+          lineStyle: {
+            color: color
+          }
+        }
+      },
+      series: [{
+        name: '文章篇数',
+        type: 'line',
+        smooth: true,
+        lineStyle: {
+            width: 0
+        },
+        showSymbol: false,
+        itemStyle: {
+          opacity: 1,
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+            offset: 0,
+            color: 'rgba(128, 255, 165)'
+          },
+          {
+            offset: 1,
+            color: 'rgba(1, 191, 236)'
+          }])
+        },
+        areaStyle: {
+          opacity: 1,
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+            offset: 0,
+            color: 'rgba(128, 255, 165)'
+          }, {
+            offset: 1,
+            color: 'rgba(1, 191, 236)'
+          }])
+        },
+        data: [0,1,2,3,2,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0],
+        markLine: {
+          data: [{
+            name: '平均值',
+            type: 'average',
+            label: {
+              color: color
+            }
+          }]
+        }
+      }]
+    };
+    postsChart.setOption(postsOption);
+    window.addEventListener('resize', () => { 
+      postsChart.resize();
+    });
+    postsChart.on('click', 'series', (event) => {
+      if (event.componentType === 'series') window.location.href = '/archives/' + event.name.replace('-', '/');
+    });
+  </script><div id="tags-chart" data-length="10" style="border-radius: 8px; height: 300px; padding: 10px;"></div>
+  <script id="tagsChart">
+    var color = document.documentElement.getAttribute('data-theme') === 'light' ? '#4c4948' : 'rgba(255,255,255,0.7)'
+    var tagsChart = echarts.init(document.getElementById('tags-chart'), 'light');
+    var tagsOption = {
+      title: {
+        text: 'Top 10 标签统计图',
+        x: 'center',
+        textStyle: {
+          color: color
+        }
+      },
+      tooltip: {},
+      xAxis: {
+        name: '标签',
+        type: 'category',
+        nameTextStyle: {
+          color: color
+        },
+        axisTick: {
+          show: false
+        },
+        axisLabel: {
+          show: true,
+          color: color,
+          interval: 0
+        },
+        axisLine: {
+          show: true,
+          lineStyle: {
+            color: color
+          }
+        },
+        data: ["data structure","算法","碎碎念","不知道在讲啥","游戏","golang","歌歌","物语系列","网络安全","buggggg"]
+      },
+      yAxis: {
+        name: '文章篇数',
+        type: 'value',
+        splitLine: {
+          show: false
+        },
+        nameTextStyle: {
+          color: color
+        },
+        axisTick: {
+          show: false
+        },
+        axisLabel: {
+          show: true,
+          color: color
+        },
+        axisLine: {
+          show: true,
+          lineStyle: {
+            color: color
+          }
+        }
+      },
+      series: [{
+        name: '文章篇数',
+        type: 'bar',
+        data: [{"name":"data structure","value":12,"path":"tags/data-structure/"},{"name":"算法","value":6,"path":"tags/算法/"},{"name":"碎碎念","value":3,"path":"tags/碎碎念/"},{"name":"不知道在讲啥","value":3,"path":"tags/不知道在讲啥/"},{"name":"游戏","value":2,"path":"tags/游戏/"},{"name":"golang","value":2,"path":"tags/golang/"},{"name":"歌歌","value":1,"path":"tags/歌歌/"},{"name":"物语系列","value":1,"path":"tags/物语系列/"},{"name":"网络安全","value":1,"path":"tags/网络安全/"},{"name":"buggggg","value":1,"path":"tags/buggggg/"},{"name":"蒟蒻弱弱弱弱弱","value":1,"path":"tags/蒟蒻弱弱弱弱弱/"},{"name":"code","value":1,"path":"tags/code/"},{"name":"cloudflare","value":1,"path":"tags/cloudflare/"},{"name":"http","value":1,"path":"tags/http/"},{"name":"java!!!","value":1,"path":"tags/java/"},{"name":"多线程","value":1,"path":"tags/多线程/"},{"name":"rust","value":1,"path":"tags/rust/"},{"name":"算法啦","value":1,"path":"tags/算法啦/"},{"name":"jpg","value":1,"path":"tags/jpg/"},{"name":"翻车","value":1,"path":"tags/翻车/"},{"name":"待定捏","value":1,"path":"tags/待定捏/"},{"name":"含泪入手","value":1,"path":"tags/含泪入手/"},{"name":"水月雨","value":1,"path":"tags/水月雨/"},{"name":"谷歌","value":1,"path":"tags/谷歌/"},{"name":"文学","value":1,"path":"tags/文学/"}],
+        itemStyle: {
+          borderRadius: [5, 5, 0, 0],
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+            offset: 0,
+            color: 'rgba(128, 255, 165)'
+          },
+          {
+            offset: 1,
+            color: 'rgba(1, 191, 236)'
+          }])
+        },
+        emphasis: {
+          itemStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+              offset: 0,
+              color: 'rgba(128, 255, 195)'
+            },
+            {
+              offset: 1,
+              color: 'rgba(1, 211, 255)'
+            }])
+          }
+        },
+        markLine: {
+          data: [{
+            name: '平均值',
+            type: 'average',
+            label: {
+              color: color
+            }
+          }]
+        }
+      }]
+    };
+    tagsChart.setOption(tagsOption);
+    window.addEventListener('resize', () => { 
+      tagsChart.resize();
+    });
+    tagsChart.on('click', 'series', (event) => {
+      if(event.data.path) window.location.href = '/' + event.data.path;
+    });
+  </script><div id="categories-chart" data-parent="true" style="border-radius: 8px; height: 300px; padding: 10px;"></div>
+  <script id="categoriesChart">
+    var color = document.documentElement.getAttribute('data-theme') === 'light' ? '#4c4948' : 'rgba(255,255,255,0.7)'
+    var categoriesChart = echarts.init(document.getElementById('categories-chart'), 'light');
+    var categoryParentFlag = false
+    var categoriesOption = {
+      title: {
+        text: '文章分类统计图',
+        x: 'center',
+        textStyle: {
+          color: color
+        }
+      },
+      legend: {
+        top: 'bottom',
+        data: ["bug的炼金工坊","print*,\"hello world!!!\"","摸鱼大师","碎碎念","Roman","游戏","呐！","文学"],
+        textStyle: {
+          color: color
+        }
+      },
+      tooltip: {
+        trigger: 'item'
+      },
+      series: []
+    };
+    categoriesOption.series.push(
+      categoryParentFlag ? 
+      {
+        nodeClick :false,
+        name: '文章篇数',
+        type: 'sunburst',
+        radius: ['15%', '90%'],
+        center: ['50%', '55%'],
+        sort: 'desc',
+        data: [{"name":"bug的炼金工坊","value":15,"path":"categories/bug的炼金工坊/","id":"clj8925wa000jw9oo94xpfe3b","parentId":"0"},{"name":"print*,\"hello world!!!\"","value":8,"path":"categories/print-hello-world/","id":"clj8925wt002aw9oo38fp86bs","parentId":"0"},{"name":"摸鱼大师","value":4,"path":"categories/摸鱼大师/","id":"clj8925x2003ew9oo155hh2xp","parentId":"0"},{"name":"碎碎念","value":3,"path":"categories/碎碎念/","id":"clj8925x60042w9oo53ek73oy","parentId":"0"},{"name":"Roman","value":2,"path":"categories/Roman/","id":"clj8925w00004w9oohtvk9mbk","parentId":"0"},{"name":"游戏","value":2,"path":"categories/游戏/","id":"clj8925wq0022w9ooerr17492","parentId":"0"},{"name":"呐！","value":1,"path":"categories/呐！/","id":"clj8925x00035w9oo7qdmdeh3","parentId":"0"},{"name":"文学","value":1,"path":"categories/文学/","id":"clj8925x8004ew9oo0gqs59ox","parentId":"0"}],
+        itemStyle: {
+          borderColor: '#fff',
+          borderWidth: 2,
+          emphasis: {
+            focus: 'ancestor',
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(255, 255, 255, 0.5)'
+          }
+        }
+      }
+      :
+      {
+        name: '文章篇数',
+        type: 'pie',
+        radius: [30, 80],
+        roseType: 'area',
+        label: {
+          color: color,
+          formatter: '{b} : {c} ({d}%)'
+        },
+        data: [{"name":"bug的炼金工坊","value":15,"path":"categories/bug的炼金工坊/","id":"clj8925wa000jw9oo94xpfe3b","parentId":"0"},{"name":"print*,\"hello world!!!\"","value":8,"path":"categories/print-hello-world/","id":"clj8925wt002aw9oo38fp86bs","parentId":"0"},{"name":"摸鱼大师","value":4,"path":"categories/摸鱼大师/","id":"clj8925x2003ew9oo155hh2xp","parentId":"0"},{"name":"碎碎念","value":3,"path":"categories/碎碎念/","id":"clj8925x60042w9oo53ek73oy","parentId":"0"},{"name":"Roman","value":2,"path":"categories/Roman/","id":"clj8925w00004w9oohtvk9mbk","parentId":"0"},{"name":"游戏","value":2,"path":"categories/游戏/","id":"clj8925wq0022w9ooerr17492","parentId":"0"},{"name":"呐！","value":1,"path":"categories/呐！/","id":"clj8925x00035w9oo7qdmdeh3","parentId":"0"},{"name":"文学","value":1,"path":"categories/文学/","id":"clj8925x8004ew9oo0gqs59ox","parentId":"0"}],
+        itemStyle: {
+          emphasis: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(255, 255, 255, 0.5)'
+          }
+        }
+      }
+    )
+    categoriesChart.setOption(categoriesOption);
+    window.addEventListener('resize', () => { 
+    categoriesChart.resize();
+    })
+    categoriesChart.on('click', 'series', (event) => {
+      if(event.data.path) window.location.href = '/' + event.data.path;
+    });
+  </script><h2>访问统计显示不出来请刷新页面<script data-pjax="" id="LA-DATA-WIDGET" crossorigin="anonymous" charset="UTF-8" src="https://v6-widget.51.la/v6/JnlSnWLD7XChjrlx/quote.js?theme=0&amp;col=true&amp;f=12&amp;badge=icon_0&amp;icon=center"></script></h2></div><div class="asetting" id="con-abouts"><h1>关于</h1>Hexo-theme-Acryple v1.0.100<br>Ariasaka Console v0.01<br>欢迎<a href="/messageboard">反馈！</a></div></div></div><div id="setting-sidesl"><button class="reSettings con-rightside" title="恢复默认设置"><i class="fa fa-repeat"></i></button><div id="setting-sides"><button class="con-rightside" title="繁简转换" id="con-translate" onclick="javascript:rmf.translate();"><i class="iconfont icon-fanti"></i></button><button class="con-rightside" title="昼夜切换" id="con-mode" onclick="rmf.switchDarkMode();"><i class="fa fa-adjust"></i></button><button class="con-rightside" title="阅读模式" id="con-reading" onclick="rmf.switchReadMode();"><i class="fa fa-book-open"></i></button><button class="con-rightside" title="单双栏切换" id="con-toggleaside" onclick="toggleAside();"><i class="fas fa-arrows-alt-h"></i></button><button class="con-rightside" title="左右栏切换" id="con-toggleleftaside" onclick="switchAside();"><i class="fas fa-binoculars"></i></button><button class="con-rightside" title="开关弹幕" id="con-barrage" onclick="switchCommentBarrage();"><i class="iconfont icon-danmu"></i></button><button class="con-rightside" title="全屏" id="con-fullscreen" onclick="fullScreen();"><i class="fas fa-expand"></i></button></div></div></div><!-- hexo injector body_end start --><script data-pjax="">
+  function butterfly_swiper_injector_config(){
+    var parent_div_git = document.getElementsByClassName('swiper-div')[0];
+    var item_html = '<div class="recent-post-item" style="height: auto;width: 100%"><div class="blog-slider swiper-container-fade swiper-container-horizontal" id="swiper_container"><div class="blog-slider__wrp swiper-wrapper" style="transition-duration: 0ms;"><div class="blog-slider__item swiper-slide" style="background:url(https://pic.youmingsama.fun/kksk/dajiejie.jpg);border-radius:12px;opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><div class="blog-slider__content"><span class="blog-slider__code">2022-11-08</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;posts/e0da0190/&quot;);" href="javascript:void(0);" rel="external nofollow noreferrer" alt="">rust学习资源与进阶资料</a><div class="blog-slider__text">再怎么看我也不知道怎么描述它的啦！</div></div></div><div class="blog-slider__item swiper-slide" style="background:url(https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo_1/img2/明日方舟.png);border-radius:12px;opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><div class="blog-slider__content"><span class="blog-slider__code">2021-03-07</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;posts/ea3732f5/&quot;);" href="javascript:void(0);" rel="external nofollow noreferrer" alt="">第一次的Cloudflare worker</a><div class="blog-slider__text">再怎么看我也不知道怎么描述它的啦！</div></div></div></div><div class="blog-slider__pagination swiper-pagination-clickable swiper-pagination-bullets"></div><div class="swiper-button-prev"></div><div class="swiper-button-next"></div></div></div>';
+    console.log('已挂载butterfly_swiper')
+    parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  var elist = 'undefined'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_swiper_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_swiper_injector_config();
+  }
+  </script><script defer="" src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/5.4.5/js/swiper.min.js"></script><script defer="" data-pjax="" src="https://npm.elemecdn.com/hexo-butterfly-swiper-lyx/lib/swiper_init.js"></script><script async="" src="//at.alicdn.com/t/c/font_2269988_gvntri7bk1r.js"></script><!-- hexo injector body_end end --><div><script src="https://npm.elemecdn.com/vue@2.6.11"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn1.tianli0.top/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="https://cdn1.tianli0.top/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/local-search.js"></script><script>window.addEventListener('DOMContentLoaded',function(){
+var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+    setTimeout(function(){document.getElementById('loading-box').classList.add("loadend")},700)
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+    document.getElementById('loading-box').classList.remove("loadend")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())} )
+window.addEventListener('pjax:start',function(){
+var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+    setTimeout(function(){document.getElementById('loading-box').classList.add("loadend")},700)
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+    document.getElementById('loading-box').classList.remove("loadend")
+
+  }
+}
+window.addEventListener('pjax:complete',preloader.endLoading())} )</script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn1.tianli0.top/npm/katex@latest/dist/katex.min.css"><script src="https://cdn1.tianli0.top/npm/katex@latest/dist/contrib/copy-tex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn1.tianli0.top/npm/katex@latest/dist/contrib/copy-tex.css"><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://tk.youmingsama.cn/',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://tk.youmingsama.cn/',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: true
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn1.tianli0.top/npm/twikoo@1.6.7/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !false) {
+    if (false) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script><script>var gitcalendar = new Vue({
+  el: '#gitcalendar',
+  data: {
+    simplemode: false,
+    user: 'youmingsama',
+    fixed: 'fixed',
+    px: 'px',
+    x: '',
+    y: '',
+    span1: '',
+    span2: '',
+    month: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+    monthchange: [],
+    oneyearbeforeday: '',
+    thisday: '',
+    amonthago: '',
+    aweekago: '',
+    weekdatacore: 0,
+    datacore: 0,
+    total: 0,
+    datadate: '',
+    data: [],
+    positionplusdata: [],
+    firstweek: [],
+    lastweek: [],
+    beforeweek: [],
+    thisweekdatacore: 0,
+    mounthbeforeday: 0,
+    mounthfirstindex: 0,
+    crispedges: 'crispedges',
+    thisdayindex: 0,
+    amonthagoindex: 0,
+    amonthagoweek: [],
+    firstdate: [],
+    first2date: [],
+    montharrbefore: [],
+    monthindex: 0,
+    color: ['#ebedf0', '#f1f8ff', '#dbedff', '#c8e1ff', '#79b8ff', '#2188ff', '#0366d6', '#005cc5', '#044289', '#032f62', '#05264c']
+  },
+  methods: {
+    selectStyle(data, event) {
+      document.querySelector('.angle-wrapper').style.display = 'block'
+      this.span1 = data.date;
+      this.span2 = data.count;
+      this.x = event.clientX - 100;
+      this.y = event.clientY - 60
+    },
+    outStyle() {
+      document.querySelector('.angle-wrapper').style.display = 'none'
+    },
+    thiscolor(x) {
+      if (x === 0) {
+        let i = parseInt(x / 2);
+        return this.color[0]
+      } else if (x < 2) {
+        return this.color[1]
+      } else if (x < 20) {
+        let i = parseInt(x / 2);
+        return this.color[i]
+      } else {
+        return this.color[9]
+      }
+    },
+  }
+});
+var apiurl = 'gcapi.yisous.xyz' ? 'https://gcapi.yisous.xyz/api?' : 'https://githubapi.ryanchristian.dev/user/'
+var githubapiurl = apiurl + gitcalendar.user;
+//canvas绘图
+function responsiveChart() {
+  let c = document.getElementById("gitcanvas");
+  if (c) {
+    let cmessage = document.getElementById("gitmessage");
+    let ctx = c.getContext("2d");
+    c.width = document.getElementById("gitcalendarcanvasbox").offsetWidth;
+    let linemaxwitdh = 0.96 * c.width / gitcalendar.data.length;
+    c.height = 9 * linemaxwitdh;
+    let lineminwitdh = 0.8 * linemaxwitdh;
+    let setposition = {
+      x: 0.02 * c.width,
+      y: 0.025 * c.width
+    };
+    for (let week in gitcalendar.data) {
+      weekdata = gitcalendar.data[week];
+      for (let day in weekdata) {
+        let dataitem = {
+          date: "",
+          count: "",
+          x: 0,
+          y: 0
+        };
+        gitcalendar.positionplusdata.push(dataitem);
+        ctx.fillStyle = gitcalendar.thiscolor(weekdata[day].count);
+        setposition.y = Math.round(setposition.y * 100) / 100;
+        dataitem.date = weekdata[day].date;
+        dataitem.count = weekdata[day].count;
+        dataitem.x = setposition.x;
+        dataitem.y = setposition.y;
+        ctx.fillRect(setposition.x, setposition.y, lineminwitdh, lineminwitdh);
+        setposition.y = setposition.y + linemaxwitdh
+      };
+      setposition.y = 0.025 * c.width;
+      setposition.x = setposition.x + linemaxwitdh
+    };
+    ctx.font = "600  Arial";
+    ctx.fillStyle = '#aaa';
+    ctx.fillText("日", 0, 1.9 * linemaxwitdh);
+    ctx.fillText("二", 0, 3.9 * linemaxwitdh);
+    ctx.fillText("四", 0, 5.9 * linemaxwitdh);
+    ctx.fillText("六", 0, 7.9 * linemaxwitdh);
+    let monthindexlist = c.width / 24;
+    for (let index in gitcalendar.monthchange) {
+      ctx.fillText(gitcalendar.monthchange[index], monthindexlist, 0.7 * linemaxwitdh);
+      monthindexlist = monthindexlist + c.width / 12
+    };
+    cmessage.onmousemove = function(event) {
+      document.querySelector('.angle-wrapper').style.display = 'none'
+    };
+    c.onmousemove = function(event) {
+      document.querySelector('.angle-wrapper').style.display = 'none'
+      getMousePos(c, event);
+    };
+
+    function getMousePos(canvas, event) {
+      var rect = canvas.getBoundingClientRect();
+      var x = event.clientX - rect.left * (canvas.width / rect.width);
+      var y = event.clientY - rect.top * (canvas.height / rect.height);
+      //console.log("x:"+x+",y:"+y);
+      for (let item of gitcalendar.positionplusdata) {
+        let lenthx = x - item.x;
+        let lenthy = y - item.y;
+        //console.log(lenthx,lenthy);
+        if (0 < lenthx && lenthx < lineminwitdh) {
+          if (0 < lenthy && lenthy < lineminwitdh) {
+            //console.log(item.date,item.count)
+            document.querySelector('.angle-wrapper').style.display = 'block'
+            gitcalendar.span1 = item.date;
+            gitcalendar.span2 = item.count;
+            gitcalendar.x = event.clientX - 100;
+            gitcalendar.y = event.clientY - 60
+          }
+        }
+        //if(0< x - item.x <lineminwitdh&&0< y - item.y <lineminwitdh){
+        //console.log(item.count,item.date);
+        //}
+      }
+    }
+  }
+}
+//数据统计算法
+function addlastmonth() {
+  if (gitcalendar.thisdayindex === 0) {
+    thisweekcore(52);
+    thisweekcore(51);
+    thisweekcore(50);
+    thisweekcore(49);
+    thisweekcore(48);
+    gitcalendar.thisweekdatacore += gitcalendar.firstdate[6].count;
+    gitcalendar.amonthago = gitcalendar.firstdate[6].date
+  } else {
+    thisweekcore(52);
+    thisweekcore(51);
+    thisweekcore(50);
+    thisweekcore(49);
+    thisweek2core();
+    gitcalendar.amonthago = gitcalendar.first2date[gitcalendar.thisdayindex - 1].date
+  }
+};
+
+function thisweek2core() {
+  for (let i = gitcalendar.thisdayindex - 1; i < gitcalendar.first2date.length; i++) {
+    gitcalendar.thisweekdatacore += gitcalendar.first2date[i].count
+  }
+};
+
+function thisweekcore(index) {
+  for (let item of gitcalendar.data[index]) {
+    gitcalendar.thisweekdatacore += item.count
+  }
+};
+
+function addlastweek() {
+  for (let item of gitcalendar.lastweek) {
+    gitcalendar.weekdatacore += item.count
+  }
+};
+
+function addbeforeweek() {
+  for (let i = gitcalendar.thisdayindex; i < gitcalendar.beforeweek.length; i++) {
+    gitcalendar.weekdatacore += gitcalendar.beforeweek[i].count
+  }
+};
+
+function addweek(data) {
+  if (gitcalendar.thisdayindex === 6) {
+    gitcalendar.aweekago = gitcalendar.lastweek[0].date;
+    addlastweek()
+  } else {
+    lastweek = data.contributions[51];
+    gitcalendar.aweekago = lastweek[gitcalendar.thisdayindex + 1].date;
+    addlastweek();
+    addbeforeweek()
+  }
+}
+
+fetch(githubapiurl)
+  .then(data => data.json())
+  .then(data => {
+    gitcalendar.data = data.contributions;
+    gitcalendar.total = data.total;
+    gitcalendar.first2date = gitcalendar.data[48];
+    gitcalendar.firstdate = gitcalendar.data[47];
+    gitcalendar.firstweek = data.contributions[0];
+    gitcalendar.lastweek = data.contributions[52];
+    gitcalendar.beforeweek = data.contributions[51];
+    gitcalendar.thisdayindex = gitcalendar.lastweek.length - 1;
+    gitcalendar.thisday = gitcalendar.lastweek[gitcalendar.thisdayindex].date;
+    gitcalendar.oneyearbeforeday = gitcalendar.firstweek[0].date;
+    gitcalendar.monthindex = gitcalendar.thisday.substring(5, 7) * 1;
+    gitcalendar.montharrbefore = gitcalendar.month.splice(gitcalendar.monthindex, 12 - gitcalendar.monthindex);
+    gitcalendar.monthchange = gitcalendar.montharrbefore.concat(gitcalendar.month);
+    addweek(data);
+    addlastmonth();
+    responsiveChart();
+  })
+  .catch(function(error) {
+    console.log(error);
+  });
+
+//手机版更换为svg绘制
+if (document.getElementById("gitcalendarcanvasbox").offsetWidth < 500) {
+  gitcalendar.simplemode = false
+}
+
+//当改变窗口大小时重新绘制canvas
+window.onresize = function() {
+  if (gitcalendar.simplemode) responsiveChart()
+}
+
+//解决滚动滑轮时出现的标签显示
+window.onscroll = function() {
+  if (document.querySelector('.angle-wrapper')) {
+    document.querySelector('.angle-wrapper').style.display = 'none'
+  }
+};</script></div><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[图片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[链接]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[代码]') // replace code
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getComment = () => {
+    const runTwikoo = () => {
+      twikoo.getRecentComments({
+        envId: 'https://tk.youmingsama.cn/',
+        region: '',
+        pageSize: 6,
+        includeReply: true
+      }).then(function (res) {
+        const twikooArray = res.map(e => {
+          return {
+            'content': changeContent(e.comment),
+            'avatar': e.avatar,
+            'nick': e.nick,
+            'url': e.url + '#' + e.id,
+            'date': new Date(e.created).toISOString()
+          }
+        })
+
+        saveToLocal.set('twikoo-newest-comments', JSON.stringify(twikooArray), 10/(60*24))
+        generateHtml(twikooArray)
+      }).catch(function (err) {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.innerHTML= "无法获取评论，请确认相关配置是否正确"
+      })
+    }
+
+    if (typeof twikoo === 'object') {
+      runTwikoo()
+    } else {
+      getScript('https://cdn1.tianli0.top/npm/twikoo@1.6.7/dist/twikoo.all.min.js').then(runTwikoo)
+    }
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          const name = 'src'
+          result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'></a>`
+        }
+        
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}' title='${array[i].content}'>${array[i].content}</a>
+        <div class='name'><span>${array[i].nick} / </span><time datetime="${array[i].date}">${btf.diffDate(array[i].date, true)}</time></div>
+        </div></div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('twikoo-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><script type="text/javascript" src="/js/fixbugpjax.js"></script><script src="/js/sakura.js"></script><div class="aplayer no-destroy" data-id="7803928554" data-server="netease" data-type="playlist" data-listfolded="false" data-preload="metadata" data-theme="var(--lyx-theme)" data-fixed="true" data-autoplay="false" data-volume="0.1" style="z-index:514"> </div><script type="text/javascript" src="/js/aplayersave.js"></script><script type="text/javascript" src="/js/noie.js"></script><script src="https://cdn1.tianli0.top/npm/leancloud-storage@4.13.1/dist/av-min.js"></script><script src="https://cdn1.tianli0.top/gh/nextapps-de/winbox/dist/winbox.bundle.min.js"></script><script src="https://cdn1.tianli0.top/npm/sweetalert2@8"></script><script type="text/javascript" data-pjax="" src="/js/rightmenu.js"></script><script type="text/javascript" src="/js/copy.js"></script><script type="text/javascript" src="/js/welcome.js"></script><script type="text/javascript" src="https://cdn1.tianli0.top/npm/jquery@latest/dist/jquery.min.js"></script><script type="text/javascript" src="/js/resizeTop.js"></script><script type="text/javascript" src="/js/languages.js"></script><script type="text/javascript" src="/js/browser.js"></script><script type="text/javascript" src="/js/smooth-scrolling.js"></script><script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script><script type="text/javascript" src="/js/sitetime.js"></script><script type="text/javascript" src="/js/seo.js"></script><script data-pjax="" type="text/javascript" src="/js/heimu.js"></script><script data-pjax="" src="/js/bbtalklunbo.js"></script><script data-pjax="" src="/js/fps.js"></script><script data-pjax="" src="/js/dis.js"></script><script data-pjax="" src="/js/settings.js"></script><script src="/js/owo.js"></script><script src="/js/welcomeconsole.js"></script><script src="/js/hide.show.js"></script><script src="https://f.zhheo.com/JS-Heo/bb/showbb_in_index.js" data-pjax="" =""="" defer=""></script><script data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}" src="https://cdn.bootcss.com/pace/1.0.2/pace.min.js"></script><script data-pjax="" src="/js/baiduhistory.js"></script><script src="/js/random.js"></script><script src="/js/lunar.js"></script><script src="/js/day.js"></script><script data-pjax="" src="/js/nav.js"></script><script src="/js/cursor.js"></script><script data-pjax="" type="text/javascript" src="/js/dianzan.js"></script><script type="text/javascript" src="/js/commentsCount.js"></script><script type="text/javascript" src="/js/latest.js"></script><script data-pjax="" defer="" src="/js/fixed_card_widget.js"></script><script type="text/javascript" src="https://cdn1.tianli0.top/npm/node-snackbar@latest/src/js/snackbar.min.js"></script><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/aplayer@1/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn1.tianli0.top/npm/aplayer@1/dist/APlayer.min.js"></script><script src="https://cdn1.tianli0.top/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script src="https://cdn1.tianli0.top/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax","#fixedcard-dashboard"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"]):not([href="/speaks/"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async="" data-pjax="" src="https://cdn.dusays.com/bsz.js"></script><div id="fixedcard-dashboard"><button class="fixedcard-activebtn" type="button" title="我的信息" onclick="FixedCardWidget(&quot;class&quot;,&quot;card-info&quot;,&quot;0&quot;)"><i class="fas fa-address-book"></i></button><button class="fixedcard-activebtn" type="button" title="公告" onclick="FixedCardWidget(&quot;class&quot;,&quot;card-announcement&quot;,&quot;0&quot;)"><i class="fas fa-bullhorn"></i></button><button class="fixedcard-activebtn" type="button" title="天气" onclick="FixedCardWidget(&quot;class&quot;,&quot;card-weather&quot;,&quot;0&quot;)"><i class="fas fa-cloud-sun"></i></button><button class="fixedcard-activebtn" type="button" title="最新文章" onclick="FixedCardWidget(&quot;class&quot;,&quot;card-recent-post&quot;,&quot;0&quot;)"><i class="fas fa-history"></i></button><button class="fixedcard-activebtn" type="button" title="最新评论" onclick="FixedCardWidget(&quot;id&quot;,&quot;card-newest-comments&quot;,&quot;0&quot;)"><i class="fas fa-comment-dots"></i></button><button class="fixedcard-activebtn" type="button" title="文章日历" onclick="FixedCardWidget(&quot;class&quot;,&quot;card-calendar&quot;,&quot;0&quot;)"><i class="fas fa-calendar"></i></button><div class="fixedcard-user-avatar fixedcard-activebtn" onclick="RemoveFixedCardWidget()"><img class="fixedcard-user-avatar-img" src="/img/avatar.png" title="youmingsama"></div></div></div><div class="barrageswiper swiper-container"><div class="comment-barrage js-pjax swiper-wrapper"></div><link rel="stylesheet" href="/css/commentBarrage.css"><script data-pjax="" src="/js/commentBarrage.js"></script></div></body></html>

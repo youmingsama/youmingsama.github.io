@@ -1,0 +1,1245 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>java多线程原理篇大概 | youmingsama</title><meta name="keywords" content="java!!!,多线程"><meta name="author" content="youmingsama"><meta name="copyright" content="youmingsama"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="这大概是传说中的原理篇 当然其中会参杂一些其他的东西，（失礼了  1.先来看看Java内存模型  线程间如何通信？即：线程之间以何种机制来交换信息 线程间如何同步？即：线程以何种机制来控制不同线程间操作发生的相对顺序  有两种并发模型可以解决这两个问题：  消息传递并发模型 共享内存并发模型  这两种模型之间的区别如下表所示：  我们看出来了在Java中，使用的是共享内存并发模型。  Java内">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java多线程原理篇大概">
+<meta property="og:url" content="https://blog.youmingsama.cn/posts/7126b21b/index.html">
+<meta property="og:site_name" content="youmingsama">
+<meta property="og:description" content="这大概是传说中的原理篇 当然其中会参杂一些其他的东西，（失礼了  1.先来看看Java内存模型  线程间如何通信？即：线程之间以何种机制来交换信息 线程间如何同步？即：线程以何种机制来控制不同线程间操作发生的相对顺序  有两种并发模型可以解决这两个问题：  消息传递并发模型 共享内存并发模型  这两种模型之间的区别如下表所示：  我们看出来了在Java中，使用的是共享内存并发模型。  Java内">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/ing/coolneko.jpg">
+<meta property="article:published_time" content="2020-11-08T00:00:00.000Z">
+<meta property="article:modified_time" content="2023-06-23T07:25:57.098Z">
+<meta property="article:author" content="youmingsama">
+<meta property="article:tag" content="java!!!">
+<meta property="article:tag" content="多线程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/ing/coolneko.jpg"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://blog.youmingsama.cn/posts/7126b21b/"><link rel="preconnect" href="//cdn1.tianli0.top"><link rel="preconnect" href="//cdn.dusays.com"><link rel="manifest" href="/manifest.json"><link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/img/32.png"><link rel="icon" type="image/png" sizes="16x16" href="/img/16.png"><link rel="mask-icon" href="/img/safari-pinned-tab.svg" color="#5bbad5"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"简","msgToSimplifiedChinese":"繁"},
+  noticeOutdate: {"limitDay":120,"position":"top","messagePrev":"距离上次更新已经过了","messageNext":"天，文章所描述的內容可能已经发生变化，请留意"},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":500},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: youmingsama","link":"链接: ","source":"来源: youmingsama","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"top-right"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn1.tianli0.top/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn1.tianli0.top/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'java多线程原理篇大概',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-06-23 07:25:57'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/ariasakablog.css"><link id="css" rel="stylesheet" href="/css/stylessimple.css"><link rel="stylesheet" href="/css/iconfont.css"><style>#article-container h1:before, h2:before, h3:before, h4:before, h5:before, h6:before { -webkit-animation: avatar_turn_around 3s linear infinite; -moz-animation: avatar_turn_around 3s linear infinite; -o-animation: avatar_turn_around 3s linear infinite; -ms-animation: avatar_turn_around 3s linear infinite; animation: avatar_turn_around 3s linear infinite; }</style><style id="barragesColor"></style><style id="settingStyle"></style><style id="yjjs"></style><style id="themeColor"></style><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+SC"><link rel="stylesheet" href="https://cdn1.tianli0.top/gh/Zfour/Butterfly-card-history/baiduhistory/css/main.css"><link rel="stylesheet" href="/css/commentBarrage.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif+SC"><link rel="stylesheet" type="text/css" href="https://cdn1.tianli0.top/npm/node-snackbar@latest/dist/snackbar.min.css"><script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script><script>LA.init({id: "JnlSnWLD7XChjrlx",ck: "JnlSnWLD7XChjrlx"})</script><script src="https://sdk.51.la/perf/js-sdk-perf.min.js" crossorigin="anonymous"></script><script>new LingQue.Monitor().init({id:"JnnW6bt2WtyehVan"});</script><script src="/swReg.js"></script></head><body><span id="fps"></span><style id="grays"></style><script src="https://cdn1.tianli0.top/npm/prefetch-page"></script><script>addEventListener('DOMContentLoaded', function () {prefetch({ threshold: 25, delay: 3000, limit: 10 ,customs: ['search.xml']})});requestIdleCallback(function () {prefetch({ threshold: 25, delay: 3000, limit: 10,customs: ['search.xml']})})</script><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/5.4.5/css/swiper.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-swiper-lyx/lib/swiperstyle.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://cdn1.tianli0.top/npm/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="youmingsama" type="application/atom+xml">
+<div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><img src="/img/nyancat.gif" id="loadcat"></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fa fa-newspaper"></i><span> 文章</span><!--i.fas.fa-chevron-down--></a><ul class="menus_item_child"><li><a class="site-page child" href="javascript:toRandomPost()" rel="external nofollow noreferrer"><i class="fa-fw fa fa-paper-plane"></i><span> 随便逛逛</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fa fa-sitemap"></i><span> 本站</span><!--i.fas.fa-chevron-down--></a><ul class="menus_item_child"><li><a class="site-page child" href="/speaks/"><i class="fa-fw fa fa-comments"></i><span> 说说</span></a></li><li><a class="site-page child" href="/links/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></li><li><a class="site-page child" href="/fcircle/"><i class="fa-fw fab fa-galactic-republic"></i><span> 朋友圈</span></a></li><li><a class="site-page child" href="/othersite/"><i class="fa-fw fa fa-tasks"></i><span> 分站</span></a></li><li><a class="site-page child" href="/update/"><i class="fa-fw fa fa-bell"></i><span> 日志</span></a></li><li><a class="site-page child" href="/messageboard/"><i class="fa-fw fa fa-blackboard"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fa-fw fas fa-address-card"></i><span> 我的</span><!--i.fas.fa-chevron-down--></a><ul class="menus_item_child"><li><a class="site-page child" href="/movies/"><i class="fa-fw fa fa-photo-video"></i><span> 电影</span></a></li><li><a class="site-page child" href="/bangumis/"><i class="fa-fw fa-fw fas fa fa-film"></i><span> 追番</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fa fa-info-circle"></i><span> 关于我</span></a></li><li><a class="site-page child" href="/license/"><i class="fa-fw fas fa-balance-scale"></i><span> 声明</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fa-fw fas fa-tools"></i><span> 工具</span><!--i.fas.fa-chevron-down--></a><ul class="menus_item_child"><li><a class="site-page child" href="/kongtiao/"><span> 小空调</span></a></li><li><a class="site-page child" href="/zaobao/"><i class="fa-fw fa fa-newspaper"></i><span> 每日早报</span></a></li><li><a class="site-page child" href="/muyu/"><i class="fa-fw fa fa-cog"></i><span> 木鱼</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fas fa-link"></i><span> 线路</span><!--i.fas.fa-chevron-down--></a><ul class="menus_item_child"><li><a class="site-page child" href="https://blog.youmingsama.cn"><span> Vercel</span></a></li><li><a class="site-page child" href="https://blog.youmingsama.cn"><span> Vercel2</span></a></li><li><a class="site-page child" href="https://blog.youmingsama.cn"><span> Netlify</span></a></li><li><a class="site-page child" target="_blank" rel="noopener external nofollow noreferrer" href="https://blog.youmingsama.top/"><span> Cloudflare</span></a></li><li><a class="site-page child" target="_blank" rel="noopener external nofollow noreferrer" href="https://blog.youmingsama.top/"><span> Cloudflare2</span></a></li><li><a class="site-page child" target="_blank" rel="noopener external nofollow noreferrer" href="https://blog.youmingsama.top/"><span> Github</span></a></li><li><a class="site-page child" target="_blank" rel="noopener external nofollow noreferrer" href="https://blog.youmingsama.top/"><span> Railway</span></a></li><li><a class="site-page child" target="_blank" rel="noopener external nofollow noreferrer" href="https://blog.youmingsama.top/"><span> Railway2</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/ing/coolneko.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">youmingsama</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fa fa-newspaper"></i><span> 文章</span><!--i.fas.fa-chevron-down--></a><ul class="menus_item_child"><li><a class="site-page child" href="javascript:toRandomPost()" rel="external nofollow noreferrer"><i class="fa-fw fa fa-paper-plane"></i><span> 随便逛逛</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fa fa-sitemap"></i><span> 本站</span><!--i.fas.fa-chevron-down--></a><ul class="menus_item_child"><li><a class="site-page child" href="/speaks/"><i class="fa-fw fa fa-comments"></i><span> 说说</span></a></li><li><a class="site-page child" href="/links/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></li><li><a class="site-page child" href="/fcircle/"><i class="fa-fw fab fa-galactic-republic"></i><span> 朋友圈</span></a></li><li><a class="site-page child" href="/othersite/"><i class="fa-fw fa fa-tasks"></i><span> 分站</span></a></li><li><a class="site-page child" href="/update/"><i class="fa-fw fa fa-bell"></i><span> 日志</span></a></li><li><a class="site-page child" href="/messageboard/"><i class="fa-fw fa fa-blackboard"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fa-fw fas fa-address-card"></i><span> 我的</span><!--i.fas.fa-chevron-down--></a><ul class="menus_item_child"><li><a class="site-page child" href="/movies/"><i class="fa-fw fa fa-photo-video"></i><span> 电影</span></a></li><li><a class="site-page child" href="/bangumis/"><i class="fa-fw fa-fw fas fa fa-film"></i><span> 追番</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fa fa-info-circle"></i><span> 关于我</span></a></li><li><a class="site-page child" href="/license/"><i class="fa-fw fas fa-balance-scale"></i><span> 声明</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fa-fw fas fa-tools"></i><span> 工具</span><!--i.fas.fa-chevron-down--></a><ul class="menus_item_child"><li><a class="site-page child" href="/kongtiao/"><span> 小空调</span></a></li><li><a class="site-page child" href="/zaobao/"><i class="fa-fw fa fa-newspaper"></i><span> 每日早报</span></a></li><li><a class="site-page child" href="/muyu/"><i class="fa-fw fa fa-cog"></i><span> 木鱼</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fas fa-link"></i><span> 线路</span><!--i.fas.fa-chevron-down--></a><ul class="menus_item_child"><li><a class="site-page child" href="https://blog.youmingsama.cn"><span> Vercel</span></a></li><li><a class="site-page child" href="https://blog.youmingsama.cn"><span> Vercel2</span></a></li><li><a class="site-page child" href="https://blog.youmingsama.cn"><span> Netlify</span></a></li><li><a class="site-page child" target="_blank" rel="noopener external nofollow noreferrer" href="https://blog.youmingsama.top/"><span> Cloudflare</span></a></li><li><a class="site-page child" target="_blank" rel="noopener external nofollow noreferrer" href="https://blog.youmingsama.top/"><span> Cloudflare2</span></a></li><li><a class="site-page child" target="_blank" rel="noopener external nofollow noreferrer" href="https://blog.youmingsama.top/"><span> Github</span></a></li><li><a class="site-page child" target="_blank" rel="noopener external nofollow noreferrer" href="https://blog.youmingsama.top/"><span> Railway</span></a></li><li><a class="site-page child" target="_blank" rel="noopener external nofollow noreferrer" href="https://blog.youmingsama.top/"><span> Railway2</span></a></li></ul></div></div><center id="name-container"><a id="page-name" href="javascript:rmf.scrollToTop()" rel="external nofollow noreferrer">PAGE_NAME</a></center></div><div id="toggleButtons"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><!--span=' '+_p('search.title')--></a></div><div id="randoms"><a class="site-page social-icon" href="javascript:toRandomPost()" rel="external nofollow noreferrer"><i class="fa fa-paper-plane"></i></a></div><div id="travellings"><a class="site-page social-icon" target="_blank" rel="noopener external nofollow noreferrer" href="https://travellings.link"><i class="fa fa-subway"></i></a></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">java多线程原理篇大概</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-11-08T00:00:00.000Z" title="发表于 2020-11-08 00:00:00">2020-11-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-06-23T07:25:57.098Z" title="更新于 2023-06-23 07:25:57">2023-06-23</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/print-hello-world/">print*,"hello world!!!"</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">8.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>25分钟</span></span><span class="post-meta-separator">|</span><span id="" data-flag-title="java多线程原理篇大概"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="twikoo_visitors"></span></span><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/posts/7126b21b/#post-comment"><span id="twikoo-count"></span></a></span><span class="post-meta-separator">|&nbsp; <span class="post-meta-dianzan"><a class="dianzan" href="javascript:void(0)" rel="external nofollow noreferrer" onclick="dianzan()"><i class="fas fa-thumbs-up"></i></a><span class="post-meta-label"> 点赞:</span><span class="dianzan-count">0</span></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h3 id="这大概是传说中的原理篇"><a class="markdownIt-Anchor" href="#这大概是传说中的原理篇"></a> 这大概是传说中的原理篇</h3>
+<p>当然其中会参杂一些其他的东西，（失礼了</p>
+<h3 id="1先来看看java内存模型"><a class="markdownIt-Anchor" href="#1先来看看java内存模型"></a> 1.先来看看Java内存模型</h3>
+<ul>
+<li>线程间如何通信？即：线程之间以何种机制来交换信息</li>
+<li>线程间如何同步？即：线程以何种机制来控制不同线程间操作发生的相对顺序</li>
+</ul>
+<p>有两种并发模型可以解决这两个问题：</p>
+<ul>
+<li>消息传递并发模型</li>
+<li>共享内存并发模型</li>
+</ul>
+<p>这两种模型之间的区别如下表所示：</p>
+<p><img src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/ing/%E4%B8%A4%E7%A7%8D%E5%B9%B6%E5%8F%91%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%AF%94%E8%BE%831.png" alt=""></p>
+<p>我们看出来了<strong>在Java中，使用的是共享内存并发模型</strong>。</p>
+<h2 id="java内存模型的抽象结构"><a class="markdownIt-Anchor" href="#java内存模型的抽象结构"></a> Java内存模型的抽象结构</h2>
+<h3 id="运行时内存的划分"><a class="markdownIt-Anchor" href="#运行时内存的划分"></a> 运行时内存的划分</h3>
+<p>先谈一下运行时数据区，下面这张图相信大家一点都不陌生：<img src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/ing/Java%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA.png" alt=""></p>
+<p>对于每一个线程来说，栈都是私有的，而堆是共有的。</p>
+<p>也就是说在栈中的变量（局部变量、方法定义参数、异常处理器参数）不会在线程之间共享，也就不会有内存可见性（下文会说到）的问题，也不受内存模型的影响。而在堆中的变量是共享的，本文称为共享变量。</p>
+<p>所以，内存可见性是针对的<strong>共享变量</strong>。</p>
+<h3 id="既然堆是共享的为什么在堆中会有内存不可见问题"><a class="markdownIt-Anchor" href="#既然堆是共享的为什么在堆中会有内存不可见问题"></a> 既然堆是共享的，为什么在堆中会有内存不可见问题？</h3>
+<p>这是因为现代计算机为了高效，往往会在高速缓存区中缓存共享变量，因为cpu访问缓存区比访问内存要快得多。</p>
+<blockquote>
+<p>线程之间的共享变量存在主内存中，每个线程都有一个私有的本地内存，存储了该线程以读、写共享变量的副本。本地内存是Java内存模型的一个抽象概念，并不真实存在。它涵盖了缓存、写缓冲区、寄存器等。</p>
+</blockquote>
+<p>Java线程之间的通信由Java内存模型（简称JMM）控制，从抽象的角度来说，JMM定义了线程和主内存之间的抽象关系。JMM的抽象示意图如图所示：</p>
+<p><img src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/ing/JMM%E6%8A%BD%E8%B1%A1%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg" alt=""></p>
+<p>从图中可以看出： 1. 所有的共享变量都存在主内存中。 2. 每个线程都保存了一份该线程使用到的共享变量的副本。 3. 如果线程A与线程B之间要通信的话，必须经历下面2个步骤： 1. 线程A将本地内存A中更新过的共享变量刷新到主内存中去。 2. 线程B到主内存中去读取线程A之前已经更新过的共享变量。</p>
+<p><strong>所以，线程A无法直接访问线程B的工作内存，线程间通信必须经过主内存。</strong></p>
+<p>注意，根据JMM的规定，<strong>线程对共享变量的所有操作都必须在自己的本地内存中进行，不能直接从主内存中读取</strong>。</p>
+<p>所以线程B并不是直接去主内存中读取共享变量的值，而是先在本地内存B中找到这个共享变量，发现这个共享变量已经被更新了，然后本地内存B去主内存中读取这个共享变量的新值，并拷贝到本地内存B中，最后线程B再读取本地内存B中的新值。</p>
+<p>那么怎么知道这个共享变量的被其他线程更新了呢？这就是JMM的功劳了，也是JMM存在的必要性之一。<strong>JMM通过控制主内存与每个线程的本地内存之间的交互，来提供内存可见性保证</strong>。</p>
+<blockquote>
+<p>Java中的volatile关键字可以保证多线程操作共享变量的可见性以及禁止指令重排序，synchronized关键字不仅保证可见性，同时也保证了原子性（互斥性）。在更底层，JMM通过内存屏障来实现内存的可见性以及禁止重排序。为了程序员的方便理解，提出了happens-before，它更加的简单易懂，从而避免了去理解内存可见性而去学习复杂的重排序规则以及这些规则的具体实现方法。</p>
+</blockquote>
+<h3 id="jmm与java内存区域划分的区别与联系"><a class="markdownIt-Anchor" href="#jmm与java内存区域划分的区别与联系"></a> JMM与Java内存区域划分的区别与联系</h3>
+<p>上面两小节分别提到了JMM和Java运行时内存区域的划分，这两者既有差别又有联系：</p>
+<ul>
+<li>
+<p>区别</p>
+<p>两者是不同的概念层次。JMM是抽象的，他是用来描述一组规则，通过这个规则来控制各个变量的访问方式，围绕原子性、有序性、可见性等展开的。而Java运行时内存的划分是具体的，是JVM运行Java程序时，必要的内存划分。</p>
+</li>
+<li>
+<p>联系</p>
+<p>都存在私有数据区域和共享数据区域。一般来说，JMM中的主内存属于共享数据区域，他是包含了堆和方法区；同样，JMM中的本地内存属于私有数据区域，包含了程序计数器、本地方法栈、虚拟机栈。</p>
+</li>
+</ul>
+<p><strong>实际上，他们表达的是同一种含义，这里不做区分。</strong></p>
+<h2 id="2重排序和happens-before"><a class="markdownIt-Anchor" href="#2重排序和happens-before"></a> 2.重排序和happens-before</h2>
+<h3 id="什么是重排序"><a class="markdownIt-Anchor" href="#什么是重排序"></a> 什么是重排序？</h3>
+<p>计算机在执行程序时，为了提高性能，编译器和处理器常常会对指令做重排。</p>
+<p><strong>为什么指令重排序可以提高性能？</strong></p>
+<p>简单地说，每一个指令都会包含多个步骤，每个步骤可能使用不同的硬件。因此，<strong>流水线技术</strong>产生了，它的原理是指令1还没有执行完，就可以开始执行指令2，而不用等到指令1执行结束之后再执行指令2，这样就大大提高了效率。</p>
+<p>但是，流水线技术最害怕<strong>中断</strong>，恢复中断的代价是比较大的，所以我们要想尽办法不让流水线中断。指令重排就是减少中断的一种技术。</p>
+<p>我们分析一下下面这个代码的执行情况：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = b + c;</span><br><span class="line">d = e - f ;</span><br></pre></td></tr></tbody></table></figure>
+<p>先加载b、c（<strong>注意，即有可能先加载b，也有可能先加载c</strong>），但是在执行add(b,c)的时候，需要等待b、c装载结束才能继续执行，也就是增加了停顿，那么后面的指令也会依次有停顿,这降低了计算机的执行效率。</p>
+<p>为了减少这个停顿，我们可以先加载e和f,然后再去加载add(b,c),这样做对程序（串行）是没有影响的,但却减少了停顿。既然add(b,c)需要停顿，那还不如去做一些有意义的事情。</p>
+<p>综上所述，<strong>指令重排对于提高CPU处理性能十分必要。虽然由此带来了乱序的问题，但是这点牺牲是值得的。</strong></p>
+<p>指令重排一般分为以下三种：</p>
+<ul>
+<li>
+<p><strong>编译器优化重排</strong></p>
+<p>编译器在<strong>不改变单线程程序语义</strong>的前提下，可以重新安排语句的执行顺序。</p>
+</li>
+<li>
+<p><strong>指令并行重排</strong></p>
+<p>现代处理器采用了指令级并行技术来将多条指令重叠执行。如果<strong>不存在数据依赖性</strong>(即后一个执行的语句无需依赖前面执行的语句的结果)，处理器可以改变语句对应的机器指令的执行顺序。</p>
+</li>
+<li>
+<p><strong>内存系统重排</strong></p>
+<p>由于处理器使用缓存和读写缓存冲区，这使得加载(load)和存储(store)操作看上去可能是在乱序执行，因为三级缓存的存在，导致内存与缓存的数据同步存在时间差。</p>
+</li>
+</ul>
+<p><strong>指令重排可以保证串行语义一致，但是没有义务保证多线程间的语义也一致</strong>。所以在多线程下，指令重排序可能会导致一些问题。</p>
+<h3 id="顺序一致性模型与jmm的保证"><a class="markdownIt-Anchor" href="#顺序一致性模型与jmm的保证"></a> 顺序一致性模型与JMM的保证</h3>
+<p>顺序一致性模型是一个<strong>理论参考模型</strong>，内存模型在设计的时候都会以顺序一致性内存模型作为参考。</p>
+<h3 id="数据竞争与顺序一致性"><a class="markdownIt-Anchor" href="#数据竞争与顺序一致性"></a> 数据竞争与顺序一致性</h3>
+<p>当程序未正确同步的时候，就可能存在数据竞争。</p>
+<blockquote>
+<p>数据竞争：在一个线程中写一个变量，在另一个线程读同一个变量，并且写和读没有通过同步来排序。</p>
+</blockquote>
+<p>如果程序中包含了数据竞争，那么运行的结果往往充满了<strong>不确定性</strong>，比如读发生在了写之前，可能就会读到错误的值；如果一个线程程序能够正确同步，那么就不存在数据竞争。</p>
+<p>Java内存模型（JMM）对于正确同步多线程程序的内存一致性做了以下保证：</p>
+<blockquote>
+<p><strong>如果程序是正确同步的，程序的执行将具有顺序一致性</strong>。 即程序的执行结果和该程序在顺序一致性模型中执行的结果相同。</p>
+</blockquote>
+<p>这里的同步包括了使用<code>volatile</code>、<code>final</code>、<code>synchronized</code>等关键字来实现<strong>多线程下的同步</strong>。</p>
+<p>如果程序员没有正确使用<code>volatile</code>、<code>final</code>、<code>synchronized</code>，那么即便是使用了同步（单线程下的同步），JMM也不会有内存可见性的保证，可能会导致你的程序出错，并且具有不可重现性，很难排查。</p>
+<p>所以如何正确使用<code>volatile</code>、<code>final</code>、<code>synchronized</code>，是我们应该去了解的。后面会有专门的章节介绍这几个关键字的内存语义及使用。</p>
+<h3 id="顺序一致性模型"><a class="markdownIt-Anchor" href="#顺序一致性模型"></a> 顺序一致性模型</h3>
+<p>顺序一致性内存模型是一个<strong>理想化的理论参考模型</strong>，它为我们提供了极强的内存可见性保证。</p>
+<p>顺序一致性模型有两大特性：</p>
+<ul>
+<li>一个线程中的所有操作必须按照程序的顺序（即Java代码的顺序）来执行。</li>
+<li>不管程序是否同步，所有线程都只能看到一个单一的操作执行顺序。即在顺序一致性模型中，每个操作必须是<strong>原子性的，且立刻对所有线程可见</strong>。</li>
+</ul>
+<blockquote>
+<p>关于原子操作这里先不做阐述</p>
+</blockquote>
+<p>为了理解这两个特性，我们举个例子，假设有两个线程A和B并发执行，线程A有3个操作，他们在程序中的顺序是A1-&gt;A2-&gt;A3，线程B也有3个操作，B1-&gt;B2-&gt;B3。</p>
+<p>假设<strong>正确使用了同步</strong>，A线程的3个操作执行后释放锁，B线程获取同一个锁。那么在<strong>顺序一致性模型</strong>中的执行效果如下所示：</p>
+<p><img src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/ing/%E6%AD%A3%E7%A1%AE%E5%90%8C%E6%AD%A5.png" alt=""></p>
+<p>操作的执行整体上有序，并且两个线程都只能看到这个执行顺序。</p>
+<p>假设<strong>没有使用同步</strong>，那么在<strong>顺序一致性模型</strong>中的执行效果如下所示：</p>
+<p><img src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/ing/%E6%B2%A1%E6%9C%89%E6%AD%A3%E7%A1%AE%E5%90%8C%E6%AD%A5.png" alt=""></p>
+<p>操作的执行整体上无序，但是两个线程都只能看到这个执行顺序。之所以可以得到这个保证，是因为顺序一致性模型中的<strong>每个操作必须立即对任意线程可见</strong>。</p>
+<p><strong>但是JMM没有这样的保证。</strong></p>
+<p>比如，在当前线程把写过的数据缓存在本地内存中，在没有刷新到主内存之前，这个写操作仅对当前线程可见；从其他线程的角度来观察，这个写操作根本没有被当前线程所执行。只有当前线程把本地内存中写过的数据刷新到主内存之后，这个写操作才对其他线程可见。在这种情况下，当前线程和其他线程看到的执行顺序是不一样的。</p>
+<h3 id="jmm中同步程序的顺序一致性效果"><a class="markdownIt-Anchor" href="#jmm中同步程序的顺序一致性效果"></a> JMM中同步程序的顺序一致性效果</h3>
+<p>在顺序一致性模型中，所有操作完全按照程序的顺序串行执行。但是JMM中，临界区内（同步块或同步方法中）的代码可以发生重排序（但不允许临界区内的代码“逃逸”到临界区之外，因为会破坏锁的内存语义）。</p>
+<p>虽然线程A在临界区做了重排序，但是因为锁的特性，线程B无法观察到线程A在临界区的重排序。这种重排序既提高了执行效率，又没有改变程序的执行结果。</p>
+<p>同时，JMM会在退出临界区和进入临界区做特殊的处理，使得在临界区内程序获得与顺序一致性模型相同的内存视图。</p>
+<p><strong>由此可见，JMM的具体实现方针是：在不改变（正确同步的）程序执行结果的前提下，尽量为编译期和处理器的优化打开方便之门</strong>。</p>
+<h3 id="jmm中未同步程序的顺序一致性效果"><a class="markdownIt-Anchor" href="#jmm中未同步程序的顺序一致性效果"></a> JMM中未同步程序的顺序一致性效果</h3>
+<p>对于未同步的多线程程序，JMM只提供<strong>最小安全性</strong>：线程读取到的值，要么是之前某个线程写入的值，要么是默认值，不会无中生有。</p>
+<p>为了实现这个安全性，JVM在堆上分配对象时，首先会对内存空间清零，然后才会在上面分配对象（这两个操作是同步的）。</p>
+<p><strong>JMM没有保证未同步程序的执行结果与该程序在顺序一致性中执行结果一致。因为如果要保证执行结果一致，那么JMM需要禁止大量的优化，对程序的执行性能会产生很大的影响。</strong></p>
+<p>未同步程序在JMM和顺序一致性内存模型中的执行特性有如下差异： 1. 顺序一致性保证单线程内的操作会按程序的顺序执行；JMM不保证单线程内的操作会按程序的顺序执行。（因为重排序，但是JMM保证单线程下的重排序不影响执行结果） 2. 顺序一致性模型保证所有线程只能看到一致的操作执行顺序，而JMM不保证所有线程能看到一致的操作执行顺序。（因为JMM不保证所有操作立即可见） 3. JMM不保证对64位的long型和double型变量的写操作具有原子性，而顺序一致性模型保证对所有的内存读写操作都具有原子性。</p>
+<h3 id="happens-before"><a class="markdownIt-Anchor" href="#happens-before"></a> happens-before</h3>
+<h3 id="什么是happens-before"><a class="markdownIt-Anchor" href="#什么是happens-before"></a> 什么是happens-before?</h3>
+<p>一方面，程序员需要JMM提供一个强的内存模型来编写代码；另一方面，编译器和处理器希望JMM对它们的束缚越少越好，这样它们就可以最可能多的做优化来提高性能，希望的是一个弱的内存模型。</p>
+<p>JMM考虑了这两种需求，并且找到了平衡点，对编译器和处理器来说，<strong>只要不改变程序的执行结果（单线程程序和正确同步了的多线程程序），编译器和处理器怎么优化都行。</strong></p>
+<p>而对于程序员，JMM提供了<strong>happens-before规则</strong>（JSR-133规范），满足了程序员的需求——**简单易懂，并且提供了足够强的内存可见性保证。**换言之，程序员只要遵循happens-before规则，那他写的程序就能保证在JMM中具有强的内存可见性。</p>
+<p>JMM使用happens-before的概念来定制两个操作之间的执行顺序。这两个操作可以在一个线程以内，也可以是不同的线程之间。因此，JMM可以通过happens-before关系向程序员提供跨线程的内存可见性保证。</p>
+<p>happens-before关系的定义如下： 1. 如果一个操作happens-before另一个操作，那么第一个操作的执行结果将对第二个操作可见，而且第一个操作的执行顺序排在第二个操作之前。 2. <strong>两个操作之间存在happens-before关系，并不意味着Java平台的具体实现必须要按照happens-before关系指定的顺序来执行。如果重排序之后的执行结果，与按happens-before关系来执行的结果一致，那么JMM也允许这样的重排序。</strong></p>
+<p>happens-before关系本质上和as-if-serial语义是一回事。</p>
+<p>as-if-serial语义保证单线程内重排序后的执行结果和程序代码本身应有的结果是一致的，happens-before关系保证正确同步的多线程程序的执行结果不被重排序改变。</p>
+<p>总之，<strong>如果操作A happens-before操作B，那么操作A在内存上所做的操作对操作B都是可见的，不管它们在不在一个线程。</strong></p>
+<h3 id="天然的happens-before关系"><a class="markdownIt-Anchor" href="#天然的happens-before关系"></a> 天然的happens-before关系</h3>
+<p>在Java中，有以下天然的happens-before关系：</p>
+<ul>
+<li>程序顺序规则：一个线程中的每一个操作，happens-before于该线程中的任意后续操作。</li>
+<li>监视器锁规则：对一个锁的解锁，happens-before于随后对这个锁的加锁。</li>
+<li>volatile变量规则：对一个volatile域的写，happens-before于任意后续对这个volatile域的读。</li>
+<li>传递性：如果A happens-before B，且B happens-before C，那么A happens-before C。</li>
+<li>start规则：如果线程A执行操作ThreadB.start()启动线程B，那么A线程的ThreadB.start（）操作happens-before于线程B中的任意操作、</li>
+<li>join规则：如果线程A执行操作ThreadB.join（）并成功返回，那么线程B中的任意操作happens-before于线程A从ThreadB.join()操作成功返回。</li>
+</ul>
+<p>举例：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">int a = 1; // A操作</span><br><span class="line">int b = 2; // B操作</span><br><span class="line">int sum = a + b;// C 操作</span><br><span class="line">System.out.println(sum);</span><br></pre></td></tr></tbody></table></figure>
+<p>根据以上介绍的happens-before规则，假如只有一个线程，那么不难得出：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1&gt; A happens-before B </span><br><span class="line">2&gt; B happens-before C </span><br><span class="line">3&gt; A happens-before C</span><br></pre></td></tr></tbody></table></figure>
+<p>注意，真正在执行指令的时候，其实JVM有可能对操作A &amp; B进行重排序，因为无论先执行A还是B，他们都对对方是可见的，并且不影响执行结果。</p>
+<p>如果这里发生了重排序，这在视觉上违背了happens-before原则，但是JMM是允许这样的重排序的。</p>
+<p>所以，我们只关心happens-before规则，不用关心JVM到底是怎样执行的。只要确定操作A happens-before操作B就行了。</p>
+<p>重排序有两类，JMM对这两类重排序有不同的策略：</p>
+<ul>
+<li>会改变程序执行结果的重排序，比如 A -&gt; C，JMM要求编译器和处理器都不许禁止这种重排序。</li>
+<li>不会改变程序执行结果的重排序，比如 A -&gt; B，JMM对编译器和处理器不做要求，允许这种重排序。</li>
+</ul>
+<h2 id="3volatile"><a class="markdownIt-Anchor" href="#3volatile"></a> 3.Volatile</h2>
+<p>之前在我们有说过要好好来聊聊Volatile，由于上次篇幅有限所以就不了了之了（毕竟上次写了一万多字啊</p>
+<p>嗯现在我们来看看Volatile</p>
+<p>Volatile是什么啊，我们为什么要用Volatile，仔细想想啊如果有时我们只是 为了简单的读写一两个实例字段而使用同步的话看起来好像有点划不来。毕竟什么地方能出错呢，可是现代处理器和编译器出错的可能非常大。</p>
+<p>原因如下：</p>
+<ul>
+<li>有处理器的计算机能够暂时在寄存器或者本地缓存中保存内存值，于是造成的结果就是运行在不同的处理器上的线程可能看到的是同一个内存位置会有不同的值。</li>
+<li>虽然我们可以改变指令的顺序使吞吐量达到最大化，编译器不会选择可能改变代码语义的顺序，但是编译器有一个假定，认为只有在代码中有显式修改指令时才会改变，然而，特殊情况是，内存值有可能被线程改变。</li>
+</ul>
+<p>这种时候我们使用锁来保护可能会被多线程访问的代码，这个时候这种问题显然不存在。Volatile则为实例字段的同步访问供了一种免锁机制。</p>
+<h3 id="内存可见性"><a class="markdownIt-Anchor" href="#内存可见性"></a> 内存可见性</h3>
+<p>在Java内存模型那一章我们介绍了JMM有一个主内存，每个线程有自己私有的工作内存，工作内存中保存了一些变量在主内存的拷贝。</p>
+<p><strong>内存可见性，指的是线程之间的可见性，当一个线程修改了共享变量时，另一个线程可以读取到这个修改后的值</strong>。</p>
+<p>之前说了两个概念</p>
+<h3 id="重排序"><a class="markdownIt-Anchor" href="#重排序"></a> 重排序</h3>
+<p>为优化程序性能，对原有的指令执行顺序进行优化重新排序。重排序可能发生在多个阶段，比如编译重排序、CPU重排序等。</p>
+<h3 id="happens-before规则"><a class="markdownIt-Anchor" href="#happens-before规则"></a> happens-before规则</h3>
+<p>是一个给程序员使用的规则，只要程序员在写代码的时候遵循happens-before规则，JVM就能保证指令在多线程之间的顺序性符合程序员的预期。</p>
+<p>那么问题来了Volatile的呢</p>
+<h2 id="volatile的内存语义"><a class="markdownIt-Anchor" href="#volatile的内存语义"></a> volatile的内存语义</h2>
+<p>在Java中，volatile关键字有特殊的内存语义。volatile主要有以下两个功能：</p>
+<ul>
+<li>保证变量的<strong>内存可见性</strong></li>
+<li>禁止volatile变量与普通变量<strong>重排序</strong>（JSR133提出，Java 5 开始才有这个“增强的volatile内存语义”）</li>
+</ul>
+<h3 id="内存可见性-2"><a class="markdownIt-Anchor" href="#内存可见性-2"></a> 内存可见性</h3>
+<p>以一段示例代码开始：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">VolatileExample</span> {</span><br><span class="line">    <span class="type">int</span> <span class="variable">a</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">volatile</span> <span class="type">boolean</span> <span class="variable">flag</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">writer</span><span class="params">()</span> {</span><br><span class="line">        a = <span class="number">1</span>; <span class="comment">// step 1</span></span><br><span class="line">        flag = <span class="literal">true</span>; <span class="comment">// step 2</span></span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">reader</span><span class="params">()</span> {</span><br><span class="line">        <span class="keyword">if</span> (flag) { <span class="comment">// step 3</span></span><br><span class="line">            System.out.println(a); <span class="comment">// step 4</span></span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>在这段代码里，我们使用<code>volatile</code>关键字修饰了一个<code>boolean</code>类型的变量<code>flag</code>。</p>
+<p>所谓内存可见性，指的是当一个线程对<code>volatile</code>修饰的变量进行<strong>写操作</strong>（比如step 2）时，JMM会立即把该线程对应的本地内存中的共享变量的值刷新到主内存；当一个线程对<code>volatile</code>修饰的变量进行<strong>读操作</strong>（比如step 3）时，JMM会把立即该线程对应的本地内存置为无效，从主内存中读取共享变量的值。</p>
+<blockquote>
+<p>在这一点上，volatile与锁具有相同的内存效果，volatile变量的写和锁的释放具有相同的内存语义，volatile变量的读和锁的获取具有相同的内存语义。</p>
+</blockquote>
+<p>假设在时间线上，线程A先自行方法<code>writer</code>方法，线程B后执行<code>reader</code>方法。那必然会有下图：</p>
+<p><img src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/ing/volatile%E5%86%85%E5%AD%98%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg" alt=""></p>
+<p>而如果<code>flag</code>变量<strong>没有</strong>用<code>volatile</code>修饰，在step 2，线程A的本地内存里面的变量就不会立即更新到主内存，那随后线程B也同样不会去主内存拿最新的值，仍然使用线程B本地内存缓存的变量的值<code>a = 0，flag = false</code></p>
+<h3 id="禁止重排序"><a class="markdownIt-Anchor" href="#禁止重排序"></a> 禁止重排序</h3>
+<p>在JSR-133之前的旧的Java内存模型中，是允许volatile变量与普通变量重排序的。那上面的案例中，可能就会被重排序成下列时序来执行：</p>
+<ol>
+<li>线程A写volatile变量，step 2，设置flag为true；</li>
+<li>线程B读同一个volatile，step 3，读取到flag为true；</li>
+<li>线程B读普通变量，step 4，读取到 a = 0；</li>
+<li>线程A修改普通变量，step 1，设置 a = 1；</li>
+</ol>
+<p>可见，如果volatile变量与普通变量发生了重排序，虽然volatile变量能保证内存可见性，也可能导致普通变量读取错误。</p>
+<p>所以在旧的内存模型中，volatile的写-读就不能与锁的释放-获取具有相同的内存语义了。为了提供一种比锁更轻量级的<strong>线程间的通信机制</strong>，<strong>JSR-133</strong>专家组决定增强volatile的内存语义：严格限制编译器和处理器对volatile变量与普通变量的重排序。</p>
+<p>编译器还好说，JVM是怎么还能限制处理器的重排序的呢？它是通过<strong>内存屏障</strong>来实现的。</p>
+<p>什么是内存屏障？硬件层面，内存屏障分两种：读屏障（Load Barrier）和写屏障（Store Barrier）。内存屏障有两个作用：</p>
+<ol>
+<li>阻止屏障两侧的指令重排序；</li>
+<li>强制把写缓冲区/高速缓存中的脏数据等写回主内存，或者让缓存中相应的数据失效。</li>
+</ol>
+<blockquote>
+<p>注意这里的缓存主要指的是CPU缓存，如L1，L2等</p>
+</blockquote>
+<p>编译器在<strong>生成字节码时</strong>，会在指令序列中插入内存屏障来禁止特定类型的处理器重排序。编译器选择了一个<strong>比较保守的JMM内存屏障插入策略</strong>，这样可以保证在任何处理器平台，任何程序中都能得到正确的volatile内存语义。这个策略是：</p>
+<ul>
+<li>在每个volatile写操作前插入一个StoreStore屏障；</li>
+<li>在每个volatile写操作后插入一个StoreLoad屏障；</li>
+<li>在每个volatile读操作后插入一个LoadLoad屏障；</li>
+<li>在每个volatile读操作后再插入一个LoadStore屏障。</li>
+</ul>
+<p>大概示意图是这个样子：</p>
+<p><img src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/ing/%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9C.png" alt=""></p>
+<blockquote>
+<p>再逐个解释一下这几个屏障。注：下述Load代表读操作，Store代表写操作</p>
+<p><strong>LoadLoad屏障</strong>：对于这样的语句Load1; LoadLoad; Load2，在Load2及后续读取操作要读取的数据被访问前，保证Load1要读取的数据被读取完毕。<br>
+<strong>StoreStore屏障</strong>：对于这样的语句Store1; StoreStore; Store2，在Store2及后续写入操作执行前，这个屏障会吧Store1强制刷新到内存，保证Store1的写入操作对其它处理器可见。<br>
+<strong>LoadStore屏障</strong>：对于这样的语句Load1; LoadStore; Store2，在Store2及后续写入操作被刷出前，保证Load1要读取的数据被读取完毕。<br>
+<strong>StoreLoad屏障</strong>：对于这样的语句Store1; StoreLoad; Load2，在Load2及后续所有读取操作执行前，保证Store1的写入对所有处理器可见。它的开销是四种屏障中最大的（冲刷写缓冲器，清空无效化队列）。在大多数处理器的实现中，这个屏障是个万能屏障，兼具其它三种内存屏障的功能</p>
+</blockquote>
+<p>对于连续多个volatile变量读或者连续多个volatile变量写，编译器做了一定的优化来提高性能，比如：</p>
+<blockquote>
+<p>第一个volatile读;</p>
+<p>LoadLoad屏障；</p>
+<p>第二个volatile读；</p>
+<p>LoadStore屏障</p>
+</blockquote>
+<p>再介绍一下volatile与普通变量的重排序规则:</p>
+<ol>
+<li>如果第一个操作是volatile读，那无论第二个操作是什么，都不能重排序；</li>
+<li>如果第二个操作是volatile写，那无论第一个操作是什么，都不能重排序；</li>
+<li>如果第一个操作是volatile写，第二个操作是volatile读，那不能重排序。</li>
+</ol>
+<p>举个例子，我们在案例中step 1，是普通变量的写，step 2是volatile变量的写，那符合第2个规则，这两个steps不能重排序。而step 3是volatile变量读，step 4是普通变量读，符合第1个规则，同样不能重排序。</p>
+<p>但如果是下列情况：第一个操作是普通变量读，第二个操作是volatile变量读，那是可以重排序的：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 声明变量</span></span><br><span class="line"><span class="type">int</span> <span class="variable">a</span> <span class="operator">=</span> <span class="number">0</span>; <span class="comment">// 声明普通变量</span></span><br><span class="line"><span class="keyword">volatile</span> <span class="type">boolean</span> <span class="variable">flag</span> <span class="operator">=</span> <span class="literal">false</span>; <span class="comment">// 声明volatile变量</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 以下两个变量的读操作是可以重排序的</span></span><br><span class="line"><span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> a; <span class="comment">// 普通变量读</span></span><br><span class="line"><span class="type">boolean</span> <span class="variable">j</span> <span class="operator">=</span> flag; <span class="comment">// volatile变量读</span></span><br></pre></td></tr></tbody></table></figure>
+<h3 id="volatile的用途"><a class="markdownIt-Anchor" href="#volatile的用途"></a> volatile的用途</h3>
+<p>从volatile的内存语义上来看，volatile可以保证内存可见性且禁止重排序。</p>
+<p>在保证内存可见性这一点上，volatile有着与锁相同的内存语义，所以可以作为一个“轻量级”的锁来使用。但由于volatile仅仅保证对单个volatile变量的读/写具有原子性，而锁可以保证整个<strong>临界区代码</strong>的执行具有原子性。所以<strong>在功能上，锁比volatile更强大；在性能上，volatile更有优势</strong>。</p>
+<p>在禁止重排序这一点上，volatile也是非常有用的。比如我们熟悉的单例模式，其中有一种实现方式是“双重锁检查”，比如这样的代码：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singleton</span> {</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance; <span class="comment">// 不使用volatile关键字</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 双重锁检验</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> {</span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="literal">null</span>) { <span class="comment">// 第7行</span></span><br><span class="line">            <span class="keyword">synchronized</span> (Singleton.class) {</span><br><span class="line">                <span class="keyword">if</span> (instance == <span class="literal">null</span>) {</span><br><span class="line">                    instance = <span class="keyword">new</span> <span class="title class_">Singleton</span>(); <span class="comment">// 第10行</span></span><br><span class="line">                }</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>如果这里的变量声明不使用volatile关键字，是可能会发生错误的。它可能会被重排序：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">instance = new Singleton(); // 第10行</span><br><span class="line"></span><br><span class="line">// 可以分解为以下三个步骤</span><br><span class="line">1 memory=allocate();// 分配内存 相当于c的malloc</span><br><span class="line">2 ctorInstanc(memory) //初始化对象</span><br><span class="line">3 s=memory //设置s指向刚分配的地址</span><br><span class="line"></span><br><span class="line">// 上述三个步骤可能会被重排序为 1-3-2，也就是：</span><br><span class="line">1 memory=allocate();// 分配内存 相当于c的malloc</span><br><span class="line">3 s=memory //设置s指向刚分配的地址</span><br><span class="line">2 ctorInstanc(memory) //初始化对象</span><br></pre></td></tr></tbody></table></figure>
+<p>而一旦假设发生了这样的重排序，比如线程A在第10行执行了步骤1和步骤3，但是步骤2还没有执行完。这个时候另一个线程B执行到了第7行，它会判定instance不为空，然后直接返回了一个未初始化完成的instance！</p>
+<p>所以JSR-133对volatile做了增强后，volatile的禁止重排序功能还是非常有用的。</p>
+<h2 id="总之说了半天我们终于磕到锁了"><a class="markdownIt-Anchor" href="#总之说了半天我们终于磕到锁了"></a> 总之说了半天我们终于磕到锁了</h2>
+<p>首先需要明确的一点是：<strong>Java多线程的锁都是基于对象的</strong>，Java中的每一个对象都可以作为一个锁。</p>
+<p>还有一点需要注意的是，我们常听到的<strong>类锁</strong>其实也是对象锁。</p>
+<p>Java类只有一个Class对象（可以有多个实例对象，多个实例共享这个Class对象），而Class对象也是特殊的Java对象。所以我们常说的类锁，其实就是Class对象的锁。</p>
+<h3 id="synchronized关键字"><a class="markdownIt-Anchor" href="#synchronized关键字"></a> Synchronized关键字</h3>
+<p>说到锁，我们通常会谈到<code>synchronized</code>这个关键字。它翻译成中文就是“同步”的意思。</p>
+<p>我们通常使用<code>synchronized</code>关键字来给一段代码或一个方法上锁。它通常有以下三种形式：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 关键字在实例方法上，锁为当前实例</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title function_">instanceLock</span><span class="params">()</span> {</span><br><span class="line">    <span class="comment">// code</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// 关键字在静态方法上，锁为当前Class对象</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title function_">classLock</span><span class="params">()</span> {</span><br><span class="line">    <span class="comment">// code</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// 关键字在代码块上，锁为括号里面的对象</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">blockLock</span><span class="params">()</span> {</span><br><span class="line">    <span class="type">Object</span> <span class="variable">o</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Object</span>();</span><br><span class="line">    <span class="keyword">synchronized</span> (o) {</span><br><span class="line">        <span class="comment">// code</span></span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>我们这里介绍一下“临界区”的概念。所谓“临界区”，指的是某一块代码区域，它同一时刻只能由一个线程执行。在上面的例子中，如果<code>synchronized</code>关键字在方法上，那临界区就是整个方法内部。而如果是使用synchronized代码块，那临界区就指的是代码块内部的区域。</p>
+<p>通过上面的例子我们可以看到，下面这两个写法其实是等价的作用：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 关键字在实例方法上，锁为当前实例</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title function_">instanceLock</span><span class="params">()</span> {</span><br><span class="line">    <span class="comment">// code</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// 关键字在代码块上，锁为括号里面的对象</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">blockLock</span><span class="params">()</span> {</span><br><span class="line">    <span class="keyword">synchronized</span> (<span class="built_in">this</span>) {</span><br><span class="line">        <span class="comment">// code</span></span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>同理，下面这两个方法也应该是等价的：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 关键字在静态方法上，锁为当前Class对象</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title function_">classLock</span><span class="params">()</span> {</span><br><span class="line">    <span class="comment">// code</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// 关键字在代码块上，锁为括号里面的对象</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">blockLock</span><span class="params">()</span> {</span><br><span class="line">    <span class="keyword">synchronized</span> (<span class="built_in">this</span>.getClass()) {</span><br><span class="line">        <span class="comment">// code</span></span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="几种锁"><a class="markdownIt-Anchor" href="#几种锁"></a> 几种锁</h3>
+<p>Java 6 为了减少获得锁和释放锁带来的性能消耗，引入了“偏向锁”和“轻量级锁“。在Java 6 以前，所有的锁都是”重量级“锁。所以在Java 6 及其以后，一个对象其实有四种锁状态，它们级别由低到高依次是：</p>
+<ol>
+<li>无锁状态</li>
+<li>偏向锁状态</li>
+<li>轻量级锁状态</li>
+<li>重量级锁状态</li>
+</ol>
+<p>无锁就是没有对资源进行锁定，任何线程都可以尝试去修改它，这里就不再进行赘述。</p>
+<p>几种锁会随着竞争情况逐渐升级，锁的升级很容易发生，但是锁降级发生的条件会比较苛刻，锁降级发生在Stop The World期间，当JVM进入安全点的时候，会检查是否有闲置的锁，然后进行降级。</p>
+<blockquote>
+<p>关于锁降级有两点说明：</p>
+<p>1.不同于大部分文章说锁不能降级，实际上HotSpot JVM 是支持锁降级的</p>
+<p>2.上面提到的Stop The World期间，以及安全点，这些知识是属于JVM的知识范畴，本文不做细讲。</p>
+</blockquote>
+<p>下面分别介绍这几种锁以及它们之间的升级。</p>
+<p>youmingsama编辑中</p>
+<p><img src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/ing/huima.png" alt=""></p>
+<p>呐呐呐youmingsama持续编辑中绘麻天下第一！！！是的呢</p>
+<p>！！！！</p>
+</article><div class="post-copyright"><div class="post-copyright__title"><span class="post-copyright-info"><h>java多线程原理篇大概</h></span></div><div class="post-copyright__type"><span class="post-copyright-info"><a href="https://blog.youmingsama.cn/posts/7126b21b/">https://blog.youmingsama.cn/posts/7126b21b/</a></span></div><div class="post-copyright-m"><div class="post-copyright-m-info"><div class="post-copyright-a" style="display: inline-block;width: 120px"><h>作者</h><div class="post-copyright-cc-info"><h>youmingsama</h></div></div><div class="post-copyright-c" style="display: inline-block;width: 120px"><h>发布于</h><div class="post-copyright-cc-info"><h>2020-11-08</h></div></div><div class="post-copyright-u" style="display: inline-block;width: 120px"><h>更新于</h><div class="post-copyright-cc-info"><h>2023-06-23</h></div></div><div class="post-copyright-c" style="display: inline-block;width: 180px"><h>许可协议</h><div class="post-copyright-cc-info"><a class="icon" rel="noopener external nofollow noreferrer" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a rel="noopener external nofollow noreferrer" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a></div></div></div></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/java/">java!!!</a><a class="post-meta__tags" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">多线程</a></div><div class="post_share"><div class="social-share" data-image="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/ing/coolneko.jpg" data-sites="wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn1.tianli0.top/gh/overtrue/share.js@master/dist/js/social-share.min.js" defer=""></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/8f098f8e/"><img class="prev-cover" src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/img/bqb.jpg" onerror="onerror=null;src='https://api.vvhan.com/api/acgimg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">golang杂耍大师混乱的笔记</div></div></a></div><div class="next-post pull-right"><a href="/posts/929895af/"><img class="next-cover" src="https://youmingsama.github.io/PicGo/四季/jie.jpg" onerror="onerror=null;src='https://api.vvhan.com/api/acgimg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">杂谈：异度之刃2</div></div></a></div></nav><hr><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="fgx"><div class="avatar_img"><img style="border-radius:10px" src="/img/avatar.png" onerror="this.onerror=null;this.src='https://apis.yisous.xyz/api/randomAvatar'" alt="avatar"></div><div class="author-info__description"></div><div class="rights"><div class="author-info__name">youmingsama</div><div class="card-info-data site-data is-center"><a class="adiv" href="/archives/"><div class="headline">文章</div><div class="length-num">36</div></a><a class="adiv" href="/tags/"><div class="headline">标签</div><div class="length-num">25</div></a><a class="adiv" href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div></div></div><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/youmingsama" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="iconfont icon-github-o"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="Rss"><i class="iconfont icon-rss"></i></a><a class="social-icon" href="mailto:FLDYSYMhahaha229@outlook.com" rel="external nofollow noreferrer" target="_blank" title="Email"><i class="iconfont icon-email"></i></a><a class="social-icon" href="https://discord.com/channels/1071845973116080309/1071845973610999810" rel="external nofollow noreferrer" target="_blank" title="Discord"><i class="iconfont icon-discord"></i></a><a class="social-icon" href="https://www.notion.so/216ff0dfea524c788b698474ab61148f" rel="external nofollow noreferrer" target="_blank" title="Notion"><i class="iconfont icon-Notion"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">本网站的Twikoo评论系统使用Cravatar头像系统，请自行绑定邮箱配置</div></div><div class="card-widget card-history"><div class="card-content"><div class="item-headline"><i class="fas fa-clock fa-spin"></i><span>那年今日</span></div><div id="history-baidu" style="height: 100px;overflow: hidden;"><div class="history_swiper-container" id="history-container" style="width: 100%;height: 100%;"><div class="swiper-wrapper" id="history_container_wrapper" style="height:20px"></div></div></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%99%E5%A4%A7%E6%A6%82%E6%98%AF%E4%BC%A0%E8%AF%B4%E4%B8%AD%E7%9A%84%E5%8E%9F%E7%90%86%E7%AF%87"><span class="toc-number">1.</span> <span class="toc-text"> 这大概是传说中的原理篇</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%85%88%E6%9D%A5%E7%9C%8B%E7%9C%8Bjava%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B"><span class="toc-number">2.</span> <span class="toc-text"> 1.先来看看Java内存模型</span></a></li></ol><li class="toc-item toc-level-2"><a class="toc-link" href="#java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%8A%BD%E8%B1%A1%E7%BB%93%E6%9E%84"><span class="toc-number"></span> <span class="toc-text"> Java内存模型的抽象结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E6%97%B6%E5%86%85%E5%AD%98%E7%9A%84%E5%88%92%E5%88%86"><span class="toc-number">1.</span> <span class="toc-text"> 运行时内存的划分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A2%E7%84%B6%E5%A0%86%E6%98%AF%E5%85%B1%E4%BA%AB%E7%9A%84%E4%B8%BA%E4%BB%80%E4%B9%88%E5%9C%A8%E5%A0%86%E4%B8%AD%E4%BC%9A%E6%9C%89%E5%86%85%E5%AD%98%E4%B8%8D%E5%8F%AF%E8%A7%81%E9%97%AE%E9%A2%98"><span class="toc-number">2.</span> <span class="toc-text"> 既然堆是共享的，为什么在堆中会有内存不可见问题？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jmm%E4%B8%8Ejava%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%E5%88%92%E5%88%86%E7%9A%84%E5%8C%BA%E5%88%AB%E4%B8%8E%E8%81%94%E7%B3%BB"><span class="toc-number">3.</span> <span class="toc-text"> JMM与Java内存区域划分的区别与联系</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E9%87%8D%E6%8E%92%E5%BA%8F%E5%92%8Chappens-before"><span class="toc-number"></span> <span class="toc-text"> 2.重排序和happens-before</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E9%87%8D%E6%8E%92%E5%BA%8F"><span class="toc-number">1.</span> <span class="toc-text"> 什么是重排序？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%BA%E5%BA%8F%E4%B8%80%E8%87%B4%E6%80%A7%E6%A8%A1%E5%9E%8B%E4%B8%8Ejmm%E7%9A%84%E4%BF%9D%E8%AF%81"><span class="toc-number">2.</span> <span class="toc-text"> 顺序一致性模型与JMM的保证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%AB%9E%E4%BA%89%E4%B8%8E%E9%A1%BA%E5%BA%8F%E4%B8%80%E8%87%B4%E6%80%A7"><span class="toc-number">3.</span> <span class="toc-text"> 数据竞争与顺序一致性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%BA%E5%BA%8F%E4%B8%80%E8%87%B4%E6%80%A7%E6%A8%A1%E5%9E%8B"><span class="toc-number">4.</span> <span class="toc-text"> 顺序一致性模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jmm%E4%B8%AD%E5%90%8C%E6%AD%A5%E7%A8%8B%E5%BA%8F%E7%9A%84%E9%A1%BA%E5%BA%8F%E4%B8%80%E8%87%B4%E6%80%A7%E6%95%88%E6%9E%9C"><span class="toc-number">5.</span> <span class="toc-text"> JMM中同步程序的顺序一致性效果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jmm%E4%B8%AD%E6%9C%AA%E5%90%8C%E6%AD%A5%E7%A8%8B%E5%BA%8F%E7%9A%84%E9%A1%BA%E5%BA%8F%E4%B8%80%E8%87%B4%E6%80%A7%E6%95%88%E6%9E%9C"><span class="toc-number">6.</span> <span class="toc-text"> JMM中未同步程序的顺序一致性效果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#happens-before"><span class="toc-number">7.</span> <span class="toc-text"> happens-before</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFhappens-before"><span class="toc-number">8.</span> <span class="toc-text"> 什么是happens-before?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%A9%E7%84%B6%E7%9A%84happens-before%E5%85%B3%E7%B3%BB"><span class="toc-number">9.</span> <span class="toc-text"> 天然的happens-before关系</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3volatile"><span class="toc-number"></span> <span class="toc-text"> 3.Volatile</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%8F%AF%E8%A7%81%E6%80%A7"><span class="toc-number">1.</span> <span class="toc-text"> 内存可见性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%8D%E6%8E%92%E5%BA%8F"><span class="toc-number">2.</span> <span class="toc-text"> 重排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#happens-before%E8%A7%84%E5%88%99"><span class="toc-number">3.</span> <span class="toc-text"> happens-before规则</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#volatile%E7%9A%84%E5%86%85%E5%AD%98%E8%AF%AD%E4%B9%89"><span class="toc-number"></span> <span class="toc-text"> volatile的内存语义</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%8F%AF%E8%A7%81%E6%80%A7-2"><span class="toc-number">1.</span> <span class="toc-text"> 内存可见性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A6%81%E6%AD%A2%E9%87%8D%E6%8E%92%E5%BA%8F"><span class="toc-number">2.</span> <span class="toc-text"> 禁止重排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#volatile%E7%9A%84%E7%94%A8%E9%80%94"><span class="toc-number">3.</span> <span class="toc-text"> volatile的用途</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E4%B9%8B%E8%AF%B4%E4%BA%86%E5%8D%8A%E5%A4%A9%E6%88%91%E4%BB%AC%E7%BB%88%E4%BA%8E%E7%A3%95%E5%88%B0%E9%94%81%E4%BA%86"><span class="toc-number"></span> <span class="toc-text"> 总之说了半天我们终于磕到锁了</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#synchronized%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-number">1.</span> <span class="toc-text"> Synchronized关键字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%A0%E7%A7%8D%E9%94%81"><span class="toc-number">2.</span> <span class="toc-text"> 几种锁</span></a></li></ol></li></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/e0da0190/" title="rust学习资源与进阶资料"><img src="https://pic.youmingsama.fun/kksk/dajiejie.jpg" onerror="this.onerror=null;this.src='https://api.vvhan.com/api/acgimg'" alt="rust学习资源与进阶资料"></a><div class="content"><a class="title" href="/posts/e0da0190/" title="rust学习资源与进阶资料">rust学习资源与进阶资料</a><time datetime="2022-11-08T00:00:00.000Z" title="发表于 2022-11-08 00:00:00">2022-11-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/385296e3/" title="新坑预定"><img src="https://npm.elemecdn.com/youmingsama_img@1.0.7/saimaniang.jpg" onerror="this.onerror=null;this.src='https://api.vvhan.com/api/acgimg'" alt="新坑预定"></a><div class="content"><a class="title" href="/posts/385296e3/" title="新坑预定">新坑预定</a><time datetime="2021-08-01T00:00:00.000Z" title="发表于 2021-08-01 00:00:00">2021-08-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/9e073fd6/" title="买耳机送老婆:水月雨ssp"><img src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/pivcgame/img/水月雨.jpg" onerror="this.onerror=null;this.src='https://api.vvhan.com/api/acgimg'" alt="买耳机送老婆:水月雨ssp"></a><div class="content"><a class="title" href="/posts/9e073fd6/" title="买耳机送老婆:水月雨ssp">买耳机送老婆:水月雨ssp</a><time datetime="2021-08-01T00:00:00.000Z" title="发表于 2021-08-01 00:00:00">2021-08-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/bad5c14e/" title="京都读后感"><img src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo/img2/亭阁.png" onerror="this.onerror=null;this.src='https://api.vvhan.com/api/acgimg'" alt="京都读后感"></a><div class="content"><a class="title" href="/posts/bad5c14e/" title="京都读后感">京都读后感</a><time datetime="2021-05-19T00:00:00.000Z" title="发表于 2021-05-19 00:00:00">2021-05-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/2ad933a0/" title="拆机翻车指南("><img src="https://npm.elemecdn.com/youmingsama_pic@1.0.0/pivcgame//img/贞德.jpg" onerror="this.onerror=null;this.src='https://api.vvhan.com/api/acgimg'" alt="拆机翻车指南("></a><div class="content"><a class="title" href="/posts/2ad933a0/" title="拆机翻车指南(">拆机翻车指南(</a><time datetime="2021-05-13T00:00:00.000Z" title="发表于 2021-05-13 00:00:00">2021-05-13</time></div></div></div></div><div class="card-widget card-weather" style="width:100%,height:270px"><div class="item-headline"><i class="fas fa-cloud-sun"></i><span>天气</span></div><div id="he-plugin-standard"></div><script>WIDGET = {
+  "CONFIG": {
+    "layout": "2",
+    "width": 270,
+    "height": 270,
+    "background": "5",
+    "dataColor": "000000",
+    "key": "170186298b184055bafbb4d30e4322a7"
+  }
+}</script><script src="https://widget.qweather.net/standard/static/js/he-standard-common.js?v=2.0"></script></div></div></div></main><footer id="footer" style="background: transparent"><div id="footer-wrap"><div class="social-icons"></div><div class="copyright">©2022 - 2023 By youmingsama</div><div class="framework-info"></div><div class="footer_custom_text" id="footer_custom_text">这个小破站已运行{y}年{d}天{s}时{min}分{sec}秒</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"></div><div id="rightside-config-show"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">简</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><a id="switch_commentBarrage" href="javascript:switchCommentBarrage();" rel="external nofollow noreferrer" title="开关弹幕"><i class="iconfont icon-danmu"></i></a><a id="opensettings" href="javascript:toggleWinbox();" rel="external nofollow noreferrer" title="博客设置"><i class="fa fa-wrench"></i></a><button id="go-up" type="button" title="回到顶部" onclick="rmf.scrollToTop()"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"></div></div><hr><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div class="js-pjax" id="rightMenu"><div class="rightMenu-group rightMenu-small"><a class="rightMenu-item" href="javascript:window.history.back();" rel="external nofollow noreferrer"><i class="fa fa-arrow-left"></i></a><a class="rightMenu-item" href="javascript:window.history.forward();" rel="external nofollow noreferrer"><i class="fa fa-arrow-right"></i></a><a class="rightMenu-item" href="javascript:window.location.reload();" rel="external nofollow noreferrer"><i class="fa fa-refresh"></i></a><a class="rightMenu-item" href="javascript:rmf.scrollToTop();" rel="external nofollow noreferrer"><i class="fa fa-arrow-up"></i></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-text"><a class="rightMenu-item" href="javascript:rmf.copySelect();" rel="external nofollow noreferrer"><i class="fa fa-copy"></i><span>复制</span></a><a class="rightMenu-item" href="javascript:window.open(&quot;https://www.baidu.com/s?wd=&quot;+window.getSelection().toString());window.location.reload();" rel="external nofollow noreferrer"><i class="iconfont icon-baidu"></i><span>百度搜索</span></a><a class="rightMenu-item" href="javascript:rmf.searchinThisPage();" rel="external nofollow noreferrer"><i class="fas fa-search"></i><span>站内搜索</span></a><a class="rightMenu-item" href="#post-comment" onclick="rmf.yinyong()"><i class="fa-solid fa-message"></i><span>引用文本评论</span></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-too"><a class="rightMenu-item" href="javascript:window.open(window.getSelection().toString());window.location.reload();" rel="external nofollow noreferrer"><i class="fa fa-link"></i><span>转到链接</span></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-paste"><a class="rightMenu-item" href="javascript:rmf.paste()" rel="external nofollow noreferrer"><i class="fa fa-copy"></i><span>粘贴</span></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-post"><a class="rightMenu-item" href="#post-comment"><i class="fas fa-comment"></i><span>空降评论</span></a><a class="rightMenu-item" href="javascript:switchCommentBarrage()" rel="external nofollow noreferrer"><i class="iconfont icon-danmu"></i><span>开/关评论弹幕</span></a><a class="rightMenu-item" href="javascript:rmf.copyWordsLink()" rel="external nofollow noreferrer"><i class="fa fa-link"></i><span>复制本文地址</span></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-to"><a class="rightMenu-item" href="javascript:rmf.openWithNewTab()" rel="external nofollow noreferrer"><i class="fa fa-window-restore"></i><span>新窗口打开</span></a><a class="rightMenu-item" id="menu-too" href="javascript:rmf.open()" rel="external nofollow noreferrer"><i class="fa fa-link"></i><span>转到链接</span></a><a class="rightMenu-item" href="javascript:rmf.copyLink()" rel="external nofollow noreferrer"><i class="fa fa-copy"></i><span>复制链接</span></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-img"><a class="rightMenu-item" href="javascript:rmf.saveAs()" rel="external nofollow noreferrer"><i class="fa fa-download"></i><span>保存图片</span></a><a class="rightMenu-item" href="javascript:rmf.openWithNewTab()" rel="external nofollow noreferrer"><i class="fa fa-window-restore"></i><span>在新窗口打开</span></a><a class="rightMenu-item" href="javascript:rmf.click()" rel="external nofollow noreferrer"><i class="fa fa-arrows-alt"></i><span>全屏显示</span></a><a class="rightMenu-item" href="javascript:rmf.copyLink()" rel="external nofollow noreferrer"><i class="fa fa-copy"></i><span>复制图片链接</span></a></div><div class="rightMenu-group rightMenu-line"><a class="rightMenu-item" href="javascript:toRandomPost()" rel="external nofollow noreferrer"><i class="fa fa-paper-plane"></i><span>随便逛逛</span></a><a class="rightMenu-item" href="javascript:rmf.switchDarkMode();" rel="external nofollow noreferrer"><i class="fa fa-moon"></i><span>昼夜切换</span></a><a class="rightMenu-item" href="javascript:rmf.translate();" rel="external nofollow noreferrer"><i class="iconfont icon-fanti"></i><span>繁简转换</span></a><a class="rightMenu-item" href="javascript:rmf.switchReadMode();" rel="external nofollow noreferrer"><i class="fa fa-book"></i><span>阅读模式</span></a><a class="rightMenu-item" href="javascript:pjax.loadUrl(&quot;/license/&quot;);" rel="external nofollow noreferrer"><i class="fa fa-info-circle"></i><span>版权声明</span></a><a class="rightMenu-item" href="javascript:toggleWinbox();" rel="external nofollow noreferrer"><i class="fas fa-cog"></i><span>博客设置</span></a><a class="rightMenu-item" href="javascript:fullScreen();" rel="external nofollow noreferrer"><i class="fas fa-expand"></i><span>进入全屏</span></a></div></div><div class="js-pjax" id="settingWindow"><span class="setting-title"> <span id="stt">控制面板</span><a id="close-console" onclick="toggleWinbox();">×</a></span><button id="backer" onclick="$('.asetting').hide();$('.settingx').show();$('#backer').hide()"><i class="fa fa-chevron-left"></i><span>返回</span></button><div class="settings"><div id="setting-buttons"><button class="settingx" onclick="$('#theme-settings').show();$('.settingx').hide();$('#backer').show();"><i class="fas fa-layer-group"></i><span>外观</span></button><button class="settingx" onclick="$('#font-settings').show();$('.settingx').hide();$('#backer').show();"><i class="fa fa-font"></i><span>字体</span></button><button class="settingx" onclick="$('#background-settings').show();$('.settingx').hide();$('#backer').show();"><i class="far fa-image"></i><span>背景</span></button><button class="settingx" onclick="$('#con-echarts').show();$('.settingx').hide();$('#backer').show();var evt = document.createEvent(&quot;HTMLEvents&quot;);evt.initEvent(&quot;resize&quot;, false, false);window.dispatchEvent(evt);"><i class="fas fa-chart-pie"></i><span>统计</span></button><button class="settingx" onclick="$('#con-abouts').show();$('.settingx').hide();$('#backer').show();"><i class="fa fa-cloud-download"></i><span>关于</span></button></div><div id="setting-hides"><div class="asetting" id="theme-settings"><h2 class="content-head">性能设置</h2><p></p><div class="content" style="display:flex"><input id="blur" type="checkbox" onclick="setBlur()"><div class="content-text">禁用模糊效果</div></div><div class="content" style="display:flex"><input id="fpson" type="checkbox" onclick="fpssw()" style="flex-shrink: 0"><div class="content-text"><span>开启帧率检测（</span><a href="javascript:window.location.reload()" rel="external nofollow noreferrer">刷新</a><span>后生效）</span></div></div><p></p><p></p><h2 class="content-head">主题设置</h2><div class="content" style="display:flex"><input id="hideAplayer" type="checkbox" onclick="toggleAplayer()"><div class="content-text">显示aplayer</div></div><div class="content" style="display:flex"><input id="hideSakura" type="checkbox" onclick="toggleSakuras()"><div class="content-text">落樱特效</div></div><div class="content" style="display:flex"><input id="autoTheme" type="checkbox" onclick="toggleAutoTheme()"><div class="content-text">明暗模式自动切换</div></div><div class="content" style="display:flex"><input id="autoColor" type="checkbox" onclick="autoColor()"><div class="content-text">自动主题色（跟随文章封面）</div></div>未完工<div class="content" style="display:flex"><input id="hideAplayer" type="checkbox" onclick="toggleNav()"><div class="content-text">固定导航栏</div></div>###<div class="content" style="display:flex"><button class="content-button" onclick="switchTheme()">切换主题</button></div><p></p><p></p><h3 class="content-head">主题色</h3><div class="content" id="themeColorSettings" style="display:flex"><input id="red" type="radio" name="colors" onclick="setColor('red')"><input id="orange" type="radio" name="colors" onclick="setColor('orange')"><input id="yellow" type="radio" name="colors" onclick="setColor('yellow')"><input id="green" type="radio" name="colors" onclick="setColor('green')"><input id="blue" type="radio" name="colors" onclick="setColor('blue')"><input id="heoblue" type="radio" name="colors" onclick="setColor('heoblue')"><input id="darkblue" type="radio" name="colors" onclick="setColor('darkblue')"><input id="purple" type="radio" name="colors" onclick="setColor('purple')"><input id="pink" type="radio" name="colors" onclick="setColor('pink')" checked="checked"><input id="black" type="radio" name="colors" onclick="setColor('black')"><input id="blackgray" type="radio" name="colors" onclick="setColor('blackgray')"></div><p></p></div><div class="asetting" id="font-settings"><h2 class="content-head">字体设置</h2><p id="swfs"><a class="swf" href="javascript:;" rel="noopener external nofollow" style="font-family:'HYTMR'!important;color:black" onclick="setFont('HYTMR')">汉仪唐美人</a><br><a class="swf" href="javascript:;" rel="noopener external nofollow" style="font-family:'HYPailou'!important;color:black" onclick="setFont('HYPailou')">汉仪新蒂牌楼</a><br><a class="swf" href="javascript:;" rel="noopener external nofollow" style="font-family:'FZXJLJ'!important;color:black" onclick="setFont('FZXJLJ')">方正金陵体</a><br><a class="swf" href="javascript:;" rel="noopener external nofollow" style="font-family:'FZXS'!important;color:black" onclick="setFont('FZXS')">方正像素体</a><br><a class="swf" href="javascript:;" rel="noopener external nofollow" style="font-family:'ZhuZiAWan'!important;color:black" onclick="setFont('ZhuZiAWan')">筑紫A丸ゴシック</a><br><a class="swf" href="javascript:;" rel="noopener external nofollow" style="font-family:'FZODZK'!important;color:black" onclick="setFont('FZODZK')">方正欧蝶正楷</a><br><a class="swf" href="javascript:;" rel="noopener external nofollow" style="font-family:'Source Serif'!important;color:black" onclick="setFont('Source Serif')">思源宋体</a><br><a class="swf" href="javascript:;" rel="noopener external nofollow" style="font-family:'Source Sans'!important;color:black" onclick="setFont('Source Sans')">思源黑体</a><br><a class="swf" href="javascript:;" rel="noopener external nofollow" style="font-family:-apple-system, IBM Plex Mono ,monosapce,'微软雅黑', sans-serif;" onclick="setFont('main')">系统默认</a><br></p></div><div class="asetting" id="background-settings"><h2 style="margin-left:10px">背景设置</h2><div></div><span>注意:切换背景功能仅在Acrylic主题中生效，在Simple主题中无效</span><button class="content-button" onclick="localStorage.removeItem('blogbg');location.reload();"><i class="fa-solid fa-arrows-rotate"></i><span> 点我恢复默认背景</span></button><button class="content-button" onclick="switchTheme()">切换主题</button><h3>图片（手机）</h3><div class="bgbox"><a class="pimgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2022/08/30/630d6d4d539a5.webp)" onclick="changeBg('url(https://bu.dusays.com/2022/08/30/630d6d4d539a5.webp)')"></a><a class="pimgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2022/08/30/630d6d4e15c9d.webp)" onclick="changeBg('url(https://bu.dusays.com/2022/08/30/630d6d4e15c9d.webp)')"></a><a class="pimgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2022/08/30/630d6f22c03c6.webp)" onclick="changeBg('url(https://bu.dusays.com/2022/08/30/630d6f22c03c6.webp)')"></a><a class="pimgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://pic.youmingsama.fun/blog_pic/ytm.webp)" onclick="changeBg('url(https://pic.youmingsama.fun/blog_pic/ytm.webp)')"></a><a class="pimgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2022/08/30/630d6d50b439b.webp)" onclick="changeBg('url(https://bu.dusays.com/2022/08/30/630d6d50b439b.webp)')"></a></div><h3>图片（电脑）</h3><div class="bgbox"><a class="imgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2022/08/30/630d6d5574d0e.webp)" onclick="changeBg('url(https://bu.dusays.com/2022/08/30/630d6d5574d0e.webp)')"></a><a class="imgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2022/08/30/630d6d529adf9.webp)" onclick="changeBg('url(https://bu.dusays.com/2022/08/30/630d6d529adf9.webp)')"></a><a class="imgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2022/08/30/630d6d5159b31.webp)" onclick="changeBg('url(https://bu.dusays.com/2022/08/30/630d6d5159b31.webp)')"></a><a class="imgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2022/08/30/630d718bbeef6.webp)" onclick="changeBg('url(https://bu.dusays.com/2022/08/30/630d718bbeef6.webp)')"></a><a class="imgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2022/08/30/630d72f237d19.jpg)" onclick="changeBg('url(https://bu.dusays.com/2022/08/30/630d72f237d19.jpg)')"></a><a class="imgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2022/08/30/630d72f2032c8.jpg)" onclick="changeBg('url(https://bu.dusays.com/2022/08/30/630d72f2032c8.jpg)')"></a><a class="imgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2021/12/01/7792ff0082ec4.jpg)" onclick="changeBg('url(https://bu.dusays.com/2021/12/01/7792ff0082ec4.jpg)')"></a><a class="imgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2022/08/30/630d72ee6d4f3.png)" onclick="changeBg('url(https://bu.dusays.com/2022/08/30/630d72ee6d4f3.png)')"></a><a class="imgbox" href="javascript:;" rel="noopener external nofollow" style="background-image:url(https://bu.dusays.com/2022/08/30/630d72ed76532.jpg)" onclick="changeBg('url(https://bu.dusays.com/2022/08/30/630d72ed76532.jpg)')"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://bu.dusays.com/2022/09/17/6324aea549be6.webp)')"><img src="https://bu.dusays.com/2022/09/17/6324aea549be6.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://bu.dusays.com/2022/09/17/6324aec701a68.webp)')"><img src="https://bu.dusays.com/2022/09/17/6324aec701a68.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://bu.dusays.com/2022/09/17/6324aef4a5543.webp)')"><img src="https://bu.dusays.com/2022/09/17/6324aef4a5543.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://bu.dusays.com/2022/09/17/6324af3622884.webp)')"><img src="https://bu.dusays.com/2022/09/17/6324af3622884.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/5.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/5.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/6.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/6.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/7.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/7.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://bu.dusays.com/2022/12/08/6391b77ed767c.png)')"><img src="https://bu.dusays.com/2022/12/08/6391b77ed767c.png"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/9.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/9.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/10.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/10.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/11.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/11.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/12.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/12.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/13.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/13.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/14.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/14.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/15.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/15.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/16.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/16.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/17.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/17.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/18.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/18.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/19.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/19.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/20.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/20.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/21.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/21.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/22.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/22.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/23.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/23.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/24.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/24.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/25.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/25.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/26.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/26.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/27.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/27.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/28.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/28.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/29.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/29.webp"></a><a class="imgbox" href="javascript:;" rel="external nofollow noreferrer" onclick="changeBg('url(https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/30.webp)')"><img src="https://cdn.afdelivr.top/npm/saiodgm-api@1.0.1/randomimg-my/30.webp"></a></div><h3>渐变色</h3><div class="bgbox"><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: linear-gradient(to right, #eecda3, #ef629f)" onclick="changeBg('linear-gradient(to right, #eecda3, #ef629f)')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: linear-gradient(to right, #B7D31E, #42CE1E)" onclick="changeBg('linear-gradient(to right, #B7D31E, #42CE1E)')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: linear-gradient(to right, #06DE86, #06A5DE)" onclick="changeBg('linear-gradient(to right, #06DE86, #06A5DE)')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: linear-gradient(to right, #189BC4, #183DC4)" onclick="changeBg('linear-gradient(to right, #189BC4, #183DC4)')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: linear-gradient(to right, #C018C4, #C41818)" onclick="changeBg('linear-gradient(to right, #C018C4, #C41818)')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: linear-gradient(to right, #8B00BB, #030094)" onclick="changeBg('linear-gradient(to right, #8B00BB, #030094)')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: linear-gradient(to right, #eecda3, #ef629f)" onclick="changeBg('linear-gradient(to right, #eecda3, #ef629f)')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: linear-gradient(90deg, #ffd7e4 0%, #c8f1ff 100%)" onclick="changeBg('linear-gradient(90deg, #ffd7e4 0%, #c8f1ff 100%)')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: linear-gradient(45deg, #e5737b, #c6999e, #96b9c2, #00d6e8)" onclick="changeBg('linear-gradient(45deg, #e5737b, #c6999e, #96b9c2, #00d6e8)')"></a></div><h3>纯色</h3><div class="bgbox"><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: #7D9D9C" onclick="changeBg('#7D9D9C')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: #fff" onclick="changeBg('#fff')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: #49A6E9" onclick="changeBg('#49A6E9')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: #F7CEFF" onclick="changeBg('#F7CEFF')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: #FFFFCE" onclick="changeBg('#FFFFCE')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: #CFFFCE" onclick="changeBg('#CFFFCE')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: #17EFE9" onclick="changeBg('#17EFE9')"></a><a class="box" href="javascript:;" rel="noopener external nofollow" style="background: #9F17EF" onclick="changeBg('#9F17EF')"></a></div></div><div class="asetting" id="con-echarts"><h1>文章统计</h1><h2>监控</h2><iframe src="https://status.yisous.xyz" width="100%" height="500px" frameborder="no"></iframe><h2>文章统计</h2><script src="https://npm.elemecdn.com/echarts@4.9.0/dist/echarts.min.js"></script><div id="posts-chart" data-start="2021-01" style="border-radius: 8px; height: 300px; padding: 10px;"></div>
+  <script id="postsChart">
+    var color = document.documentElement.getAttribute('data-theme') === 'light' ? '#4c4948' : 'rgba(255,255,255,0.7)'
+    var postsChart = echarts.init(document.getElementById('posts-chart'), 'light');
+    var postsOption = {
+      title: {
+        text: '文章发布统计图',
+        x: 'center',
+        textStyle: {
+          color: color
+        }
+      },
+      tooltip: {
+        trigger: 'axis'
+      },
+      xAxis: {
+        name: '日期',
+        type: 'category',
+        boundaryGap: false,
+        nameTextStyle: {
+          color: color
+        },
+        axisTick: {
+          show: false
+        },
+        axisLabel: {
+          show: true,
+          color: color
+        },
+        axisLine: {
+          show: true,
+          lineStyle: {
+            color: color
+          }
+        },
+        data: ["2021-01","2021-02","2021-03","2021-04","2021-05","2021-06","2021-07","2021-08","2021-09","2021-10","2021-11","2021-12","2022-01","2022-02","2022-03","2022-04","2022-05","2022-06","2022-07","2022-08","2022-09","2022-10","2022-11","2022-12","2023-01","2023-02","2023-03","2023-04","2023-05","2023-06"]
+      },
+      yAxis: {
+        name: '文章篇数',
+        type: 'value',
+        nameTextStyle: {
+          color: color
+        },
+        splitLine: {
+          show: false
+        },
+        axisTick: {
+          show: false
+        },
+        axisLabel: {
+          show: true,
+          color: color
+        },
+        axisLine: {
+          show: true,
+          lineStyle: {
+            color: color
+          }
+        }
+      },
+      series: [{
+        name: '文章篇数',
+        type: 'line',
+        smooth: true,
+        lineStyle: {
+            width: 0
+        },
+        showSymbol: false,
+        itemStyle: {
+          opacity: 1,
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+            offset: 0,
+            color: 'rgba(128, 255, 165)'
+          },
+          {
+            offset: 1,
+            color: 'rgba(1, 191, 236)'
+          }])
+        },
+        areaStyle: {
+          opacity: 1,
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+            offset: 0,
+            color: 'rgba(128, 255, 165)'
+          }, {
+            offset: 1,
+            color: 'rgba(1, 191, 236)'
+          }])
+        },
+        data: [0,1,2,3,2,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0],
+        markLine: {
+          data: [{
+            name: '平均值',
+            type: 'average',
+            label: {
+              color: color
+            }
+          }]
+        }
+      }]
+    };
+    postsChart.setOption(postsOption);
+    window.addEventListener('resize', () => { 
+      postsChart.resize();
+    });
+    postsChart.on('click', 'series', (event) => {
+      if (event.componentType === 'series') window.location.href = '/archives/' + event.name.replace('-', '/');
+    });
+  </script><div id="tags-chart" data-length="10" style="border-radius: 8px; height: 300px; padding: 10px;"></div>
+  <script id="tagsChart">
+    var color = document.documentElement.getAttribute('data-theme') === 'light' ? '#4c4948' : 'rgba(255,255,255,0.7)'
+    var tagsChart = echarts.init(document.getElementById('tags-chart'), 'light');
+    var tagsOption = {
+      title: {
+        text: 'Top 10 标签统计图',
+        x: 'center',
+        textStyle: {
+          color: color
+        }
+      },
+      tooltip: {},
+      xAxis: {
+        name: '标签',
+        type: 'category',
+        nameTextStyle: {
+          color: color
+        },
+        axisTick: {
+          show: false
+        },
+        axisLabel: {
+          show: true,
+          color: color,
+          interval: 0
+        },
+        axisLine: {
+          show: true,
+          lineStyle: {
+            color: color
+          }
+        },
+        data: ["data structure","算法","碎碎念","不知道在讲啥","游戏","golang","歌歌","物语系列","网络安全","buggggg"]
+      },
+      yAxis: {
+        name: '文章篇数',
+        type: 'value',
+        splitLine: {
+          show: false
+        },
+        nameTextStyle: {
+          color: color
+        },
+        axisTick: {
+          show: false
+        },
+        axisLabel: {
+          show: true,
+          color: color
+        },
+        axisLine: {
+          show: true,
+          lineStyle: {
+            color: color
+          }
+        }
+      },
+      series: [{
+        name: '文章篇数',
+        type: 'bar',
+        data: [{"name":"data structure","value":12,"path":"tags/data-structure/"},{"name":"算法","value":6,"path":"tags/算法/"},{"name":"碎碎念","value":3,"path":"tags/碎碎念/"},{"name":"不知道在讲啥","value":3,"path":"tags/不知道在讲啥/"},{"name":"游戏","value":2,"path":"tags/游戏/"},{"name":"golang","value":2,"path":"tags/golang/"},{"name":"歌歌","value":1,"path":"tags/歌歌/"},{"name":"物语系列","value":1,"path":"tags/物语系列/"},{"name":"网络安全","value":1,"path":"tags/网络安全/"},{"name":"buggggg","value":1,"path":"tags/buggggg/"},{"name":"蒟蒻弱弱弱弱弱","value":1,"path":"tags/蒟蒻弱弱弱弱弱/"},{"name":"code","value":1,"path":"tags/code/"},{"name":"cloudflare","value":1,"path":"tags/cloudflare/"},{"name":"http","value":1,"path":"tags/http/"},{"name":"java!!!","value":1,"path":"tags/java/"},{"name":"多线程","value":1,"path":"tags/多线程/"},{"name":"rust","value":1,"path":"tags/rust/"},{"name":"算法啦","value":1,"path":"tags/算法啦/"},{"name":"jpg","value":1,"path":"tags/jpg/"},{"name":"翻车","value":1,"path":"tags/翻车/"},{"name":"待定捏","value":1,"path":"tags/待定捏/"},{"name":"含泪入手","value":1,"path":"tags/含泪入手/"},{"name":"水月雨","value":1,"path":"tags/水月雨/"},{"name":"谷歌","value":1,"path":"tags/谷歌/"},{"name":"文学","value":1,"path":"tags/文学/"}],
+        itemStyle: {
+          borderRadius: [5, 5, 0, 0],
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+            offset: 0,
+            color: 'rgba(128, 255, 165)'
+          },
+          {
+            offset: 1,
+            color: 'rgba(1, 191, 236)'
+          }])
+        },
+        emphasis: {
+          itemStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+              offset: 0,
+              color: 'rgba(128, 255, 195)'
+            },
+            {
+              offset: 1,
+              color: 'rgba(1, 211, 255)'
+            }])
+          }
+        },
+        markLine: {
+          data: [{
+            name: '平均值',
+            type: 'average',
+            label: {
+              color: color
+            }
+          }]
+        }
+      }]
+    };
+    tagsChart.setOption(tagsOption);
+    window.addEventListener('resize', () => { 
+      tagsChart.resize();
+    });
+    tagsChart.on('click', 'series', (event) => {
+      if(event.data.path) window.location.href = '/' + event.data.path;
+    });
+  </script><div id="categories-chart" data-parent="true" style="border-radius: 8px; height: 300px; padding: 10px;"></div>
+  <script id="categoriesChart">
+    var color = document.documentElement.getAttribute('data-theme') === 'light' ? '#4c4948' : 'rgba(255,255,255,0.7)'
+    var categoriesChart = echarts.init(document.getElementById('categories-chart'), 'light');
+    var categoryParentFlag = false
+    var categoriesOption = {
+      title: {
+        text: '文章分类统计图',
+        x: 'center',
+        textStyle: {
+          color: color
+        }
+      },
+      legend: {
+        top: 'bottom',
+        data: ["bug的炼金工坊","print*,\"hello world!!!\"","摸鱼大师","碎碎念","Roman","游戏","呐！","文学"],
+        textStyle: {
+          color: color
+        }
+      },
+      tooltip: {
+        trigger: 'item'
+      },
+      series: []
+    };
+    categoriesOption.series.push(
+      categoryParentFlag ? 
+      {
+        nodeClick :false,
+        name: '文章篇数',
+        type: 'sunburst',
+        radius: ['15%', '90%'],
+        center: ['50%', '55%'],
+        sort: 'desc',
+        data: [{"name":"bug的炼金工坊","value":15,"path":"categories/bug的炼金工坊/","id":"clj8925wa000jw9oo94xpfe3b","parentId":"0"},{"name":"print*,\"hello world!!!\"","value":8,"path":"categories/print-hello-world/","id":"clj8925wt002aw9oo38fp86bs","parentId":"0"},{"name":"摸鱼大师","value":4,"path":"categories/摸鱼大师/","id":"clj8925x2003ew9oo155hh2xp","parentId":"0"},{"name":"碎碎念","value":3,"path":"categories/碎碎念/","id":"clj8925x60042w9oo53ek73oy","parentId":"0"},{"name":"Roman","value":2,"path":"categories/Roman/","id":"clj8925w00004w9oohtvk9mbk","parentId":"0"},{"name":"游戏","value":2,"path":"categories/游戏/","id":"clj8925wq0022w9ooerr17492","parentId":"0"},{"name":"呐！","value":1,"path":"categories/呐！/","id":"clj8925x00035w9oo7qdmdeh3","parentId":"0"},{"name":"文学","value":1,"path":"categories/文学/","id":"clj8925x8004ew9oo0gqs59ox","parentId":"0"}],
+        itemStyle: {
+          borderColor: '#fff',
+          borderWidth: 2,
+          emphasis: {
+            focus: 'ancestor',
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(255, 255, 255, 0.5)'
+          }
+        }
+      }
+      :
+      {
+        name: '文章篇数',
+        type: 'pie',
+        radius: [30, 80],
+        roseType: 'area',
+        label: {
+          color: color,
+          formatter: '{b} : {c} ({d}%)'
+        },
+        data: [{"name":"bug的炼金工坊","value":15,"path":"categories/bug的炼金工坊/","id":"clj8925wa000jw9oo94xpfe3b","parentId":"0"},{"name":"print*,\"hello world!!!\"","value":8,"path":"categories/print-hello-world/","id":"clj8925wt002aw9oo38fp86bs","parentId":"0"},{"name":"摸鱼大师","value":4,"path":"categories/摸鱼大师/","id":"clj8925x2003ew9oo155hh2xp","parentId":"0"},{"name":"碎碎念","value":3,"path":"categories/碎碎念/","id":"clj8925x60042w9oo53ek73oy","parentId":"0"},{"name":"Roman","value":2,"path":"categories/Roman/","id":"clj8925w00004w9oohtvk9mbk","parentId":"0"},{"name":"游戏","value":2,"path":"categories/游戏/","id":"clj8925wq0022w9ooerr17492","parentId":"0"},{"name":"呐！","value":1,"path":"categories/呐！/","id":"clj8925x00035w9oo7qdmdeh3","parentId":"0"},{"name":"文学","value":1,"path":"categories/文学/","id":"clj8925x8004ew9oo0gqs59ox","parentId":"0"}],
+        itemStyle: {
+          emphasis: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(255, 255, 255, 0.5)'
+          }
+        }
+      }
+    )
+    categoriesChart.setOption(categoriesOption);
+    window.addEventListener('resize', () => { 
+    categoriesChart.resize();
+    })
+    categoriesChart.on('click', 'series', (event) => {
+      if(event.data.path) window.location.href = '/' + event.data.path;
+    });
+  </script><h2>访问统计显示不出来请刷新页面<script data-pjax="" id="LA-DATA-WIDGET" crossorigin="anonymous" charset="UTF-8" src="https://v6-widget.51.la/v6/JnlSnWLD7XChjrlx/quote.js?theme=0&amp;col=true&amp;f=12&amp;badge=icon_0&amp;icon=center"></script></h2></div><div class="asetting" id="con-abouts"><h1>关于</h1>Hexo-theme-Acryple v1.0.100<br>Ariasaka Console v0.01<br>欢迎<a href="/messageboard">反馈！</a></div></div></div><div id="setting-sidesl"><button class="reSettings con-rightside" title="恢复默认设置"><i class="fa fa-repeat"></i></button><div id="setting-sides"><button class="con-rightside" title="繁简转换" id="con-translate" onclick="javascript:rmf.translate();"><i class="iconfont icon-fanti"></i></button><button class="con-rightside" title="昼夜切换" id="con-mode" onclick="rmf.switchDarkMode();"><i class="fa fa-adjust"></i></button><button class="con-rightside" title="阅读模式" id="con-reading" onclick="rmf.switchReadMode();"><i class="fa fa-book-open"></i></button><button class="con-rightside" title="单双栏切换" id="con-toggleaside" onclick="toggleAside();"><i class="fas fa-arrows-alt-h"></i></button><button class="con-rightside" title="左右栏切换" id="con-toggleleftaside" onclick="switchAside();"><i class="fas fa-binoculars"></i></button><button class="con-rightside" title="开关弹幕" id="con-barrage" onclick="switchCommentBarrage();"><i class="iconfont icon-danmu"></i></button><button class="con-rightside" title="全屏" id="con-fullscreen" onclick="fullScreen();"><i class="fas fa-expand"></i></button></div></div></div><!-- hexo injector body_end start --><script data-pjax="">
+  function butterfly_swiper_injector_config(){
+    var parent_div_git = document.getElementsByClassName('swiper-div')[0];
+    var item_html = '<div class="recent-post-item" style="height: auto;width: 100%"><div class="blog-slider swiper-container-fade swiper-container-horizontal" id="swiper_container"><div class="blog-slider__wrp swiper-wrapper" style="transition-duration: 0ms;"><div class="blog-slider__item swiper-slide" style="background:url(https://pic.youmingsama.fun/kksk/dajiejie.jpg);border-radius:12px;opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><div class="blog-slider__content"><span class="blog-slider__code">2022-11-08</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;posts/e0da0190/&quot;);" href="javascript:void(0);" rel="external nofollow noreferrer" alt="">rust学习资源与进阶资料</a><div class="blog-slider__text">再怎么看我也不知道怎么描述它的啦！</div></div></div><div class="blog-slider__item swiper-slide" style="background:url(https://npm.elemecdn.com/youmingsama_pic@1.0.0/PicGo_1/img2/明日方舟.png);border-radius:12px;opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><div class="blog-slider__content"><span class="blog-slider__code">2021-03-07</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;posts/ea3732f5/&quot;);" href="javascript:void(0);" rel="external nofollow noreferrer" alt="">第一次的Cloudflare worker</a><div class="blog-slider__text">再怎么看我也不知道怎么描述它的啦！</div></div></div></div><div class="blog-slider__pagination swiper-pagination-clickable swiper-pagination-bullets"></div><div class="swiper-button-prev"></div><div class="swiper-button-next"></div></div></div>';
+    console.log('已挂载butterfly_swiper')
+    parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  var elist = 'undefined'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_swiper_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_swiper_injector_config();
+  }
+  </script><script defer="" src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/5.4.5/js/swiper.min.js"></script><script defer="" data-pjax="" src="https://npm.elemecdn.com/hexo-butterfly-swiper-lyx/lib/swiper_init.js"></script><script async="" src="//at.alicdn.com/t/c/font_2269988_gvntri7bk1r.js"></script><!-- hexo injector body_end end --><div><script src="https://npm.elemecdn.com/vue@2.6.11"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn1.tianli0.top/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="https://cdn1.tianli0.top/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/local-search.js"></script><script>window.addEventListener('DOMContentLoaded',function(){
+var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+    setTimeout(function(){document.getElementById('loading-box').classList.add("loadend")},700)
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+    document.getElementById('loading-box').classList.remove("loadend")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())} )
+window.addEventListener('pjax:start',function(){
+var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+    setTimeout(function(){document.getElementById('loading-box').classList.add("loadend")},700)
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+    document.getElementById('loading-box').classList.remove("loadend")
+
+  }
+}
+window.addEventListener('pjax:complete',preloader.endLoading())} )</script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn1.tianli0.top/npm/katex@latest/dist/katex.min.css"><script src="https://cdn1.tianli0.top/npm/katex@latest/dist/contrib/copy-tex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn1.tianli0.top/npm/katex@latest/dist/contrib/copy-tex.css"><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://tk.youmingsama.cn/',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://tk.youmingsama.cn/',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: true
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn1.tianli0.top/npm/twikoo@1.6.7/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !false) {
+    if (false) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script><script>var gitcalendar = new Vue({
+  el: '#gitcalendar',
+  data: {
+    simplemode: false,
+    user: 'youmingsama',
+    fixed: 'fixed',
+    px: 'px',
+    x: '',
+    y: '',
+    span1: '',
+    span2: '',
+    month: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+    monthchange: [],
+    oneyearbeforeday: '',
+    thisday: '',
+    amonthago: '',
+    aweekago: '',
+    weekdatacore: 0,
+    datacore: 0,
+    total: 0,
+    datadate: '',
+    data: [],
+    positionplusdata: [],
+    firstweek: [],
+    lastweek: [],
+    beforeweek: [],
+    thisweekdatacore: 0,
+    mounthbeforeday: 0,
+    mounthfirstindex: 0,
+    crispedges: 'crispedges',
+    thisdayindex: 0,
+    amonthagoindex: 0,
+    amonthagoweek: [],
+    firstdate: [],
+    first2date: [],
+    montharrbefore: [],
+    monthindex: 0,
+    color: ['#ebedf0', '#f1f8ff', '#dbedff', '#c8e1ff', '#79b8ff', '#2188ff', '#0366d6', '#005cc5', '#044289', '#032f62', '#05264c']
+  },
+  methods: {
+    selectStyle(data, event) {
+      document.querySelector('.angle-wrapper').style.display = 'block'
+      this.span1 = data.date;
+      this.span2 = data.count;
+      this.x = event.clientX - 100;
+      this.y = event.clientY - 60
+    },
+    outStyle() {
+      document.querySelector('.angle-wrapper').style.display = 'none'
+    },
+    thiscolor(x) {
+      if (x === 0) {
+        let i = parseInt(x / 2);
+        return this.color[0]
+      } else if (x < 2) {
+        return this.color[1]
+      } else if (x < 20) {
+        let i = parseInt(x / 2);
+        return this.color[i]
+      } else {
+        return this.color[9]
+      }
+    },
+  }
+});
+var apiurl = 'gcapi.yisous.xyz' ? 'https://gcapi.yisous.xyz/api?' : 'https://githubapi.ryanchristian.dev/user/'
+var githubapiurl = apiurl + gitcalendar.user;
+//canvas绘图
+function responsiveChart() {
+  let c = document.getElementById("gitcanvas");
+  if (c) {
+    let cmessage = document.getElementById("gitmessage");
+    let ctx = c.getContext("2d");
+    c.width = document.getElementById("gitcalendarcanvasbox").offsetWidth;
+    let linemaxwitdh = 0.96 * c.width / gitcalendar.data.length;
+    c.height = 9 * linemaxwitdh;
+    let lineminwitdh = 0.8 * linemaxwitdh;
+    let setposition = {
+      x: 0.02 * c.width,
+      y: 0.025 * c.width
+    };
+    for (let week in gitcalendar.data) {
+      weekdata = gitcalendar.data[week];
+      for (let day in weekdata) {
+        let dataitem = {
+          date: "",
+          count: "",
+          x: 0,
+          y: 0
+        };
+        gitcalendar.positionplusdata.push(dataitem);
+        ctx.fillStyle = gitcalendar.thiscolor(weekdata[day].count);
+        setposition.y = Math.round(setposition.y * 100) / 100;
+        dataitem.date = weekdata[day].date;
+        dataitem.count = weekdata[day].count;
+        dataitem.x = setposition.x;
+        dataitem.y = setposition.y;
+        ctx.fillRect(setposition.x, setposition.y, lineminwitdh, lineminwitdh);
+        setposition.y = setposition.y + linemaxwitdh
+      };
+      setposition.y = 0.025 * c.width;
+      setposition.x = setposition.x + linemaxwitdh
+    };
+    ctx.font = "600  Arial";
+    ctx.fillStyle = '#aaa';
+    ctx.fillText("日", 0, 1.9 * linemaxwitdh);
+    ctx.fillText("二", 0, 3.9 * linemaxwitdh);
+    ctx.fillText("四", 0, 5.9 * linemaxwitdh);
+    ctx.fillText("六", 0, 7.9 * linemaxwitdh);
+    let monthindexlist = c.width / 24;
+    for (let index in gitcalendar.monthchange) {
+      ctx.fillText(gitcalendar.monthchange[index], monthindexlist, 0.7 * linemaxwitdh);
+      monthindexlist = monthindexlist + c.width / 12
+    };
+    cmessage.onmousemove = function(event) {
+      document.querySelector('.angle-wrapper').style.display = 'none'
+    };
+    c.onmousemove = function(event) {
+      document.querySelector('.angle-wrapper').style.display = 'none'
+      getMousePos(c, event);
+    };
+
+    function getMousePos(canvas, event) {
+      var rect = canvas.getBoundingClientRect();
+      var x = event.clientX - rect.left * (canvas.width / rect.width);
+      var y = event.clientY - rect.top * (canvas.height / rect.height);
+      //console.log("x:"+x+",y:"+y);
+      for (let item of gitcalendar.positionplusdata) {
+        let lenthx = x - item.x;
+        let lenthy = y - item.y;
+        //console.log(lenthx,lenthy);
+        if (0 < lenthx && lenthx < lineminwitdh) {
+          if (0 < lenthy && lenthy < lineminwitdh) {
+            //console.log(item.date,item.count)
+            document.querySelector('.angle-wrapper').style.display = 'block'
+            gitcalendar.span1 = item.date;
+            gitcalendar.span2 = item.count;
+            gitcalendar.x = event.clientX - 100;
+            gitcalendar.y = event.clientY - 60
+          }
+        }
+        //if(0< x - item.x <lineminwitdh&&0< y - item.y <lineminwitdh){
+        //console.log(item.count,item.date);
+        //}
+      }
+    }
+  }
+}
+//数据统计算法
+function addlastmonth() {
+  if (gitcalendar.thisdayindex === 0) {
+    thisweekcore(52);
+    thisweekcore(51);
+    thisweekcore(50);
+    thisweekcore(49);
+    thisweekcore(48);
+    gitcalendar.thisweekdatacore += gitcalendar.firstdate[6].count;
+    gitcalendar.amonthago = gitcalendar.firstdate[6].date
+  } else {
+    thisweekcore(52);
+    thisweekcore(51);
+    thisweekcore(50);
+    thisweekcore(49);
+    thisweek2core();
+    gitcalendar.amonthago = gitcalendar.first2date[gitcalendar.thisdayindex - 1].date
+  }
+};
+
+function thisweek2core() {
+  for (let i = gitcalendar.thisdayindex - 1; i < gitcalendar.first2date.length; i++) {
+    gitcalendar.thisweekdatacore += gitcalendar.first2date[i].count
+  }
+};
+
+function thisweekcore(index) {
+  for (let item of gitcalendar.data[index]) {
+    gitcalendar.thisweekdatacore += item.count
+  }
+};
+
+function addlastweek() {
+  for (let item of gitcalendar.lastweek) {
+    gitcalendar.weekdatacore += item.count
+  }
+};
+
+function addbeforeweek() {
+  for (let i = gitcalendar.thisdayindex; i < gitcalendar.beforeweek.length; i++) {
+    gitcalendar.weekdatacore += gitcalendar.beforeweek[i].count
+  }
+};
+
+function addweek(data) {
+  if (gitcalendar.thisdayindex === 6) {
+    gitcalendar.aweekago = gitcalendar.lastweek[0].date;
+    addlastweek()
+  } else {
+    lastweek = data.contributions[51];
+    gitcalendar.aweekago = lastweek[gitcalendar.thisdayindex + 1].date;
+    addlastweek();
+    addbeforeweek()
+  }
+}
+
+fetch(githubapiurl)
+  .then(data => data.json())
+  .then(data => {
+    gitcalendar.data = data.contributions;
+    gitcalendar.total = data.total;
+    gitcalendar.first2date = gitcalendar.data[48];
+    gitcalendar.firstdate = gitcalendar.data[47];
+    gitcalendar.firstweek = data.contributions[0];
+    gitcalendar.lastweek = data.contributions[52];
+    gitcalendar.beforeweek = data.contributions[51];
+    gitcalendar.thisdayindex = gitcalendar.lastweek.length - 1;
+    gitcalendar.thisday = gitcalendar.lastweek[gitcalendar.thisdayindex].date;
+    gitcalendar.oneyearbeforeday = gitcalendar.firstweek[0].date;
+    gitcalendar.monthindex = gitcalendar.thisday.substring(5, 7) * 1;
+    gitcalendar.montharrbefore = gitcalendar.month.splice(gitcalendar.monthindex, 12 - gitcalendar.monthindex);
+    gitcalendar.monthchange = gitcalendar.montharrbefore.concat(gitcalendar.month);
+    addweek(data);
+    addlastmonth();
+    responsiveChart();
+  })
+  .catch(function(error) {
+    console.log(error);
+  });
+
+//手机版更换为svg绘制
+if (document.getElementById("gitcalendarcanvasbox").offsetWidth < 500) {
+  gitcalendar.simplemode = false
+}
+
+//当改变窗口大小时重新绘制canvas
+window.onresize = function() {
+  if (gitcalendar.simplemode) responsiveChart()
+}
+
+//解决滚动滑轮时出现的标签显示
+window.onscroll = function() {
+  if (document.querySelector('.angle-wrapper')) {
+    document.querySelector('.angle-wrapper').style.display = 'none'
+  }
+};</script></div><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[图片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[链接]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[代码]') // replace code
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getComment = () => {
+    const runTwikoo = () => {
+      twikoo.getRecentComments({
+        envId: 'https://tk.youmingsama.cn/',
+        region: '',
+        pageSize: 6,
+        includeReply: true
+      }).then(function (res) {
+        const twikooArray = res.map(e => {
+          return {
+            'content': changeContent(e.comment),
+            'avatar': e.avatar,
+            'nick': e.nick,
+            'url': e.url + '#' + e.id,
+            'date': new Date(e.created).toISOString()
+          }
+        })
+
+        saveToLocal.set('twikoo-newest-comments', JSON.stringify(twikooArray), 10/(60*24))
+        generateHtml(twikooArray)
+      }).catch(function (err) {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.innerHTML= "无法获取评论，请确认相关配置是否正确"
+      })
+    }
+
+    if (typeof twikoo === 'object') {
+      runTwikoo()
+    } else {
+      getScript('https://cdn1.tianli0.top/npm/twikoo@1.6.7/dist/twikoo.all.min.js').then(runTwikoo)
+    }
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          const name = 'src'
+          result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'></a>`
+        }
+        
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}' title='${array[i].content}'>${array[i].content}</a>
+        <div class='name'><span>${array[i].nick} / </span><time datetime="${array[i].date}">${btf.diffDate(array[i].date, true)}</time></div>
+        </div></div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('twikoo-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><script type="text/javascript" src="/js/fixbugpjax.js"></script><script src="/js/sakura.js"></script><div class="aplayer no-destroy" data-id="7803928554" data-server="netease" data-type="playlist" data-listfolded="false" data-preload="metadata" data-theme="var(--lyx-theme)" data-fixed="true" data-autoplay="false" data-volume="0.1" style="z-index:514"> </div><script type="text/javascript" src="/js/aplayersave.js"></script><script type="text/javascript" src="/js/noie.js"></script><script src="https://cdn1.tianli0.top/npm/leancloud-storage@4.13.1/dist/av-min.js"></script><script src="https://cdn1.tianli0.top/gh/nextapps-de/winbox/dist/winbox.bundle.min.js"></script><script src="https://cdn1.tianli0.top/npm/sweetalert2@8"></script><script type="text/javascript" data-pjax="" src="/js/rightmenu.js"></script><script type="text/javascript" src="/js/copy.js"></script><script type="text/javascript" src="/js/welcome.js"></script><script type="text/javascript" src="https://cdn1.tianli0.top/npm/jquery@latest/dist/jquery.min.js"></script><script type="text/javascript" src="/js/resizeTop.js"></script><script type="text/javascript" src="/js/languages.js"></script><script type="text/javascript" src="/js/browser.js"></script><script type="text/javascript" src="/js/smooth-scrolling.js"></script><script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script><script type="text/javascript" src="/js/sitetime.js"></script><script type="text/javascript" src="/js/seo.js"></script><script data-pjax="" type="text/javascript" src="/js/heimu.js"></script><script data-pjax="" src="/js/bbtalklunbo.js"></script><script data-pjax="" src="/js/fps.js"></script><script data-pjax="" src="/js/dis.js"></script><script data-pjax="" src="/js/settings.js"></script><script src="/js/owo.js"></script><script src="/js/welcomeconsole.js"></script><script src="/js/hide.show.js"></script><script src="https://f.zhheo.com/JS-Heo/bb/showbb_in_index.js" data-pjax="" =""="" defer=""></script><script data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}" src="https://cdn.bootcss.com/pace/1.0.2/pace.min.js"></script><script data-pjax="" src="/js/baiduhistory.js"></script><script src="/js/random.js"></script><script src="/js/lunar.js"></script><script src="/js/day.js"></script><script data-pjax="" src="/js/nav.js"></script><script src="/js/cursor.js"></script><script data-pjax="" type="text/javascript" src="/js/dianzan.js"></script><script type="text/javascript" src="/js/commentsCount.js"></script><script type="text/javascript" src="/js/latest.js"></script><script data-pjax="" defer="" src="/js/fixed_card_widget.js"></script><script type="text/javascript" src="https://cdn1.tianli0.top/npm/node-snackbar@latest/src/js/snackbar.min.js"></script><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/aplayer@1/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn1.tianli0.top/npm/aplayer@1/dist/APlayer.min.js"></script><script src="https://cdn1.tianli0.top/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script src="https://cdn1.tianli0.top/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax","#fixedcard-dashboard"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"]):not([href="/speaks/"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async="" data-pjax="" src="https://cdn.dusays.com/bsz.js"></script><div id="fixedcard-dashboard"><button class="fixedcard-activebtn" type="button" title="我的信息" onclick="FixedCardWidget(&quot;class&quot;,&quot;card-info&quot;,&quot;0&quot;)"><i class="fas fa-address-book"></i></button><button class="fixedcard-activebtn" type="button" title="公告" onclick="FixedCardWidget(&quot;class&quot;,&quot;card-announcement&quot;,&quot;0&quot;)"><i class="fas fa-bullhorn"></i></button><button class="fixedcard-activebtn" type="button" title="天气" onclick="FixedCardWidget(&quot;class&quot;,&quot;card-weather&quot;,&quot;0&quot;)"><i class="fas fa-cloud-sun"></i></button><button class="fixedcard-activebtn" type="button" title="最新文章" onclick="FixedCardWidget(&quot;class&quot;,&quot;card-recent-post&quot;,&quot;0&quot;)"><i class="fas fa-history"></i></button><button class="fixedcard-activebtn" type="button" title="最新评论" onclick="FixedCardWidget(&quot;id&quot;,&quot;card-newest-comments&quot;,&quot;0&quot;)"><i class="fas fa-comment-dots"></i></button><button class="fixedcard-activebtn" type="button" title="文章日历" onclick="FixedCardWidget(&quot;class&quot;,&quot;card-calendar&quot;,&quot;0&quot;)"><i class="fas fa-calendar"></i></button><div class="fixedcard-user-avatar fixedcard-activebtn" onclick="RemoveFixedCardWidget()"><img class="fixedcard-user-avatar-img" src="/img/avatar.png" title="youmingsama"></div></div></div><div class="barrageswiper swiper-container"><div class="comment-barrage js-pjax swiper-wrapper"></div><link rel="stylesheet" href="/css/commentBarrage.css"><script data-pjax="" src="/js/commentBarrage.js"></script></div></body></html>
